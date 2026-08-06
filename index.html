@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvel Hero Rush TCG — Deck Builder (Scaffold)</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">⚡</span>
+      <div>
+        <h1>Marvel Hero Rush <small>Deck Builder</small></h1>
+        <p class="subtitle">Scaffold · placeholder data · game drops 2026-08-15</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button id="btn-export" class="btn">匯出 Deck (JSON)</button>
+      <button id="btn-import" class="btn">匯入 Deck</button>
+      <button id="btn-share" class="btn">複製分享碼</button>
+      <button id="btn-clear" class="btn btn-danger">清空</button>
+      <input type="file" id="file-import" accept="application/json" hidden />
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- LEFT: card browser -->
+    <section class="browser">
+      <div class="controls">
+        <input type="text" id="search" placeholder="搜尋卡名 / 效果…" />
+        <select id="filter-type">
+          <option value="">全部類型</option>
+          <option value="Character">Character</option>
+          <option value="Rush Point">Rush Point</option>
+        </select>
+        <select id="filter-rarity">
+          <option value="">全部稀有度</option>
+        </select>
+        <select id="filter-level">
+          <option value="">全部等級</option>
+        </select>
+      </div>
+      <div id="card-grid" class="card-grid"><!-- cards injected --></div>
+    </section>
+
+    <!-- RIGHT: deck panel -->
+    <aside class="deck-panel">
+      <div class="deck-header">
+        <h2>Deck</h2>
+        <span id="deck-count" class="deck-count">0 張</span>
+      </div>
+
+      <div id="deck-validation" class="validation"><!-- rules status --></div>
+
+      <div class="deck-stats" id="deck-stats"><!-- stat chips --></div>
+
+      <div id="deck-list" class="deck-list"><!-- deck rows --></div>
+
+      <div class="share-box">
+        <label>分享碼 / 匯入貼上：</label>
+        <textarea id="share-text" rows="3" placeholder="點「複製分享碼」生成，或貼上別人嘅碼再點匯入…"></textarea>
+      </div>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <!-- data + logic -->
+  <script src="js/cards.js"></script>
+  <script src="js/rules.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
