@@ -36,3 +36,6 @@ python3 -m http.server 8765
 - [ ] Replace placeholder cards with real card data (post 2026-08-15)
 - [ ] Verify & finalize deck rules
 - [ ] Optional: card images, multiple saved decks, public sharing backend
+
+## Deployment
+Live site: https://aaronht88.github.io/marvel-hero-rush-deck/
