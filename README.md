@@ -2,18 +2,33 @@
 
 A lightweight deck-building web app for the **Marvel Hero Rush TCG** (Card Fun / 杰森动漫).
 
-> ✅ **Real card data.** 2026-08-10 — cardlist published on the official site; this repo now contains all **233 card entries** (192 unique card numbers, including alternate-art / rarity prints) scraped from the official API, with local card art thumbnails.
+> **Build v0.1.0-beta** · 2026-08-10
+> ✅ **Real card data.** Cardlist published on the official site — this repo contains all **233 card entries** (192 unique card numbers, including alternate-art / rarity prints) scraped from the official API, with local card art thumbnails.
+> 🎨 UI themed on the official rulebook's dark sci-fi / tactical HUD design language.
 
-## Features
-- Multi-language UI (繁中 / 简中 / English)
-- Card browser with search (name / number / trait / effect text) + filters (series / rarity / level / attack range / color)
+## Features (v0.1.0-beta)
+
+**Card database**
+- 233 real cards from the official cardlist (BP01 The Avengers booster + SD01-04 REALITY/MIND/SPACE/TIME starters)
+- Full stats: level 1-6, power, attack range 0-5, color (Red/Yellow/Blue/Green), trait, rarity (R/SR/GR/MR/UR/SEC), complete effect text
+- Local card art thumbnails (480px WebP)
+
+**Browsing & filtering**
+- Search by card name / number / trait / effect text
+- Filters: series, rarity, level, attack range, color
 - View tabs: All / Favorites / Owned collection
-- Card detail overlay: enlarged art + full stats + effect text, with Add-to-Deck / Favorite / Owned controls
-- **Multiple named decks** with a deck manager (new / rename / delete / load) + one-click copy of any deck's share code
+- Card detail overlay: enlarged art + all stats + effect text, with Add-to-Deck / Favorite / Owned (±) controls and live in-deck count
+
+**Deck building**
+- Multiple named decks with a Deck Manager (new / rename / delete / load)
+- One-click copy of any deck's share code, plus copy-paste import & JSON export/import
 - Drag & drop cards onto the deck panel to add
-- Deck building with official rules validation: **exactly 50 cards, max 2 colors, max 3 same-name copies**
-- Deck statistics (level curve, color breakdown, rarity breakdown, average Power)
-- Export / import deck as JSON, copy-paste share code
+- Official rules validation: **exactly 50 cards, max 2 colors, max 3 same-name copies**
+- Deck statistics: level curve, color breakdown, rarity breakdown, average Power
+
+**UI / UX**
+- Multi-language interface (繁體中文 / 简体中文 / English)
+- Dark sci-fi HUD theme (official rulebook design language)
 - Everything persists in localStorage (decks, favorites, owned counts, language)
 
 ## Data
@@ -41,16 +56,20 @@ python3 -m http.server 8765
 | File | Purpose |
 |------|---------|
 | `index.html` | Page structure |
-| `css/styles.css` | UI styling (dark theme) |
+| `css/styles.css` | UI styling (dark sci-fi HUD theme) |
+| `js/i18n.js` | Multi-language strings (繁中/简中/EN) |
 | `js/cards.js` | Card database (233 real entries) |
-| `js/rules.js` | Deck-building rules (win condition + levels confirmed; deck size / copy limit flagged `_todo` until the official rulebook drops) |
-| `js/app.js` | App logic: browse, build, validate, share |
+| `js/rules.js` | Deck-building rules (official: 50 cards / 2 colors / 3 same-name) |
+| `js/app.js` | App logic: browse, build, validate, share, multi-deck, favorites/owned |
 | `img/cards/` | Local card art thumbnails (WebP) |
 
 ## Roadmap
-- [x] Verify deck size + copy-limit rules against the official rulebook PDF (confirmed: 50 cards / 2 colors / 3 same-name)
+- [x] Real card data (233 entries) from official API
+- [x] Deck rules confirmed from official rulebook PDF (50 / 2 colors / 3 same-name)
+- [x] Multi-deck storage + favorites/owned collection + i18n UI
 - [ ] Traditional-Chinese card text (official API currently serves EN/ID only)
-- [ ] Multiple saved decks, card detail popup, public sharing backend
+- [ ] Card detail popup enhancements, public sharing backend
+- [ ] Monetization (shelved until game launch + proper hosting)
 
 ## Deployment
 Live site: https://aaronht88.github.io/marvel-hero-rush-deck/ (GitHub Actions → Pages)

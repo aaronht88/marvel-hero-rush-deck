@@ -4,6 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
+  const APP_VERSION = "0.1.0-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -424,6 +425,7 @@
     return {
       game: "Marvel Hero Rush TCG",
       version: "v5",
+      appVersion: APP_VERSION,
       rules: { deckSize: RULES.deckSize, copyLimitPerName: RULES.copyLimitPerName, maxColors: RULES.maxColors },
       cards: [...deck.entries()].map(([id, qty]) => ({ id, qty })),
     };
@@ -589,6 +591,7 @@
   // ---------- boot ----------
   loadPersist();
   renderDeckSelect();
+  $("#version-badge").textContent = "v" + APP_VERSION;
   const savedLang = localStorage.getItem("mhr_lang");
   if (savedLang && window.MHR_I18N.I18N[savedLang]) {
     $("#lang-select").value = savedLang;
