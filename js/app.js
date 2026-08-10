@@ -610,13 +610,21 @@
   loadPersist();
   renderDeckSelect();
   $("#version-badge").textContent = "v" + APP_VERSION;
-  const savedLang = localStorage.getItem("mhr_lang");
-  if (savedLang && window.MHR_I18N.I18N[savedLang]) {
-    $("#lang-select").value = savedLang;
-    setLang(savedLang);
-  } else {
-    setLang("zh-HK");
+  // language: saved choice wins; otherwise auto-detect from browser
+  function detectLang() {
+    const nav = (navigator.language || navigator.userLanguage || "zh-HK").toLowerCase();
+    if (nav.startsWith("zh")) {
+      if (nav.startsWith("zh-tw") || nav.startsWith("zh-hk") || nav.startsWith("zh-mo")) return "zh-HK";
+      if (nav.startsWith("zh-cn") || nav.startsWith("zh-sg")) return "zh-CN";
+      return "zh-HK"; // plain "zh" → project home market
+    }
+    return "en"; // en + everything else → English
   }
+  const savedLang = localStorage.getItem("mhr_lang");
+  const bootLang = (savedLang && window.MHR_I18N.I18N[savedLang]) ? savedLang : detectLang();
+  $("#lang-select").value = bootLang;
+  setLang(bootLang);
+  try { localStorage.setItem("mhr_lang", bootLang); } catch (e) {}
   renderCards();
   renderDeck();
   maybeShowWelcome();
