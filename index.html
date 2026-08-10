@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Marvel Hero Rush TCG — Deck Builder (Scaffold)</title>
+  <title>Marvel Hero Rush TCG — Deck Builder</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -12,7 +12,7 @@
       <span class="logo">⚡</span>
       <div>
         <h1>Marvel Hero Rush <small>Deck Builder</small></h1>
-        <p class="subtitle">Scaffold · placeholder data · game drops 2026-08-15</p>
+        <p class="subtitle">233 張實卡資料（BP01 The Avengers + SD01-04 預組）· 2026-08-10 官方 cardlist</p>
       </div>
     </div>
     <div class="top-actions">
@@ -28,17 +28,21 @@
     <!-- LEFT: card browser -->
     <section class="browser">
       <div class="controls">
-        <input type="text" id="search" placeholder="搜尋卡名 / 效果…" />
-        <select id="filter-type">
-          <option value="">全部類型</option>
-          <option value="Character">Character</option>
-          <option value="Rush Point">Rush Point</option>
+        <input type="text" id="search" placeholder="搜尋卡名 / 編號 / 特徵 / 效果…" />
+        <select id="filter-set">
+          <option value="">全部系列</option>
         </select>
         <select id="filter-rarity">
           <option value="">全部稀有度</option>
         </select>
         <select id="filter-level">
           <option value="">全部等級</option>
+        </select>
+        <select id="filter-range">
+          <option value="">全部攻擊範圍</option>
+        </select>
+        <select id="filter-attr">
+          <option value="">全部顏色</option>
         </select>
       </div>
       <div id="card-grid" class="card-grid"><!-- cards injected --></div>

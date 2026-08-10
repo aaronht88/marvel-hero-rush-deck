@@ -1,15 +1,23 @@
 # Marvel Hero Rush Deck Builder
 
-A lightweight deck-building web app for the **Marvel Hero Rush TCG** (Card Fun, launching 2026-08-15).
+A lightweight deck-building web app for the **Marvel Hero Rush TCG** (Card Fun / 杰森动漫).
 
-> ⚠️ **Scaffold / placeholder status.** This is an early scaffold built before the game's card data was published. All card data is PLACEHOLDER and the deck-construction rules are GUESSED. Replace `js/cards.js` and `js/rules.js` with real data after release.
+> ✅ **Real card data.** 2026-08-10 — cardlist published on the official site; this repo now contains all **233 card entries** (192 unique card numbers, including alternate-art / rarity prints) scraped from the official API, with local card art thumbnails.
 
 ## Features
-- Card browser with search + filters (type / rarity / level)
-- Click-to-add deck building with per-card copy limits
-- Live deck validation against placeholder rules
-- Deck statistics (character / Rush Point counts, total cost, rarity breakdown)
+- Card browser with search (name / number / trait / effect text) + filters (series / rarity / level / attack range / color)
+- Click-to-add deck building with per-card copy limits (**counted per card number**, so alternate-art prints of the same card share the 4-copy limit)
+- Live deck validation (deck size, win-condition reminder)
+- Deck statistics (level curve, color breakdown, rarity breakdown, average Power)
 - Export / import deck as JSON, and a copy-paste share code
+
+## Data
+- Source: official Marvel Hero Rush cardlist API (`server.marvelherorush.com/marvel/card/list`)
+- Sets: **BP01 The Avengers** (booster, 153 entries) · **SD01 REALITY** · **SD02 MIND** · **SD03 SPACE** · **SD04 TIME** (starter decks, 20 each)
+- Rarities: R · SR · GR · MR · UR · SEC
+- Card colors: Red · Yellow · Blue · Green
+- Card art: downloaded from the official CDN and converted to local 480px WebP thumbnails (`img/cards/`) — official image URLs carry 24-hour expiry tokens, so local copies are required for a static site
+- Note: the official cardlist contains **character cards only**; Rush Points are game tokens, not cards
 
 ## Tech
 Zero-dependency static web app — plain HTML + CSS + vanilla JS. No build step.
@@ -28,14 +36,15 @@ python3 -m http.server 8765
 |------|---------|
 | `index.html` | Page structure |
 | `css/styles.css` | UI styling (dark theme) |
-| `js/cards.js` | Card database + schema (EDIT THIS with real cards) |
-| `js/rules.js` | Deck-building rules (EDIT THIS with real rules) |
+| `js/cards.js` | Card database (233 real entries) |
+| `js/rules.js` | Deck-building rules (win condition + levels confirmed; deck size / copy limit flagged `_todo` until the official rulebook drops) |
 | `js/app.js` | App logic: browse, build, validate, share |
+| `img/cards/` | Local card art thumbnails (WebP) |
 
 ## Roadmap
-- [ ] Replace placeholder cards with real card data (post 2026-08-15)
-- [ ] Verify & finalize deck rules
-- [ ] Optional: card images, multiple saved decks, public sharing backend
+- [ ] Verify deck size + copy-limit rules against the official rulebook PDF
+- [ ] Traditional-Chinese card text (official API currently serves EN/ID only)
+- [ ] Multiple saved decks, card detail popup, public sharing backend
 
 ## Deployment
-Live site: https://aaronht88.github.io/marvel-hero-rush-deck/
+Live site: https://aaronht88.github.io/marvel-hero-rush-deck/ (GitHub Actions → Pages)

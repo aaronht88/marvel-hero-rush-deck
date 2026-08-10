@@ -1,17 +1,19 @@
 // =============================================================
-// Marvel Hero Rush TCG — Deck Construction Rules
+// Marvel Hero Rush TCG — Deck Construction Rules (v2, real data)
 // =============================================================
-// !! PLACEHOLDER GUESS based on the official Learn-to-Play
-// summary (game not yet released as of 2026-08-06).
-// Real rules arrive 2026-08-15. EDIT THIS FILE when confirmed.
+// Confirmed from official cardlist + product info (2026-08-10):
+//   - All cards in the official cardlist are CHARACTER cards
+//     (Rush Points are game tokens, not cards → no type ratio rule)
+//   - Character cards: 6 levels (Lv1-6), Power, Attack Range 0-5
+//   - Card colors (attribute): Red / Yellow / Blue / Green
+//   - Sets: BP01 The Avengers (booster), SD01 REALITY / SD02 MIND /
+//     SD03 SPACE / SD04 TIME (starter decks)
+//   - Win condition: fill your timeline with 9 Rush Points
 //
-// Known-confirmed facts (from official LP video):
-//   - Card types: Character Card, Rush Point
-//   - Character cards: 6 levels
-//   - Win condition: first to fill timeline with 9 Rush Points
-//
-// GUESSED (mark TODO until verified):
-//   - deck size, per-card copy limit, type ratio, etc.
+// STILL GUESSED (official rulebook not public — mark TODO):
+//   - deck size (default 40-60 like most TCGs)
+//   - per-card copy limit (default 4; counted per card NUMBER,
+//     so alternate-art prints of the same card share the limit)
 // =============================================================
 
 const RULES = {
@@ -20,18 +22,18 @@ const RULES = {
   // ---- confirmed ----
   winCondition: { rushPointsToWin: 9 },
   characterLevels: 6,
+  attributes: ["Red", "Yellow", "Blue", "Green"],
 
-  // ---- GUESSED — verify after release ----
+  // ---- GUESSED — verify when official rulebook releases ----
   deckSize: { min: 40, max: 60, _todo: "VERIFY: real deck size limit" },
-  copyLimitPerCard: 4, // typical TCG default; VERIFY
-  rushPointRatio: { min: 0.25, _todo: "VERIFY: required Rush Point % of deck" },
+  copyLimitPerCard: 4, // counted per card_no (variants share the limit); VERIFY
+  // NOTE: no Rush Point ratio rule — the cardlist contains characters only.
 
   // validation toggle: when false, deck is built freely (no hard errors)
   enforce: true,
 
   // ---- helpers ----
   isCharacter(card) { return card.type === "Character"; },
-  isRushPoint(card) { return card.type === "Rush Point"; },
 };
 
 window.MHR_RULES = RULES;
