@@ -443,7 +443,10 @@
     fetch("https://aaronht88.goatcounter.com/counter/TOTAL.json", { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
-        if (d && d.count) $("#visitor-count").textContent = d.count;
+        if (d && d.count) {
+          $("#visitor-count").textContent = d.count;
+          $("#wl-visitor-count").textContent = d.count;
+        }
       })
       .catch(() => {});
   }

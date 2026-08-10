@@ -43,6 +43,7 @@ const I18N = {
     toastDeckLoaded: "已載入牌組",
     toastCantDeleteLast: "至少要保留一個牌組",
     visitorViews: "訪客瀏覽次數",
+    cumulativeUsers: "累積使用人數",
     // welcome overlay
     welcomeTitle: "歡迎使用",
     whatsNewTitle: "本版更新",
@@ -136,6 +137,7 @@ const I18N = {
     toastDeckLoaded: "已载入牌组",
     toastCantDeleteLast: "至少要保留一个牌组",
     visitorViews: "访客浏览次数",
+    cumulativeUsers: "累计使用人数",
     // welcome overlay
     welcomeTitle: "欢迎使用",
     whatsNewTitle: "本版更新",
@@ -227,6 +229,7 @@ const I18N = {
     toastDeckLoaded: "Deck loaded",
     toastCantDeleteLast: "Keep at least one deck",
     visitorViews: "Visitor pageviews",
+    cumulativeUsers: "Total visitors",
     // welcome overlay
     welcomeTitle: "Welcome",
     whatsNewTitle: "What's New",

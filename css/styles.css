@@ -301,6 +301,8 @@ body.modal-open { overflow: hidden; }
   color: var(--cyan); border: 1px solid var(--cyan-dim); border-radius: 3px; padding: 3px 12px;
   background: rgba(0, 229, 255, .07); text-shadow: 0 0 8px rgba(0, 229, 255, .5);
 }
+.wl-visitors { margin-top: 4px; font-size: 12px; color: var(--muted); letter-spacing: .5px; }
+.wl-visitors #wl-visitor-count { color: var(--gold); font-weight: 700; font-family: "Rajdhani", sans-serif; font-size: 14px; text-shadow: 0 0 8px rgba(251, 191, 36, .5); }
 .wl-info { max-height: 88vh; overflow-y: auto; }
 .wl-section { margin-top: 6px; }
 .wl-section h3 {
