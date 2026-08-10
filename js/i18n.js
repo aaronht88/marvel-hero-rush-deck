@@ -42,6 +42,21 @@ const I18N = {
     toastDeckCopied: "牌組碼已複製",
     toastDeckLoaded: "已載入牌組",
     toastCantDeleteLast: "至少要保留一個牌組",
+    // welcome overlay
+    welcomeTitle: "歡迎使用",
+    whatsNewTitle: "本版更新",
+    changelogLink: "完整 Changelog →",
+    disclaimerTitle: "免責聲明",
+    disclaimerBody: "本網站係 fans 製作嘅非官方工具，與 Marvel、Card Fun（杰森動漫）無關，亦未獲官方授權。卡牌資料及卡圖取自官方網站 marvelherorush.com，版權歸 Marvel / Card Fun 所有。本工具僅供個人參考及研究之用，不作任何商業用途。",
+    creditTitle: "官方 Credit",
+    creditBody: "Marvel Hero Rush TCG 官方網站：https://www.marvelherorush.com<br />出版：Card Fun（杰森動漫）<br />卡圖 © MARVEL",
+    dontShowAgain: "下次唔好再顯示",
+    startBtn: "開始使用",
+    wn1: "官方規則驗證：50 張 · 最多 2 色 · 同名最多 3 張",
+    wn2: "多牌組儲存 + 牌組管理 + 一鍵複製分享碼",
+    wn3: "最愛 / 擁有收藏頁 + 卡牌詳情 overlay",
+    wn4: "拖曳加卡 + 三語介面（繁中 / 简中 / EN）",
+    wn5: "官方規則書風格 Dark Sci-Fi 主題",
     shareLabel: "分享碼 / 匯入貼上：",
     sharePh: "點「複製分享碼」生成，或貼上別人嘅碼再點匯入…",
     noMatch: "無吻合卡片。",
@@ -119,6 +134,21 @@ const I18N = {
     toastDeckCopied: "牌组码已复制",
     toastDeckLoaded: "已载入牌组",
     toastCantDeleteLast: "至少要保留一个牌组",
+    // welcome overlay
+    welcomeTitle: "欢迎使用",
+    whatsNewTitle: "本版更新",
+    changelogLink: "完整 Changelog →",
+    disclaimerTitle: "免责声明",
+    disclaimerBody: "本网站是粉丝制作的非官方工具，与 Marvel、Card Fun（杰森动漫）无关，亦未获官方授权。卡牌资料及卡图取自官方网站 marvelherorush.com，版权归 Marvel / Card Fun 所有。本工具仅供个人参考及研究之用，不作任何商业用途。",
+    creditTitle: "官方 Credit",
+    creditBody: "Marvel Hero Rush TCG 官方网站：https://www.marvelherorush.com<br />出版：Card Fun（杰森动漫）<br />卡图 © MARVEL",
+    dontShowAgain: "下次不要再显示",
+    startBtn: "开始使用",
+    wn1: "官方规则验证：50 张 · 最多 2 色 · 同名最多 3 张",
+    wn2: "多牌组储存 + 牌组管理 + 一键复制分享码",
+    wn3: "最爱 / 拥有收藏页 + 卡牌详情 overlay",
+    wn4: "拖拽加卡 + 三语界面（繁中 / 简中 / EN）",
+    wn5: "官方规则书风格 Dark Sci-Fi 主题",
     shareLabel: "分享码 / 导入粘贴：",
     sharePh: "点「复制分享码」生成，或粘贴别人的码再点导入…",
     noMatch: "无吻合卡片。",
@@ -194,6 +224,21 @@ const I18N = {
     toastDeckCopied: "Deck code copied",
     toastDeckLoaded: "Deck loaded",
     toastCantDeleteLast: "Keep at least one deck",
+    // welcome overlay
+    welcomeTitle: "Welcome",
+    whatsNewTitle: "What's New",
+    changelogLink: "Full Changelog →",
+    disclaimerTitle: "Disclaimer",
+    disclaimerBody: "This is an unofficial fan-made tool, not affiliated with or endorsed by Marvel, Card Fun (Jason Animation), or the game's publishers. Card data and card images are sourced from the official site marvelherorush.com and belong to Marvel / Card Fun. For personal reference only — not for commercial use.",
+    creditTitle: "Official Credits",
+    creditBody: "Marvel Hero Rush TCG official site: https://www.marvelherorush.com<br />Published by Card Fun (Jason Animation)<br />Card art © MARVEL",
+    dontShowAgain: "Don't show again",
+    startBtn: "Start",
+    wn1: "Official rules validation: 50 cards · max 2 colors · max 3 same-name",
+    wn2: "Multiple named decks + Deck Manager + one-click share code",
+    wn3: "Favorites / Owned tabs + card detail overlay",
+    wn4: "Drag & drop + 3-language UI (繁中 / 简中 / EN)",
+    wn5: "Dark Sci-Fi theme from the official rulebook",
     shareLabel: "Share code / paste to import:",
     sharePh: "Click 'Copy Share Code' to generate, or paste someone else's code and import…",
     noMatch: "No matching cards.",
@@ -250,6 +295,9 @@ function setLang(lang) {
   // static elements
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    el.innerHTML = t(el.dataset.i18nHtml);
   });
   document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
     el.placeholder = t(el.dataset.i18nPh);

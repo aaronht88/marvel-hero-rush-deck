@@ -83,7 +83,9 @@ body.modal-open { overflow: hidden; }
   text-shadow: 0 0 8px rgba(0, 229, 255, .5);
   box-shadow: 0 0 10px rgba(0, 229, 255, .12);
   white-space: nowrap;
+  cursor: pointer;
 }
+.version-badge:hover { color: #fff; box-shadow: 0 0 14px rgba(0, 229, 255, .3); }
 .top-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 
 .lang-wrap { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
@@ -270,6 +272,38 @@ body.modal-open { overflow: hidden; }
 .dm-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dm-count { font-size: 11px; color: var(--muted); }
 .dm-actions { display: flex; gap: 6px; flex: none; flex-wrap: wrap; justify-content: flex-end; }
+
+/* ---------- Welcome / info overlay ---------- */
+.modal-welcome { max-width: 720px; }
+.wl-side {
+  background:
+    radial-gradient(ellipse at 50% 15%, rgba(0, 229, 255, .16), transparent 60%),
+    linear-gradient(180deg, #0e1c36, #0a1324);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 24px 18px; text-align: center;
+  border-right: 1px solid var(--border-soft);
+}
+.wl-logo { font-size: 52px; line-height: 1; filter: drop-shadow(0 0 14px rgba(0, 229, 255, .9)) drop-shadow(0 0 30px rgba(0, 229, 255, .4)); }
+.wl-title { font-family: "Russo One", sans-serif; font-size: 19px; letter-spacing: 2px; color: #fff; }
+.wl-sub { font-family: "Rajdhani", sans-serif; font-size: 13px; letter-spacing: 4px; color: var(--cyan); }
+.wl-version {
+  margin-top: 10px; font-family: "Rajdhani", sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px;
+  color: var(--cyan); border: 1px solid var(--cyan-dim); border-radius: 3px; padding: 3px 12px;
+  background: rgba(0, 229, 255, .07); text-shadow: 0 0 8px rgba(0, 229, 255, .5);
+}
+.wl-info { max-height: 88vh; overflow-y: auto; }
+.wl-section { margin-top: 6px; }
+.wl-section h3 {
+  margin: 0 0 6px; font-size: 13px; letter-spacing: 1.5px; color: var(--cyan);
+  text-transform: uppercase; border-bottom: 1px solid var(--border-soft); padding-bottom: 4px;
+}
+.wl-list { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; color: var(--text); }
+.wl-changelog { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--cyan); text-decoration: none; border-bottom: 1px dashed var(--cyan-dim); }
+.wl-changelog:hover { color: #fff; }
+.wl-disclaimer { margin: 0; font-size: 12px; line-height: 1.65; color: var(--muted); }
+.wl-credit { margin: 0; font-size: 12px; line-height: 1.7; color: var(--text); }
+.wl-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.wl-dontshow { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); cursor: pointer; user-select: none; }
 
 /* ---------- Card detail modal ---------- */
 .modal-overlay {

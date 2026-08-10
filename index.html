@@ -89,6 +89,46 @@
     </aside>
   </main>
 
+  <!-- WELCOME / INFO OVERLAY (shown before first use) -->
+  <div id="welcome-modal" class="modal-overlay" hidden>
+    <div class="modal modal-welcome">
+      <div class="modal-body">
+        <div class="wl-side">
+          <div class="wl-logo">⚡</div>
+          <div class="wl-title">MARVEL HERO RUSH</div>
+          <div class="wl-sub">DECK BUILDER</div>
+          <div class="wl-version" id="wl-version">v0.1.0-beta</div>
+        </div>
+        <div class="modal-info wl-info">
+          <h2 class="modal-name" data-i18n="welcomeTitle">歡迎使用</h2>
+          <div class="wl-section">
+            <h3 data-i18n="whatsNewTitle">本版更新</h3>
+            <ul class="wl-list" id="wl-whatsnew">
+              <li data-i18n="wn1">官方規則驗證：50 張 · 最多 2 色 · 同名最多 3 張</li>
+              <li data-i18n="wn2">多牌組儲存 + 牌組管理 + 一鍵複製分享碼</li>
+              <li data-i18n="wn3">最愛 / 擁有收藏頁 + 卡牌詳情 overlay</li>
+              <li data-i18n="wn4">拖曳加卡 + 三語介面（繁中 / 简中 / EN）</li>
+              <li data-i18n="wn5">官方規則書風格 Dark Sci-Fi 主題</li>
+            </ul>
+            <a class="wl-changelog" id="wl-changelog-link" href="https://github.com/aaronht88/marvel-hero-rush-deck/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-i18n="changelogLink">完整 Changelog →</a>
+          </div>
+          <div class="wl-section">
+            <h3 data-i18n="disclaimerTitle">免責聲明</h3>
+            <p class="wl-disclaimer" data-i18n="disclaimerBody">本網站係 fans 製作嘅非官方工具，與 Marvel、Card Fun（杰森動漫）無關，亦未獲官方授權。卡牌資料及卡圖取自官方網站 marvelherorush.com，版權歸 Marvel / Card Fun 所有。本工具僅供個人參考及研究之用，不作任何商業用途。</p>
+          </div>
+          <div class="wl-section">
+            <h3 data-i18n="creditTitle">官方 Credit</h3>
+            <p class="wl-credit" data-i18n-html="creditBody">Marvel Hero Rush TCG 官方網站：https://www.marvelherorush.com<br />出版：Card Fun（杰森動漫）<br />卡圖 © MARVEL</p>
+          </div>
+          <div class="wl-actions">
+            <label class="wl-dontshow"><input type="checkbox" id="wl-dontshow" /><span data-i18n="dontShowAgain">下次唔好再顯示</span></label>
+            <button id="wl-start" class="btn btn-primary" data-i18n="startBtn">開始使用</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- DECK MANAGER MODAL -->
   <div id="deck-manager" class="modal-overlay" hidden>
     <div class="modal modal-sm">

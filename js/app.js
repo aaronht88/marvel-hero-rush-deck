@@ -420,6 +420,24 @@
     }
   });
 
+  // ---------- welcome / info overlay ----------
+  const LS_SEEN_VERSION = "mhr_seen_version";
+  function showWelcome() { $("#wl-version").textContent = "v" + APP_VERSION; $("#welcome-modal").hidden = false; }
+  function hideWelcome() { $("#welcome-modal").hidden = true; }
+  function maybeShowWelcome() {
+    try {
+      if (localStorage.getItem(LS_SEEN_VERSION) === APP_VERSION) return;
+    } catch (e) {}
+    showWelcome();
+  }
+  $("#wl-start").addEventListener("click", () => {
+    if ($("#wl-dontshow").checked) {
+      try { localStorage.setItem(LS_SEEN_VERSION, APP_VERSION); } catch (e) {}
+    }
+    hideWelcome();
+  });
+  $("#version-badge").addEventListener("click", showWelcome);
+
   // ---------- export / import / share ----------
   function deckToObj() {
     return {
@@ -601,4 +619,5 @@
   }
   renderCards();
   renderDeck();
+  maybeShowWelcome();
 })();
