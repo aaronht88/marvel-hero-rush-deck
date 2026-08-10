@@ -5,11 +5,16 @@ A lightweight deck-building web app for the **Marvel Hero Rush TCG** (Card Fun /
 > ✅ **Real card data.** 2026-08-10 — cardlist published on the official site; this repo now contains all **233 card entries** (192 unique card numbers, including alternate-art / rarity prints) scraped from the official API, with local card art thumbnails.
 
 ## Features
+- Multi-language UI (繁中 / 简中 / English)
 - Card browser with search (name / number / trait / effect text) + filters (series / rarity / level / attack range / color)
-- Click-to-add deck building with per-card copy limits (**counted per card number**, so alternate-art prints of the same card share the 4-copy limit)
-- Live deck validation (deck size, win-condition reminder)
+- View tabs: All / Favorites / Owned collection
+- Card detail overlay: enlarged art + full stats + effect text, with Add-to-Deck / Favorite / Owned controls
+- **Multiple named decks** with a deck manager (new / rename / delete / load) + one-click copy of any deck's share code
+- Drag & drop cards onto the deck panel to add
+- Deck building with official rules validation: **exactly 50 cards, max 2 colors, max 3 same-name copies**
 - Deck statistics (level curve, color breakdown, rarity breakdown, average Power)
-- Export / import deck as JSON, and a copy-paste share code
+- Export / import deck as JSON, copy-paste share code
+- Everything persists in localStorage (decks, favorites, owned counts, language)
 
 ## Data
 - Source: official Marvel Hero Rush cardlist API (`server.marvelherorush.com/marvel/card/list`)

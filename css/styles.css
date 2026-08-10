@@ -180,6 +180,38 @@ body.modal-open { overflow: hidden; }
 .owned-ctl .btn, .deck-ctl .btn { width: 26px; height: 26px; padding: 0; font-size: 14px; }
 #owned-count, #deck-count-modal { min-width: 20px; text-align: center; font-size: 14px; color: var(--text); font-weight: 700; }
 
+/* View tabs */
+.view-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+.tab {
+  background: var(--panel-2); color: var(--muted); border: 1px solid var(--border);
+  padding: 5px 16px; border-radius: 99px; cursor: pointer; font-size: 13px; transition: .15s;
+}
+.tab:hover { color: var(--text); border-color: var(--accent); }
+.tab.active { background: #3a2a4a; color: #fff; border-color: #6a4a8a; }
+
+/* Deck header controls */
+.deck-head-left { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.deck-head-left select {
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--border);
+  padding: 6px 8px; border-radius: 8px; font-size: 13px; max-width: 170px;
+}
+.btn-sm { padding: 4px 9px; font-size: 12px; }
+
+/* Deck manager modal */
+.modal-sm { max-width: 560px; }
+.modal-sm .modal-info { padding: 22px; gap: 12px; }
+.modal-sm h2 { margin: 0; }
+#dm-list { display: flex; flex-direction: column; gap: 8px; }
+.dm-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px;
+}
+.dm-row.dm-current { border-color: #6a4a8a; }
+.dm-info { min-width: 0; }
+.dm-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dm-count { font-size: 11px; color: var(--muted); }
+.dm-actions { display: flex; gap: 6px; flex: none; flex-wrap: wrap; justify-content: flex-end; }
+
 /* Toast */
 .toast {
   position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);

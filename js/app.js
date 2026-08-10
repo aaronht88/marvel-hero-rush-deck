@@ -1,6 +1,5 @@
 // =============================================================
-// Marvel Hero Rush TCG — Deck Builder (v4: i18n + card overlay +
-// favorites / owned + drag & drop)
+// Marvel Hero Rush TCG — Deck Builder (v5: multi-deck + views)
 // =============================================================
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
@@ -10,23 +9,43 @@
   const { t, setLang, getLang } = window.MHR_I18N;
 
   // ---------- state ----------
-  let deck = new Map();           // id -> qty
-  let favs = new Set();           // card ids
-  let owned = {};                 // id -> count
+  let decks = [];            // [{id, name, cards:[[id,qty],...]}]
+  let currentDeckId = null;
+  let deck = new Map();      // working deck (current)
+  let favs = new Set();      // card ids
+  let owned = {};            // id -> count
   let modalCardId = null;
+  let view = "all";          // "all" | "fav" | "owned"
 
   // ---------- persistence ----------
-  const LS_DECK = "mhr_deck_v2", LS_FAVS = "mhr_favs_v2", LS_OWNED = "mhr_owned_v2";
-  function saveDeck() { try { localStorage.setItem(LS_DECK, JSON.stringify([...deck.entries()])); } catch (e) {} }
+  const LS_DECKS = "mhr_decks_v3", LS_FAVS = "mhr_favs_v2", LS_OWNED = "mhr_owned_v2", LS_LEGACY_DECK = "mhr_deck_v2";
+  function genId() { return "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function saveDecks() {
+    try {
+      const cur = decks.find((d) => d.id === currentDeckId);
+      if (cur) cur.cards = [...deck.entries()];
+      localStorage.setItem(LS_DECKS, JSON.stringify({ current: currentDeckId, decks: decks.map((d) => ({ id: d.id, name: d.name, cards: d.cards })) }));
+    } catch (e) {}
+  }
   function saveFavs() { try { localStorage.setItem(LS_FAVS, JSON.stringify([...favs])); } catch (e) {} }
   function saveOwned() { try { localStorage.setItem(LS_OWNED, JSON.stringify(owned)); } catch (e) {} }
   function loadPersist() {
-    try {
-      const d = JSON.parse(localStorage.getItem(LS_DECK) || "[]");
-      deck = new Map(d.filter(([id]) => getCard(id)));
-    } catch (e) { deck = new Map(); }
     try { favs = new Set(JSON.parse(localStorage.getItem(LS_FAVS) || "[]").filter((id) => getCard(id))); } catch (e) { favs = new Set(); }
     try { owned = JSON.parse(localStorage.getItem(LS_OWNED) || "{}"); } catch (e) { owned = {}; }
+    let stored = null;
+    try { stored = JSON.parse(localStorage.getItem(LS_DECKS) || "null"); } catch (e) { stored = null; }
+    if (stored && Array.isArray(stored.decks) && stored.decks.length) {
+      decks = stored.decks.map((d) => ({ id: d.id, name: d.name || t("defaultDeckName"), cards: Array.isArray(d.cards) ? d.cards.filter(([cid]) => getCard(cid)) : [] }));
+      currentDeckId = stored.current && decks.find((d) => d.id === stored.current) ? stored.current : decks[0].id;
+    } else {
+      // migrate legacy single deck
+      let legacy = null;
+      try { legacy = JSON.parse(localStorage.getItem(LS_LEGACY_DECK) || "null"); } catch (e) { legacy = null; }
+      decks = [{ id: genId(), name: t("defaultDeckName"), cards: Array.isArray(legacy) ? legacy.filter(([cid]) => getCard(cid)) : [] }];
+      currentDeckId = decks[0].id;
+      try { localStorage.removeItem(LS_LEGACY_DECK); } catch (e) {}
+    }
+    deck = new Map(decks.find((d) => d.id === currentDeckId).cards);
   }
 
   // ---------- DOM refs ----------
@@ -43,7 +62,9 @@
   const filterLevel = $("#filter-level");
   const filterRange = $("#filter-range");
   const filterAttr = $("#filter-attr");
-  const filterFav = $("#filter-fav");
+  const deckSelect = $("#deck-select");
+  const dmModal = $("#deck-manager");
+  const dmList = $("#dm-list");
   const shareText = $("#share-text");
   const toastEl = $("#toast");
   const modal = $("#card-modal");
@@ -100,7 +121,8 @@
     if (lv && String(card.level) !== lv) return false;
     if (rng && String(card.attackRange) !== rng) return false;
     if (attr && card.attribute !== attr) return false;
-    if (filterFav.checked && !favs.has(card.id)) return false;
+    if (view === "fav" && !favs.has(card.id)) return false;
+    if (view === "owned" && !(owned[card.id] || 0)) return false;
     if (q) {
       const hay = (card.name + " " + card.card_no + " " + (card.feature || "") + " " + (card.effect || "")).toLowerCase();
       if (!hay.includes(q)) return false;
@@ -165,8 +187,8 @@
       return false;
     }
     deck.set(id, cur + 1);
-    saveDeck();
-    renderCards(); renderDeck(); updateModalActions();
+    saveDecks();
+    renderCards(); renderDeck(); updateModalActions(); renderDeckSelect();
     if (!silent) toast(t("toastAdded"));
     return true;
   }
@@ -174,8 +196,8 @@
     const cur = deck.get(id) || 0;
     if (cur <= 1) deck.delete(id);
     else deck.set(id, cur - 1);
-    saveDeck();
-    renderCards(); renderDeck(); updateModalActions();
+    saveDecks();
+    renderCards(); renderDeck(); updateModalActions(); renderDeckSelect();
   }
 
   // ---------- favorites / owned ----------
@@ -190,6 +212,81 @@
     owned[id] = Math.max(0, (owned[id] || 0) - 1);
     if (!owned[id]) delete owned[id];
     saveOwned(); renderCards(); updateModalActions(); toast(t("toastOwnedDec"));
+  }
+
+  // ---------- multi-deck ----------
+  function renderDeckSelect() {
+    deckSelect.innerHTML = "";
+    decks.forEach((d) => {
+      const o = document.createElement("option");
+      o.value = d.id; o.textContent = d.name; deckSelect.appendChild(o);
+    });
+    deckSelect.value = currentDeckId;
+  }
+  function selectDeck(id) {
+    const d = decks.find((x) => x.id === id);
+    if (!d) return;
+    // save current
+    const cur = decks.find((x) => x.id === currentDeckId);
+    if (cur) cur.cards = [...deck.entries()];
+    currentDeckId = id;
+    deck = new Map(d.cards.filter(([cid]) => getCard(cid)));
+    saveDecks();
+    renderDeckSelect(); renderDeckManager(); renderCards(); renderDeck();
+    toast(t("toastDeckLoaded"));
+  }
+  function newDeck(name) {
+    const id = genId();
+    decks.push({ id, name: (name && name.trim()) || t("defaultDeckName"), cards: [] });
+    currentDeckId = id;
+    deck = new Map();
+    saveDecks();
+    renderDeckSelect(); renderDeckManager(); renderCards(); renderDeck();
+    toast(t("toastDeckCreated"));
+  }
+  function renameDeck(id, name) {
+    const d = decks.find((x) => x.id === id);
+    if (!d) return;
+    d.name = (name && name.trim()) || d.name;
+    saveDecks(); renderDeckSelect(); renderDeckManager();
+    toast(t("toastDeckRenamed"));
+  }
+  function deleteDeck(id) {
+    if (decks.length <= 1) { toast(t("toastCantDeleteLast")); return; }
+    decks = decks.filter((d) => d.id !== id);
+    if (currentDeckId === id) {
+      currentDeckId = decks[0].id;
+      deck = new Map(decks[0].cards.filter(([cid]) => getCard(cid)));
+    }
+    saveDecks();
+    renderDeckSelect(); renderDeckManager(); renderCards(); renderDeck();
+    toast(t("toastDeckDeleted"));
+  }
+  function deckCardCount(d) { return (d.cards || []).reduce((s, [, q]) => s + q, 0); }
+  function renderDeckManager() {
+    dmList.innerHTML = "";
+    decks.forEach((d) => {
+      const row = document.createElement("div");
+      row.className = "dm-row" + (d.id === currentDeckId ? " dm-current" : "");
+      row.innerHTML = `
+        <div class="dm-info">
+          <div class="dm-name">${d.name}${d.id === currentDeckId ? " ✓" : ""}</div>
+          <div class="dm-count">${deckCardCount(d)} ${t("deckCountSuffix")}</div>
+        </div>
+        <div class="dm-actions">
+          <button class="btn btn-sm" data-dm="copy" data-id="${d.id}">${t("dmCopy")}</button>
+          <button class="btn btn-sm" data-dm="rename" data-id="${d.id}">✎</button>
+          <button class="btn btn-sm" data-dm="load" data-id="${d.id}">${t("dmLoad")}</button>
+          <button class="btn btn-sm btn-danger" data-dm="delete" data-id="${d.id}">${t("dmDelete")}</button>
+        </div>`;
+      dmList.appendChild(row);
+    });
+  }
+  function openDeckManager() { renderDeckManager(); dmModal.hidden = false; }
+  function closeDeckManager() { dmModal.hidden = true; }
+  function encodeShareFor(cardsArr) {
+    const compact = cardsArr.map(([id, qty]) => [id, qty]);
+    return btoa(unescape(encodeURIComponent(JSON.stringify(compact))));
   }
 
   // ---------- render deck ----------
@@ -326,7 +423,7 @@
   function deckToObj() {
     return {
       game: "Marvel Hero Rush TCG",
-      version: "v4",
+      version: "v5",
       rules: { deckSize: RULES.deckSize, copyLimitPerName: RULES.copyLimitPerName, maxColors: RULES.maxColors },
       cards: [...deck.entries()].map(([id, qty]) => ({ id, qty })),
     };
@@ -343,12 +440,11 @@
     (obj.cards || []).forEach(({ id, qty }) => {
       if (getCard(id)) deck.set(id, Math.max(1, qty | 0));
     });
-    saveDeck();
-    renderCards(); renderDeck();
+    saveDecks();
+    renderCards(); renderDeck(); renderDeckSelect();
   }
   function encodeShare() {
-    const compact = [...deck.entries()].map(([id, qty]) => [id, qty]);
-    return btoa(unescape(encodeURIComponent(JSON.stringify(compact))));
+    return encodeShareFor([...deck.entries()]);
   }
   function decodeShare(code) {
     try {
@@ -366,11 +462,60 @@
   filterLevel.addEventListener("change", renderCards);
   filterRange.addEventListener("change", renderCards);
   filterAttr.addEventListener("change", renderCards);
-  filterFav.addEventListener("change", renderCards);
 
+  // view tabs
+  document.querySelectorAll(".tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      view = tab.dataset.view;
+      document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x === tab));
+      renderCards();
+    });
+  });
+
+  // language
   $("#lang-select").addEventListener("change", (e) => {
     setLang(e.target.value);
     localStorage.setItem("mhr_lang", e.target.value);
+  });
+
+  // deck selector + manager
+  deckSelect.addEventListener("change", (e) => { if (e.target.value) selectDeck(e.target.value); });
+  $("#btn-deck-new").addEventListener("click", () => {
+    const name = prompt(t("promptDeckName"), "");
+    if (name !== null) newDeck(name);
+  });
+  $("#btn-deck-manage").addEventListener("click", openDeckManager);
+  $("#dm-close").addEventListener("click", closeDeckManager);
+  dmModal.addEventListener("click", (e) => { if (e.target === dmModal) closeDeckManager(); });
+  $("#dm-new").addEventListener("click", () => {
+    const name = prompt(t("promptDeckName"), "");
+    if (name !== null) { newDeck(name); }
+  });
+  dmList.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-dm]");
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const act = btn.dataset.dm;
+    if (act === "copy") {
+      const d = decks.find((x) => x.id === id);
+      if (d) {
+        const code = encodeShareFor(d.cards);
+        navigator.clipboard?.writeText(code);
+        shareText.value = code;
+        toast(t("toastDeckCopied") + "：" + d.name);
+      }
+    } else if (act === "rename") {
+      const d = decks.find((x) => x.id === id);
+      if (d) {
+        const name = prompt(t("promptDeckName"), d.name);
+        if (name !== null) renameDeck(id, name);
+      }
+    } else if (act === "load") {
+      selectDeck(id);
+      closeDeckManager();
+    } else if (act === "delete") {
+      if (confirm(t("dmDelete") + "? " + decks.find((x) => x.id === id).name)) deleteDeck(id);
+    }
   });
 
   deckListEl.addEventListener("click", (e) => {
@@ -406,7 +551,7 @@
     const code = shareText.value.trim();
     if (!code) { $("#file-import").click(); return; }
     const m = decodeShare(code);
-    if (m) { deck = m; saveDeck(); renderCards(); renderDeck(); toast(t("toastImportCode")); }
+    if (m) { deck = m; saveDecks(); renderCards(); renderDeck(); renderDeckSelect(); toast(t("toastImportCode")); }
     else toast(t("toastBadCode"));
   });
   $("#file-import").addEventListener("change", (e) => {
@@ -420,7 +565,7 @@
     reader.readAsText(file);
   });
   $("#btn-clear").addEventListener("click", () => {
-    deck = new Map(); saveDeck(); renderCards(); renderDeck(); toast(t("toastCleared"));
+    deck = new Map(); saveDecks(); renderCards(); renderDeck(); renderDeckSelect(); toast(t("toastCleared"));
   });
 
   // language change re-render hook (called by i18n.js setLang)
@@ -436,12 +581,14 @@
         if (opt) opt.textContent = t("rangePrefix") + " " + rng;
       }
       if (modalCardId) fillModalDetails(getCard(modalCardId));
+      renderDeckManager();
       renderCards(); renderDeck(); updateModalActions();
     },
   };
 
   // ---------- boot ----------
   loadPersist();
+  renderDeckSelect();
   const savedLang = localStorage.getItem("mhr_lang");
   if (savedLang && window.MHR_I18N.I18N[savedLang]) {
     $("#lang-select").value = savedLang;

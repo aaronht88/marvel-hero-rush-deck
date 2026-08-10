@@ -35,6 +35,11 @@
   <main class="layout">
     <!-- LEFT: card browser -->
     <section class="browser">
+      <div class="view-tabs">
+        <button class="tab active" data-view="all" data-i18n="viewAll">全部</button>
+        <button class="tab" data-view="fav" data-i18n="viewFav">最愛</button>
+        <button class="tab" data-view="owned" data-i18n="viewOwned">擁有</button>
+      </div>
       <div class="controls">
         <input type="text" id="search" data-i18n-ph="searchPh" placeholder="搜尋卡名 / 編號 / 特徵 / 效果…" />
         <select id="filter-set" data-i18n-first="allSeries">
@@ -52,10 +57,6 @@
         <select id="filter-attr" data-i18n-first="allColor">
           <option value="">全部顏色</option>
         </select>
-        <label class="fav-toggle">
-          <input type="checkbox" id="filter-fav" />
-          <span data-i18n="favOnly">只睇最愛</span>
-        </label>
       </div>
       <div id="card-grid" class="card-grid"><!-- cards injected --></div>
     </section>
@@ -63,7 +64,11 @@
     <!-- RIGHT: deck panel (drag & drop target) -->
     <aside class="deck-panel" id="deck-panel">
       <div class="deck-header">
-        <h2 data-i18n="deckTitle">Deck</h2>
+        <div class="deck-head-left">
+          <select id="deck-select" title="Deck"></select>
+          <button id="btn-deck-manage" class="btn btn-sm" data-i18n="deckManage">管理</button>
+          <button id="btn-deck-new" class="btn btn-sm" data-i18n="deckNew">＋</button>
+        </div>
         <span id="deck-count" class="deck-count">0 張</span>
       </div>
 
@@ -79,6 +84,18 @@
       </div>
     </aside>
   </main>
+
+  <!-- DECK MANAGER MODAL -->
+  <div id="deck-manager" class="modal-overlay" hidden>
+    <div class="modal modal-sm">
+      <button id="dm-close" class="modal-close" aria-label="close">×</button>
+      <div class="modal-info">
+        <h2 class="modal-name" data-i18n="dmTitle">牌組管理</h2>
+        <button id="dm-new" class="btn btn-primary" data-i18n="dmNew">＋ 新增牌組</button>
+        <div id="dm-list"><!-- deck rows --></div>
+      </div>
+    </div>
+  </div>
 
   <!-- CARD DETAIL OVERLAY -->
   <div id="card-modal" class="modal-overlay" hidden>
