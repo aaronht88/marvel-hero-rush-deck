@@ -75,6 +75,8 @@ body.modal-open { overflow: hidden; }
 }
 .topbar h1 small { color: var(--cyan); font-weight: 400; font-size: 12px; letter-spacing: 2.5px; margin-left: 6px; }
 .subtitle { margin: 3px 0 0; font-size: 11px; color: var(--muted); letter-spacing: .3px; }
+.author-credit { margin: 2px 0 0; font-size: 10px; color: var(--muted); letter-spacing: .5px; opacity: .8; }
+.author-credit a { color: var(--cyan); text-decoration: none; }
 .version-badge {
   align-self: flex-start;
   font-family: "Rajdhani", sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 1px;
@@ -314,6 +316,9 @@ body.modal-open { overflow: hidden; }
 .wl-changelog:hover { color: #fff; }
 .wl-disclaimer { margin: 0; font-size: 12px; line-height: 1.65; color: var(--muted); }
 .wl-credit { margin: 0; font-size: 12px; line-height: 1.7; color: var(--text); }
+.wl-author { margin: 0; font-size: 13px; color: var(--text); }
+.wl-author a { color: var(--cyan); text-decoration: none; border-bottom: 1px dashed var(--cyan-dim); }
+.wl-author a:hover { color: #fff; }
 .wl-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
 .wl-dontshow { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); cursor: pointer; user-select: none; }
 
