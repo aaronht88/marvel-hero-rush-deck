@@ -42,6 +42,7 @@ const I18N = {
     toastDeckCopied: "牌組碼已複製",
     toastDeckLoaded: "已載入牌組",
     toastCantDeleteLast: "至少要保留一個牌組",
+    visitorViews: "訪客瀏覽次數",
     // welcome overlay
     welcomeTitle: "歡迎使用",
     whatsNewTitle: "本版更新",
@@ -134,6 +135,7 @@ const I18N = {
     toastDeckCopied: "牌组码已复制",
     toastDeckLoaded: "已载入牌组",
     toastCantDeleteLast: "至少要保留一个牌组",
+    visitorViews: "访客浏览次数",
     // welcome overlay
     welcomeTitle: "欢迎使用",
     whatsNewTitle: "本版更新",
@@ -224,6 +226,7 @@ const I18N = {
     toastDeckCopied: "Deck code copied",
     toastDeckLoaded: "Deck loaded",
     toastCantDeleteLast: "Keep at least one deck",
+    visitorViews: "Visitor pageviews",
     // welcome overlay
     welcomeTitle: "Welcome",
     whatsNewTitle: "What's New",

@@ -438,6 +438,16 @@
   });
   $("#version-badge").addEventListener("click", showWelcome);
 
+  // ---------- visitor counter (GoatCounter public JSON) ----------
+  function loadVisitorCount() {
+    fetch("https://aaronht88.goatcounter.com/counter/TOTAL.json", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d && d.count) $("#visitor-count").textContent = d.count;
+      })
+      .catch(() => {});
+  }
+
   // ---------- export / import / share ----------
   function deckToObj() {
     return {
@@ -627,5 +637,6 @@
   try { localStorage.setItem("mhr_lang", bootLang); } catch (e) {}
   renderCards();
   renderDeck();
+  loadVisitorCount();
   maybeShowWelcome();
 })();
