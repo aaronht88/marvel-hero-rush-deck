@@ -1,0 +1,212 @@
+// =============================================================
+// Marvel Hero Rush TCG — Deck Builder i18n
+// =============================================================
+// UI strings for 繁體中文 / 简体中文 / English.
+// Card data itself stays in official EN (API serves EN/ID only).
+
+const I18N = {
+  "zh-HK": {
+    appTitle: "Marvel Hero Rush Deck Builder",
+    subtitle: "233 張實卡資料（BP01 The Avengers + SD01-04 預組）· 官方 cardlist",
+    langLabel: "語言",
+    exportBtn: "匯出 Deck (JSON)",
+    importBtn: "匯入 Deck",
+    shareBtn: "複製分享碼",
+    clearBtn: "清空",
+    searchPh: "搜尋卡名 / 編號 / 特徵 / 效果…",
+    allSeries: "全部系列",
+    allRarity: "全部稀有度",
+    allLevel: "全部等級",
+    allRange: "全部攻擊範圍",
+    allColor: "全部顏色",
+    rangePrefix: "範圍",
+    lvPrefix: "Lv",
+    favOnly: "只睇最愛",
+    deckTitle: "Deck",
+    deckCountSuffix: "張",
+    shareLabel: "分享碼 / 匯入貼上：",
+    sharePh: "點「複製分享碼」生成，或貼上別人嘅碼再點匯入…",
+    noMatch: "無吻合卡片。",
+    // modal
+    effectLabel: "效果",
+    attrLabel: "顏色",
+    featureLabel: "特徵",
+    rarityLabel: "稀有度",
+    setLabel: "系列",
+    lvLabel: "等級",
+    powerLabel: "戰力",
+    rangeLabel: "攻擊範圍",
+    noLabel: "編號",
+    addDeckBtn: "加入 Deck",
+    favBtn: "加入最愛",
+    unfavBtn: "取消最愛",
+    ownedLabel: "我已擁有",
+    // toasts / validation
+    toastAdded: "已加入 Deck",
+    toastCopyLimit: "同名卡最多 3 張（{name}）",
+    toastFavOn: "已加入最愛",
+    toastFavOff: "已取消最愛",
+    toastOwnedInc: "我已擁有 +1",
+    toastOwnedDec: "我已擁有 -1",
+    toastExport: "已匯出 deck JSON",
+    toastShare: "分享碼已複製",
+    toastImportCode: "已匯入分享碼",
+    toastImportJson: "已匯入 JSON",
+    toastBadCode: "分享碼無效",
+    toastBadJson: "JSON 解析失敗",
+    toastCleared: "已清空 deck",
+    toastDragAdd: "已加入 Deck（拖曳）",
+    vTooFew: "牌組過少（要 50 張）",
+    vTooMany: "牌組過多（要 50 張）",
+    vTooManyColors: "顏色過多（最多 2 色，現有 {n} 色）",
+    vOk: "✓ 50 張 · 2 色以內 · 另備 9 張衝擊卡組 · 目標：9 張衝擊卡或對手卡組歸零取勝",
+    statTotal: "合計",
+    statAvgPwr: "平均PWR",
+  },
+  "zh-CN": {
+    appTitle: "Marvel Hero Rush Deck Builder",
+    subtitle: "233 张实卡资料（BP01 The Avengers + SD01-04 预组）· 官方 cardlist",
+    langLabel: "语言",
+    exportBtn: "导出 Deck (JSON)",
+    importBtn: "导入 Deck",
+    shareBtn: "复制分享码",
+    clearBtn: "清空",
+    searchPh: "搜索卡名 / 编号 / 特征 / 效果…",
+    allSeries: "全部系列",
+    allRarity: "全部稀有度",
+    allLevel: "全部等级",
+    allRange: "全部攻击范围",
+    allColor: "全部颜色",
+    rangePrefix: "范围",
+    lvPrefix: "Lv",
+    favOnly: "只看最爱",
+    deckTitle: "Deck",
+    deckCountSuffix: "张",
+    shareLabel: "分享码 / 导入粘贴：",
+    sharePh: "点「复制分享码」生成，或粘贴别人的码再点导入…",
+    noMatch: "无吻合卡片。",
+    effectLabel: "效果",
+    attrLabel: "颜色",
+    featureLabel: "特征",
+    rarityLabel: "稀有度",
+    setLabel: "系列",
+    lvLabel: "等级",
+    powerLabel: "战力",
+    rangeLabel: "攻击范围",
+    noLabel: "编号",
+    addDeckBtn: "加入 Deck",
+    favBtn: "加入最爱",
+    unfavBtn: "取消最爱",
+    ownedLabel: "我已拥有",
+    toastAdded: "已加入 Deck",
+    toastCopyLimit: "同名卡最多 3 张（{name}）",
+    toastFavOn: "已加入最爱",
+    toastFavOff: "已取消最爱",
+    toastOwnedInc: "我已拥有 +1",
+    toastOwnedDec: "我已拥有 -1",
+    toastExport: "已导出 deck JSON",
+    toastShare: "分享码已复制",
+    toastImportCode: "已导入分享码",
+    toastImportJson: "已导入 JSON",
+    toastBadCode: "分享码无效",
+    toastBadJson: "JSON 解析失败",
+    toastCleared: "已清空 deck",
+    toastDragAdd: "已加入 Deck（拖拽）",
+    vTooFew: "牌组过少（要 50 张）",
+    vTooMany: "牌组过多（要 50 张）",
+    vTooManyColors: "颜色过多（最多 2 色，现有 {n} 色）",
+    vOk: "✓ 50 张 · 2 色以内 · 另备 9 张冲击卡组 · 目标：9 张冲击卡或对手卡组归零取胜",
+    statTotal: "合计",
+    statAvgPwr: "平均PWR",
+  },
+  en: {
+    appTitle: "Marvel Hero Rush Deck Builder",
+    subtitle: "233 real cards (BP01 The Avengers + SD01-04 starters) · official cardlist",
+    langLabel: "Language",
+    exportBtn: "Export Deck (JSON)",
+    importBtn: "Import Deck",
+    shareBtn: "Copy Share Code",
+    clearBtn: "Clear",
+    searchPh: "Search name / number / trait / effect…",
+    allSeries: "All Series",
+    allRarity: "All Rarities",
+    allLevel: "All Levels",
+    allRange: "All Attack Ranges",
+    allColor: "All Colors",
+    rangePrefix: "Range",
+    lvPrefix: "Lv",
+    favOnly: "Favorites only",
+    deckTitle: "Deck",
+    deckCountSuffix: "cards",
+    shareLabel: "Share code / paste to import:",
+    sharePh: "Click 'Copy Share Code' to generate, or paste someone else's code and import…",
+    noMatch: "No matching cards.",
+    effectLabel: "Effect",
+    attrLabel: "Color",
+    featureLabel: "Trait",
+    rarityLabel: "Rarity",
+    setLabel: "Set",
+    lvLabel: "Level",
+    powerLabel: "Power",
+    rangeLabel: "Attack Range",
+    noLabel: "No.",
+    addDeckBtn: "Add to Deck",
+    favBtn: "Add Favorite",
+    unfavBtn: "Remove Favorite",
+    ownedLabel: "Owned",
+    toastAdded: "Added to deck",
+    toastCopyLimit: "Max 3 copies per name ({name})",
+    toastFavOn: "Added to favorites",
+    toastFavOff: "Removed from favorites",
+    toastOwnedInc: "Owned +1",
+    toastOwnedDec: "Owned -1",
+    toastExport: "Deck JSON exported",
+    toastShare: "Share code copied",
+    toastImportCode: "Share code imported",
+    toastImportJson: "JSON imported",
+    toastBadCode: "Invalid share code",
+    toastBadJson: "JSON parse failed",
+    toastCleared: "Deck cleared",
+    toastDragAdd: "Added to deck (drag & drop)",
+    vTooFew: "Deck too small (need 50)",
+    vTooMany: "Deck too big (need 50)",
+    vTooManyColors: "Too many colors (max 2, have {n})",
+    vOk: "✓ 50 cards · ≤2 colors · +9-card Rush deck · Win: 9 Rush Cards or deck-out",
+    statTotal: "Total",
+    statAvgPwr: "Avg PWR",
+  },
+};
+
+const LANGS = ["zh-HK", "zh-CN", "en"];
+let _lang = "zh-HK";
+
+function t(key, vars) {
+  let s = (I18N[_lang] && I18N[_lang][key]) || I18N["zh-HK"][key] || key;
+  if (vars) Object.keys(vars).forEach((k) => { s = s.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]); });
+  return s;
+}
+
+function setLang(lang) {
+  if (!I18N[lang]) return;
+  _lang = lang;
+  document.documentElement.lang = lang === "zh-HK" ? "zh-HK" : lang === "zh-CN" ? "zh-CN" : "en";
+  // static elements
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
+    el.placeholder = t(el.dataset.i18nPh);
+  });
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    el.title = t(el.dataset.i18nTitle);
+  });
+  // select placeholders (first option per select)
+  document.querySelectorAll("select[data-i18n-first]").forEach((sel) => {
+    if (sel.options.length) sel.options[0].textContent = t(sel.dataset.i18nFirst);
+  });
+  if (window.MHR_APP && typeof window.MHR_APP.onLangChange === "function") {
+    window.MHR_APP.onLangChange();
+  }
+}
+
+window.MHR_I18N = { I18N, LANGS, t, setLang, getLang: () => _lang };
