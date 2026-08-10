@@ -298,7 +298,12 @@
     const favBtn = $("#modal-fav");
     favBtn.textContent = favs.has(modalCardId) ? t("unfavBtn") : t("favBtn");
     $("#owned-count").textContent = owned[modalCardId] || 0;
-    $("#modal-add-deck").disabled = RULES.enforce && countByName(c.name) >= RULES.copyLimitPerName;
+    const inDeck = deck.get(modalCardId) || 0;
+    $("#deck-count-modal").textContent = inDeck;
+    const atLimit = RULES.enforce && countByName(c.name) >= RULES.copyLimitPerName;
+    $("#modal-add-deck").disabled = atLimit;
+    $("#deck-inc").disabled = atLimit;
+    $("#deck-dec").disabled = inDeck === 0;
   }
 
   // ---------- drag & drop ----------
@@ -381,6 +386,8 @@
   modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !modal.hidden) closeModal(); });
   $("#modal-add-deck").addEventListener("click", () => { if (modalCardId) addCard(modalCardId); });
+  $("#deck-inc").addEventListener("click", () => { if (modalCardId) addCard(modalCardId); });
+  $("#deck-dec").addEventListener("click", () => { if (modalCardId) removeCard(modalCardId); });
   $("#modal-fav").addEventListener("click", () => { if (modalCardId) toggleFav(modalCardId); });
   $("#owned-inc").addEventListener("click", () => { if (modalCardId) incOwned(modalCardId); });
   $("#owned-dec").addEventListener("click", () => { if (modalCardId) decOwned(modalCardId); });
