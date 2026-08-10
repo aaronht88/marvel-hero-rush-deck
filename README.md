@@ -18,6 +18,7 @@ A lightweight deck-building web app for the **Marvel Hero Rush TCG** (Card Fun /
 - Card colors: Red · Yellow · Blue · Green
 - Card art: downloaded from the official CDN and converted to local 480px WebP thumbnails (`img/cards/`) — official image URLs carry 24-hour expiry tokens, so local copies are required for a static site
 - Note: the official cardlist contains **character cards only**; Rush Points are game tokens, not cards
+- Deck rules (confirmed from the official rulebook PDF): **exactly 50 cards**, **max 2 colors**, **max 3 same-name copies**; separate 9-card Rush deck
 
 ## Tech
 Zero-dependency static web app — plain HTML + CSS + vanilla JS. No build step.
@@ -42,7 +43,7 @@ python3 -m http.server 8765
 | `img/cards/` | Local card art thumbnails (WebP) |
 
 ## Roadmap
-- [ ] Verify deck size + copy-limit rules against the official rulebook PDF
+- [x] Verify deck size + copy-limit rules against the official rulebook PDF (confirmed: 50 cards / 2 colors / 3 same-name)
 - [ ] Traditional-Chinese card text (official API currently serves EN/ID only)
 - [ ] Multiple saved decks, card detail popup, public sharing backend
 

@@ -108,17 +108,18 @@
   }
 
   // ---------- deck mutations ----------
-  // copy limit is counted per CARD NUMBER (variants share it)
-  function countByNo(no) {
+  // copy limit is counted per card NAME (「subtitle」included, so
+  // alternate-art prints of the same card share the limit)
+  function countByName(name) {
     let n = 0;
-    deck.forEach((qty, id) => { if (getCard(id).card_no === no) n += qty; });
+    deck.forEach((qty, id) => { if (getCard(id).name === name) n += qty; });
     return n;
   }
   function addCard(id) {
     const card = getCard(id);
     const cur = deck.get(id) || 0;
-    if (RULES.enforce && countByNo(card.card_no) >= RULES.copyLimitPerCard) {
-      toast(`每張卡最多 ${RULES.copyLimitPerCard} 張（${card.card_no}，含異畫版）`);
+    if (RULES.enforce && countByName(card.name) >= RULES.copyLimitPerName) {
+      toast(`同名卡最多 ${RULES.copyLimitPerName} 張（${card.name}）`);
       return;
     }
     deck.set(id, cur + 1);
@@ -166,11 +167,17 @@
       return;
     }
     const issues = [];
-    const { min, max } = RULES.deckSize;
-    if (total < min) issues.push(`牌組過少（最少 ${min}）`);
-    if (total > max) issues.push(`牌組過多（最多 ${max}）`);
+    const exact = RULES.deckSize.exact;
+    if (total < exact) issues.push(`牌組過少（要 ${exact} 張）`);
+    if (total > exact) issues.push(`牌組過多（要 ${exact} 張）`);
+    // color rule: at most 2 colors
+    const colors = new Set();
+    deck.forEach((qty, id) => colors.add(getCard(id).attribute));
+    if (colors.size > RULES.maxColors) {
+      issues.push(`顏色過多（最多 ${RULES.maxColors} 色，現有 ${colors.size} 色）`);
+    }
     if (issues.length === 0) {
-      validationEl.innerHTML = `<span class="ok">✓ 符合暫定規則 · 目標：填滿 ${RULES.winCondition.rushPointsToWin} Rush Points 取勝</span>`;
+      validationEl.innerHTML = `<span class="ok">✓ ${exact} 張 · ${RULES.maxColors} 色以內 · 另備 ${RULES.rushDeckSize} 張衝擊卡組 · 目標：${RULES.winCondition.rushPointsToWin} 張衝擊卡或對手卡組歸零取勝</span>`;
     } else {
       validationEl.innerHTML = '<span class="warn">⚠ ' + issues.join(" · ") + "</span>";
     }
@@ -203,7 +210,7 @@
     return {
       game: "Marvel Hero Rush TCG",
       version: "v2-real-cards",
-      rules: { deckSize: RULES.deckSize, copyLimit: RULES.copyLimitPerCard },
+      rules: { deckSize: RULES.deckSize, copyLimitPerName: RULES.copyLimitPerName, maxColors: RULES.maxColors },
       cards: [...deck.entries()].map(([id, qty]) => ({ id, qty })),
     };
   }
