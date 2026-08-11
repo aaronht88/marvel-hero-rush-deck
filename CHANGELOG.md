@@ -2,6 +2,18 @@
 
 All notable changes to the Marvel Hero Rush Deck Builder.
 
+## [1.1-beta] — 2026-08-11
+
+### Added
+- **Deck Simulator**: new 模擬器 button in the deck panel — opens an overlay with the whole deck grouped & sorted by Grade (Lv 1-6); each grade section shows its card count; clicking any card opens the full card detail modal
+- **Series tag on every card tile**: new chip showing the source series (BP01 / SD01 / SD02 / SD03 / SD04), with the full series name on hover
+
+### Fixed
+- **Chinese attribute bug (official API data glitch)**: the official cardlist API returned Chinese color values (蓝/绿/黄) for 10 cards (BP01-061, BP01-035-V2, BP01-074-V2, BP01-075-V2, BP01-091/092/093, BP01-096-V2, BP01-097-V2, BP01-101-V2), causing missing color borders, broken color filters, and wrong deck color-count validation. All normalized to English; the data generator now maps 红→Red / 蓝→Blue / 黄→Yellow / 绿→Green so future scrapes stay clean
+
+### Changed
+- **Cache-busting**: all assets now load with `?v=` version query strings, so browsers never serve stale files after a release (visible fix for users who saw the pre-fix card data)
+
 ## [1.0-beta] — 2026-08-11
 
 ### Added
