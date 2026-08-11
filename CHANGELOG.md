@@ -2,9 +2,15 @@
 
 All notable changes to the Marvel Hero Rush Deck Builder.
 
-## [0.1.0-beta] — 2026-08-10
+## [1.0-beta] — 2026-08-11
 
 ### Added
+- Official MARVEL HERORUSH logo (topbar + welcome overlay)
+- Visitor counter: topbar badge (👁 N) + cumulative visitor count in the welcome overlay (GoatCounter)
+- Visitor counter labels follow the UI language (訪客 / 访客 / Visitors)
+- Author credit (aaronht88) in the topbar and welcome overlay
+- Custom domain: mhrdeckbuild.duckdns.org (via DuckDNS → GitHub Pages)
+- Auto-detect browser language on first visit (saved choice still wins)
 - Startup overlay: build version, changelog summary, disclaimer, official credits
 - Version badge in the topbar (click to reopen the info overlay)
 - Official deck rules validation: exactly 50 cards, max 2 colors, max 3 same-name copies
@@ -19,6 +25,7 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 - localStorage persistence: decks, favorites, owned counts, language
 
 ### Changed
+- Version bumped from 0.1.0-beta to 1.0-beta
 - Clicking a card now opens the detail overlay instead of adding to deck directly
 - Copy limit counted per card NAME (alternate-art prints share the limit)
 - Deck size changed from guessed 40-60 to official exactly 50
