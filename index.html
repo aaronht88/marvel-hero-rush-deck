@@ -77,6 +77,7 @@
           <select id="deck-select" title="Deck"></select>
           <button id="btn-deck-manage" class="btn btn-sm" data-i18n="deckManage">管理</button>
           <button id="btn-deck-new" class="btn btn-sm" data-i18n="deckNew">＋</button>
+          <button id="btn-simulator" class="btn btn-sm btn-sim" data-i18n="simulatorBtn">模擬器</button>
         </div>
         <span id="deck-count" class="deck-count">0 張</span>
       </div>
@@ -135,6 +136,18 @@
             <button id="wl-start" class="btn btn-primary" data-i18n="startBtn">開始使用</button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECK SIMULATOR OVERLAY -->
+  <div id="sim-modal" class="modal-overlay" hidden>
+    <div class="modal modal-sim">
+      <button id="sim-close" class="modal-close" aria-label="close">×</button>
+      <div class="modal-info sim-info">
+        <h2 class="modal-name" data-i18n="simTitle">牌組模擬器</h2>
+        <div class="sim-sub" id="sim-sub"></div>
+        <div id="sim-content"><!-- grade sections injected --></div>
       </div>
     </div>
   </div>

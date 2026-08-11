@@ -268,6 +268,41 @@ body.modal-open { overflow: hidden; }
 }
 .share-box textarea:focus { outline: none; border-color: var(--cyan-dim); }
 
+/* ---------- Deck simulator modal ---------- */
+.modal-sim { max-width: 900px; }
+.sim-info { padding: 22px; gap: 10px; }
+.sim-sub { font-size: 12px; color: var(--muted); letter-spacing: .5px; }
+#sim-content { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+.sim-grade { border: 1px solid var(--border-soft); border-radius: 8px; overflow: hidden; background: rgba(18, 32, 54, .5); }
+.sim-grade-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 12px; border-bottom: 1px solid var(--border-soft);
+  background: linear-gradient(90deg, rgba(0, 229, 255, .08), transparent);
+}
+.sim-grade-lv { font-family: "Russo One", sans-serif; font-size: 13px; letter-spacing: 1.5px; color: var(--cyan); }
+.sim-grade-count { font-size: 11px; color: var(--muted); font-family: "Rajdhani", sans-serif; font-weight: 700; }
+.sim-row { display: flex; gap: 10px; flex-wrap: wrap; padding: 10px 12px; }
+.sim-card {
+  width: 104px; cursor: pointer; transition: .15s; position: relative;
+  border-radius: 6px; overflow: hidden;
+  border: 1px solid var(--border); border-top: 3px solid var(--border);
+  background: var(--panel-2);
+}
+.sim-card:hover { transform: translateY(-2px); border-color: var(--cyan-dim); box-shadow: 0 6px 16px rgba(0, 0, 0, .5), 0 0 12px rgba(0, 229, 255, .15); }
+.sim-card.attr-Red { border-top-color: var(--red); }
+.sim-card.attr-Yellow { border-top-color: var(--yellow); }
+.sim-card.attr-Blue { border-top-color: var(--blue); }
+.sim-card.attr-Green { border-top-color: var(--green); }
+.sim-art { aspect-ratio: 63/88; background: #0d1a30; }
+.sim-art img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.sim-name { font-size: 10.5px; padding: 4px 6px 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sim-qty {
+  position: absolute; top: 4px; right: 4px; z-index: 2;
+  background: rgba(0, 0, 0, .75); color: var(--gold); font-weight: 700; font-size: 10px;
+  padding: 1px 6px; border-radius: 3px; border: 1px solid rgba(251, 191, 36, .4);
+}
+.sim-hint { margin: 0; font-size: 11px; color: var(--muted); text-align: center; }
+
 /* ---------- Deck manager modal ---------- */
 .modal-sm { max-width: 560px; }
 .modal-sm .modal-info { padding: 22px; gap: 12px; }

@@ -290,6 +290,55 @@
     return btoa(unescape(encodeURIComponent(JSON.stringify(compact))));
   }
 
+  // ---------- deck simulator ----------
+  function renderSimulator() {
+    const content = $("#sim-content");
+    const sub = $("#sim-sub");
+    content.innerHTML = "";
+    const entries = [...deck.entries()].sort((a, b) => {
+      const ca = getCard(a[0]), cb = getCard(b[0]);
+      return ca.level - cb.level || ca.card_no.localeCompare(cb.card_no);
+    });
+    let total = 0;
+    entries.forEach(([, qty]) => (total += qty));
+    sub.textContent = (decks.find((d) => d.id === currentDeckId) || {}).name + " · " + total + " " + t("deckCountSuffix");
+    if (!entries.length) {
+      content.innerHTML = '<p style="color:var(--muted)">' + t("simEmpty") + "</p>";
+      return;
+    }
+    const byLv = {};
+    entries.forEach(([id, qty]) => {
+      const c = getCard(id);
+      (byLv[c.level] = byLv[c.level] || []).push({ card: c, qty });
+    });
+    Object.keys(byLv).map(Number).sort((a, b) => a - b).forEach((lv) => {
+      const sec = document.createElement("div");
+      sec.className = "sim-grade";
+      const lvCount = byLv[lv].reduce((s, x) => s + x.qty, 0);
+      sec.innerHTML = `<div class="sim-grade-head"><span class="sim-grade-lv">${t("lvPrefix")} ${lv}</span><span class="sim-grade-count">×${lvCount}</span></div>`;
+      const row = document.createElement("div");
+      row.className = "sim-row";
+      byLv[lv].forEach(({ card, qty }) => {
+        const t2 = document.createElement("div");
+        t2.className = "sim-card attr-" + card.attribute;
+        t2.innerHTML = `
+          <div class="sim-art"><img loading="lazy" src="${card.art}" alt="${card.name}" onerror="this.style.display='none'"></div>
+          <div class="sim-name" title="${card.name}">${card.name}</div>
+          <div class="sim-qty">×${qty}</div>`;
+        t2.addEventListener("click", () => openModal(card.id));
+        row.appendChild(t2);
+      });
+      sec.appendChild(row);
+      content.appendChild(sec);
+    });
+    const hint = document.createElement("p");
+    hint.className = "sim-hint";
+    hint.textContent = "👆 " + t("simClickHint");
+    content.appendChild(hint);
+  }
+  function openSimulator() { renderSimulator(); $("#sim-modal").hidden = false; }
+  function closeSimulator() { $("#sim-modal").hidden = true; }
+
   // ---------- render deck ----------
   function renderDeck() {
     deckListEl.innerHTML = "";
@@ -518,6 +567,9 @@
     if (name !== null) newDeck(name);
   });
   $("#btn-deck-manage").addEventListener("click", openDeckManager);
+  $("#btn-simulator").addEventListener("click", openSimulator);
+  $("#sim-close").addEventListener("click", closeSimulator);
+  $("#sim-modal").addEventListener("click", (e) => { if (e.target === $("#sim-modal")) closeSimulator(); });
   $("#dm-close").addEventListener("click", closeDeckManager);
   dmModal.addEventListener("click", (e) => { if (e.target === dmModal) closeDeckManager(); });
   $("#dm-new").addEventListener("click", () => {
@@ -562,7 +614,12 @@
   // modal events
   $("#modal-close").addEventListener("click", closeModal);
   modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !modal.hidden) closeModal(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (!modal.hidden) closeModal();
+      else if (!$("#sim-modal").hidden) closeSimulator();
+    }
+  });
   $("#modal-add-deck").addEventListener("click", () => { if (modalCardId) addCard(modalCardId); });
   $("#deck-inc").addEventListener("click", () => { if (modalCardId) addCard(modalCardId); });
   $("#deck-dec").addEventListener("click", () => { if (modalCardId) removeCard(modalCardId); });

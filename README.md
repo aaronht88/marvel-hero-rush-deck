@@ -20,8 +20,8 @@ A lightweight deck-building web app for the **Marvel Hero Rush TCG** (Card Fun /
 - Card detail overlay: enlarged art + all stats + effect text, with Add-to-Deck / Favorite / Owned (±) controls and live in-deck count
 
 **Deck building**
-- Multiple named decks with a Deck Manager (new / rename / delete / load)
-- One-click copy of any deck's share code, plus copy-paste import & JSON export/import
+- **Multiple named decks** with a deck manager (new / rename / delete / load) + one-click copy of any deck's share code
+- **Deck Simulator**: one-click overlay showing the whole deck grouped & sorted by Grade (Lv 1-6); click any card for its full details
 - Drag & drop cards onto the deck panel to add
 - Official rules validation: **exactly 50 cards, max 2 colors, max 3 same-name copies**
 - Deck statistics: level curve, color breakdown, rarity breakdown, average Power
