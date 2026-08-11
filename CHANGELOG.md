@@ -2,6 +2,21 @@
 
 All notable changes to the Marvel Hero Rush Deck Builder.
 
+## [1.2-beta] — 2026-08-11
+
+### Added
+- **UI motion polish** (craft pass on the whole interface):
+  - Modals now animate in (scale 0.96 → 1 + fade, custom ease-out curve) and exit faster than they enter
+  - Toasts slide up + fade instead of popping in/out; rapid actions retarget smoothly
+  - Button press feedback: all buttons/tabs/qty controls scale down slightly on `:active`
+  - Card tiles lift + glow on hover (now gated to mouse pointers only — no sticky hover on touch)
+  - One-time fade-in of the card grid on first paint
+- **Accessibility**: `prefers-reduced-motion` support — users with reduced-motion enabled get opacity/color-only transitions, no movement
+
+### Changed
+- All transitions now animate explicit properties only (no more `transition: all`-style shorthand) with custom cubic-bezier easing curves
+- Easing/duration tuned to the theme's crisp tactical-HUD personality (everything stays sub-300ms)
+
 ## [1.1-beta] — 2026-08-11
 
 ### Added

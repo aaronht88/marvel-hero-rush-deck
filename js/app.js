@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.1-beta";
+  const APP_VERSION = "1.2-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -95,9 +95,30 @@
   // ---------- helpers ----------
   function toast(msg) {
     toastEl.textContent = msg;
-    toastEl.hidden = false;
     clearTimeout(toast._t);
-    toast._t = setTimeout(() => (toastEl.hidden = true), 1800);
+    clearTimeout(toast._showT);
+    toastEl.hidden = false;
+    void toastEl.offsetWidth; // reflow → CSS transition runs
+    toastEl.classList.add("show");
+    toast._t = setTimeout(() => {
+      toastEl.classList.remove("show");
+      toast._showT = setTimeout(() => { toastEl.hidden = true; }, 240);
+    }, 1600);
+  }
+  // ---------- overlay show/hide with motion ----------
+  function showOverlay(el) {
+    clearTimeout(el._hideT);
+    el.hidden = false;
+    void el.offsetWidth;
+    el.classList.remove("closing");
+    el.classList.add("show");
+  }
+  function hideOverlay(el) {
+    if (el.hidden) return;
+    el.classList.remove("show");
+    el.classList.add("closing");
+    clearTimeout(el._hideT);
+    el._hideT = setTimeout(() => { el.hidden = true; el.classList.remove("closing"); }, 200);
   }
   function getCard(id) { return CARDS.find((c) => c.id === id); }
   const ATTR_LABEL = { Red: "紅", Yellow: "黃", Blue: "藍", Green: "綠" };
@@ -284,8 +305,8 @@
       dmList.appendChild(row);
     });
   }
-  function openDeckManager() { renderDeckManager(); dmModal.hidden = false; }
-  function closeDeckManager() { dmModal.hidden = true; }
+  function openDeckManager() { renderDeckManager(); showOverlay(dmModal); }
+  function closeDeckManager() { hideOverlay(dmModal); }
   function encodeShareFor(cardsArr) {
     const compact = cardsArr.map(([id, qty]) => [id, qty]);
     return btoa(unescape(encodeURIComponent(JSON.stringify(compact))));
@@ -337,8 +358,8 @@
     hint.textContent = "👆 " + t("simClickHint");
     content.appendChild(hint);
   }
-  function openSimulator() { renderSimulator(); $("#sim-modal").hidden = false; }
-  function closeSimulator() { $("#sim-modal").hidden = true; }
+  function openSimulator() { renderSimulator(); showOverlay($("#sim-modal")); }
+  function closeSimulator() { hideOverlay($("#sim-modal")); }
 
   // ---------- render deck ----------
   function renderDeck() {
@@ -432,11 +453,11 @@
     $("#modal-name").textContent = c.name;
     fillModalDetails(c);
     updateModalActions();
-    modal.hidden = false;
+    showOverlay(modal);
     document.body.classList.add("modal-open");
   }
   function closeModal() {
-    modal.hidden = true;
+    hideOverlay(modal);
     modalCardId = null;
     document.body.classList.remove("modal-open");
   }
@@ -472,8 +493,8 @@
 
   // ---------- welcome / info overlay ----------
   const LS_SEEN_VERSION = "mhr_seen_version";
-  function showWelcome() { $("#wl-version").textContent = "v" + APP_VERSION; $("#welcome-modal").hidden = false; }
-  function hideWelcome() { $("#welcome-modal").hidden = true; }
+  function showWelcome() { $("#wl-version").textContent = "v" + APP_VERSION; showOverlay($("#welcome-modal")); }
+  function hideWelcome() { hideOverlay($("#welcome-modal")); }
   function maybeShowWelcome() {
     try {
       if (localStorage.getItem(LS_SEEN_VERSION) === APP_VERSION) return;
