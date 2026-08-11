@@ -65,8 +65,8 @@ body.modal-open { overflow: hidden; }
 }
 .brand { display: flex; align-items: center; gap: 12px; }
 .logo {
-  font-size: 26px; line-height: 1;
-  filter: drop-shadow(0 0 8px rgba(0, 229, 255, .8)) drop-shadow(0 0 18px rgba(0, 229, 255, .35));
+  height: 30px; width: auto; border-radius: 4px;
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, .35));
 }
 .topbar h1 {
   font-family: "Russo One", "Arial Black", sans-serif;
@@ -295,7 +295,7 @@ body.modal-open { overflow: hidden; }
   gap: 6px; padding: 24px 18px; text-align: center;
   border-right: 1px solid var(--border-soft);
 }
-.wl-logo { font-size: 52px; line-height: 1; filter: drop-shadow(0 0 14px rgba(0, 229, 255, .9)) drop-shadow(0 0 30px rgba(0, 229, 255, .4)); }
+.wl-logo { height: 60px; width: auto; border-radius: 6px; filter: drop-shadow(0 0 14px rgba(0, 229, 255, .45)); }
 .wl-title { font-family: "Russo One", sans-serif; font-size: 19px; letter-spacing: 2px; color: #fff; }
 .wl-sub { font-family: "Rajdhani", sans-serif; font-size: 13px; letter-spacing: 4px; color: var(--cyan); }
 .wl-version {
