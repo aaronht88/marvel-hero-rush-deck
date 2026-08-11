@@ -213,6 +213,8 @@ body.modal-open { overflow: hidden; }
 .chip-Yellow { background: linear-gradient(180deg, #ffd740, #b8860b); color: #221a00; }
 .chip-Blue { background: linear-gradient(180deg, #64b5f6, #1565c0); }
 .chip-Green { background: linear-gradient(180deg, #66bb6a, #1b8a3d); }
+.chip-set { background: linear-gradient(180deg, #39445e, #222c42); color: #aebfdd; border: 1px solid rgba(174, 191, 221, .35); font-family: "Rajdhani", sans-serif; font-weight: 700; cursor: help; }
+.chip-set:hover { color: #fff; border-color: var(--cyan-dim); }
 .rar { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 700; letter-spacing: .5px; }
 .rar-R { background: #2a3242; color: #b8c4d4; }
 .rar-SR { background: linear-gradient(180deg, #4a5a8a, #2a3a5a); color: #a8c8ff; }

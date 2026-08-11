@@ -159,6 +159,7 @@
           <div class="cmeta">
             <span class="chip chip-attr chip-${card.attribute}">${attrLabel(card.attribute)}</span>
             <span class="rar rar-${card.rarity}">${card.rarity}</span>
+            <span class="chip chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
           </div>
         </div>`;
       el.addEventListener("click", () => openModal(card.id));
