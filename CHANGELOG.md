@@ -2,6 +2,12 @@
 
 All notable changes to the Marvel Hero Rush Deck Builder.
 
+## [1.5-beta] — 2026-08-12
+
+### Changed
+- **Support entry relocated**: the 支持 tab in the card-browser tab bar is replaced by a gold **☕ 支持我** chip in the topbar, right of the visitor counter — always visible, one click to the donation view
+- Welcome overlay ☕ 支持我 button unchanged
+
 ## [1.4-beta] — 2026-08-12
 
 ### Fixed

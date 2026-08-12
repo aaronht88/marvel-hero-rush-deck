@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.4-beta";
+  const APP_VERSION = "1.5-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -586,6 +586,9 @@
       setView("donation");
     });
   }
+  // topbar: ☕ 支持我 chip jumps to the donation view
+  const donateTop = $("#btn-donate-top");
+  if (donateTop) donateTop.addEventListener("click", () => setView("donation"));
 
   // donation: Buy Me a Coffee link
   const BMC_URL = "https://buymeacoffee.com/aaronht88";
