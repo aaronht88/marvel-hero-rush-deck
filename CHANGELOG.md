@@ -2,7 +2,13 @@
 
 All notable changes to the Marvel Hero Rush Deck Builder.
 
-> 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.9-beta**。
+> 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.10-beta**。
+
+## [1.2.10-beta] — 2026-08-12
+
+### Changed
+- **Share-code box removed from the deck panel**; 匯入Deck now opens a popup modal asking for the share code (with a JSON-file import link inside); 複製分享碼 still copies straight to clipboard
+- i18n ×3 for the import modal
 
 ## [1.2.9-beta] — 2026-08-12
 

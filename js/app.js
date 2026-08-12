@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.2.9-beta";
+  const APP_VERSION = "1.2.10-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -66,7 +66,7 @@
   const deckSelect = $("#deck-select");
   const dmModal = $("#deck-manager");
   const dmList = $("#dm-list");
-  const shareText = $("#share-text");
+  const importTextEl = $("#import-text");
   const toastEl = $("#toast");
   const modal = $("#card-modal");
 
@@ -627,7 +627,6 @@
       if (d) {
         const code = encodeShareFor(d.cards);
         navigator.clipboard?.writeText(code);
-        shareText.value = code;
         toast(t("toastDeckCopied") + "：" + d.name);
       }
     } else if (act === "rename") {
@@ -660,6 +659,7 @@
       if (!modal.hidden) closeModal();
       else if (!$("#sim-modal").hidden) closeSimulator();
       else if (!$("#donation-modal").hidden) closeDonation();
+      else if (!$("#import-modal").hidden) closeImportModal();
     }
   });
   $("#modal-add-deck").addEventListener("click", () => { if (modalCardId) addCard(modalCardId); });
@@ -675,17 +675,43 @@
   });
   $("#btn-share").addEventListener("click", () => {
     const code = encodeShare();
-    shareText.value = code;
     navigator.clipboard?.writeText(code);
     toast(t("toastShare"));
   });
-  $("#btn-import").addEventListener("click", () => {
-    const code = shareText.value.trim();
-    if (!code) { $("#file-import").click(); return; }
-    const m = decodeShare(code);
-    if (m) { deck = m; saveDecks(); renderCards(); renderDeck(); renderDeckSelect(); toast(t("toastImportCode")); }
-    else toast(t("toastBadCode"));
-  });
+  // ---------- import deck modal ----------
+  function openImportModal() {
+    if (importTextEl) importTextEl.value = "";
+    showOverlay($("#import-modal"));
+    setTimeout(() => { if (importTextEl) importTextEl.focus(); }, 60);
+  }
+  function closeImportModal() { hideOverlay($("#import-modal")); }
+  $("#btn-import").addEventListener("click", openImportModal);
+  const importCloseBtn = $("#import-close");
+  if (importCloseBtn) importCloseBtn.addEventListener("click", closeImportModal);
+  const importCancelBtn = $("#import-cancel");
+  if (importCancelBtn) importCancelBtn.addEventListener("click", closeImportModal);
+  const importModalEl = $("#import-modal");
+  if (importModalEl) {
+    importModalEl.addEventListener("click", (e) => { if (e.target === importModalEl) closeImportModal(); });
+  }
+  const importOkBtn = $("#import-ok");
+  if (importOkBtn) {
+    importOkBtn.addEventListener("click", () => {
+      const code = (importTextEl ? importTextEl.value : "").trim();
+      if (!code) { toast(t("toastBadCode")); return; }
+      const m = decodeShare(code);
+      if (m) { deck = m; saveDecks(); renderCards(); renderDeck(); renderDeckSelect(); closeImportModal(); toast(t("toastImportCode")); }
+      else toast(t("toastBadCode"));
+    });
+  }
+  const importJsonLink = $("#import-json-link");
+  if (importJsonLink) {
+    importJsonLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeImportModal();
+      $("#file-import").click();
+    });
+  }
   $("#file-import").addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
