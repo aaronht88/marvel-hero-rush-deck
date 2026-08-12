@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.5-beta";
+  const APP_VERSION = "1.6-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -153,15 +153,7 @@
   }
 
   // ---------- render card browser ----------
-  function applyViewLayout() {
-    const don = view === "donation";
-    $(".controls").hidden = don;
-    $("#card-grid").hidden = don;
-    $("#donation-panel").hidden = !don;
-  }
   function renderCards() {
-    applyViewLayout();
-    if (view === "donation") return;
     cardGrid.innerHTML = "";
     const list = CARDS.filter(cardMatches);
     if (!list.length) {
@@ -318,6 +310,16 @@
   function encodeShareFor(cardsArr) {
     const compact = cardsArr.map(([id, qty]) => [id, qty]);
     return btoa(unescape(encodeURIComponent(JSON.stringify(compact))));
+  }
+
+  // ---------- donation overlay ----------
+  function openDonation() { showOverlay($("#donation-modal")); }
+  function closeDonation() { hideOverlay($("#donation-modal")); }
+  const donationClose = $("#donation-close");
+  if (donationClose) donationClose.addEventListener("click", closeDonation);
+  const donationModal = $("#donation-modal");
+  if (donationModal) {
+    donationModal.addEventListener("click", (e) => { if (e.target === donationModal) closeDonation(); });
   }
 
   // ---------- deck simulator ----------
@@ -578,17 +580,17 @@
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", () => setView(tab.dataset.view));
   });
-  // welcome overlay: donate button jumps to the donation tab
+  // welcome overlay: donate button closes welcome + opens donation overlay
   const wlDonate = $("#wl-donate");
   if (wlDonate) {
     wlDonate.addEventListener("click", () => {
       hideWelcome();
-      setView("donation");
+      openDonation();
     });
   }
-  // topbar: ☕ 支持我 chip jumps to the donation view
+  // topbar: ☕ 支持我 chip opens the donation overlay
   const donateTop = $("#btn-donate-top");
-  if (donateTop) donateTop.addEventListener("click", () => setView("donation"));
+  if (donateTop) donateTop.addEventListener("click", openDonation);
 
   // donation: Buy Me a Coffee link
   const BMC_URL = "https://buymeacoffee.com/aaronht88";
@@ -657,6 +659,7 @@
     if (e.key === "Escape") {
       if (!modal.hidden) closeModal();
       else if (!$("#sim-modal").hidden) closeSimulator();
+      else if (!$("#donation-modal").hidden) closeDonation();
     }
   });
   $("#modal-add-deck").addEventListener("click", () => { if (modalCardId) addCard(modalCardId); });
