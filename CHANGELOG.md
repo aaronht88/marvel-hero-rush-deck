@@ -2,9 +2,9 @@
 
 All notable changes to the Marvel Hero Rush Deck Builder.
 
-> 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.8-beta**。
+> 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.9-beta**。
 
-## [1.2.8-beta] — 2026-08-12
+## [1.2.9-beta] — 2026-08-12
 
 ### Changed
 - **Mobile-friendly pass**:

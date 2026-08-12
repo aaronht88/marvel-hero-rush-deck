@@ -543,8 +543,18 @@ body.modal-open { overflow: hidden; }
 }
 
 @media (max-width: 720px) {
-  .layout { grid-template-columns: 1fr; }
-  .deck-panel { border-top: 1px solid var(--border-soft); max-height: 40vh; }
+  /* mobile: natural page flow instead of fixed viewport layout */
+  body { height: auto; min-height: 100vh; }
+  .layout { flex: none; grid-template-columns: 1fr; }
+  .browser { overflow-y: visible; }
+  .deck-panel {
+    border-top: 1px solid var(--border-soft);
+    border-left: none;
+    max-height: 40vh;
+    position: sticky; bottom: 0; z-index: 40;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, .5);
+  }
+  .deck-list { max-height: 30vh; }
   .modal-body { grid-template-columns: 1fr; }
   .modal-art-wrap img { max-width: 200px; }
 
