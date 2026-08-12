@@ -504,6 +504,8 @@ body.modal-open { overflow: hidden; }
 .don-emoji { font-size: 44px; line-height: 1; filter: drop-shadow(0 0 12px rgba(251, 191, 36, .4)); }
 .don-card h3 { font-family: "Russo One", sans-serif; font-size: 17px; letter-spacing: 1px; margin: 12px 0 8px; color: #fff; }
 .don-body { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 0 0 16px; }
+.don-intro { font-size: 12px; color: var(--muted); line-height: 1.75; margin: 0 0 16px; text-align: left; }
+.modal-donation .don-card { max-height: 82vh; overflow-y: auto; }
 .don-bmc {
   display: inline-block; font-size: 14px; font-weight: 700; padding: 10px 22px;
   background: linear-gradient(180deg, #ffe14d, #ffb800); color: #1a1200 !important;
