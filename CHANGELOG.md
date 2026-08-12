@@ -2,11 +2,14 @@
 
 All notable changes to the Marvel Hero Rush Deck Builder.
 
-## [1.6-beta] — 2026-08-12
+> 版本編號格式：由 v1.6-beta 起改用 **X.Y.Z-beta**（三個小數點位）— 目前版本為 **1.2.5-beta**。
+
+## [1.2.5-beta] — 2026-08-12
 
 ### Changed
 - **☕ 支持我 now opens a popup overlay** (like the card-detail modal) instead of switching the in-page view — unmistakable reaction: BMC button, PayMe button and QR appear in a centered modal; close via × / backdrop / Esc
 - Entry points: gold chip in the topbar (right of the visitor counter) + the welcome-overlay button
+- **Version numbering switched to X.Y.Z-beta** (three-part semantic version)
 
 ## [1.5-beta] — 2026-08-12
 
