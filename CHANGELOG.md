@@ -4,6 +4,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.13-beta**。
 
+## [1.2.14-beta] — 2026-08-12
+
+### Added
+- **Contact email** (dose-tragedy-goes@duck.com) in the welcome-overlay author credit (mailto link, 3 languages) and naturally woven into the donation self-intro ("歡迎 email 我 / 欢迎 email 我 / feel free to email me")
+
 ## [1.2.13-beta] — 2026-08-12
 
 ### Added
