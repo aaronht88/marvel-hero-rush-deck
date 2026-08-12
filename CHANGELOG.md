@@ -2,6 +2,13 @@
 
 All notable changes to the Marvel Hero Rush Deck Builder.
 
+## [1.4-beta] — 2026-08-12
+
+### Fixed
+- **Cache-busting broken across 1.3-beta deploys**: five consecutive deploys kept the same `?v=1.3-beta` asset URLs, so browsers with the 10-min GitHub Pages HTML cache kept running the OLD app.js — the ☕ 支持我 button did nothing and the Support tab was invisible. Bumped to `?v=1.4-beta` so every asset URL changes and all clients fetch fresh code.
+- **Defensive event wiring**: welcome-overlay buttons (支持我 / 開始使用 / version badge) are now guarded with existence checks so a stale HTML + fresh JS mix can never crash the app
+- **View tabs wrap on narrow screens** (flex-wrap) so the 4th tab (支持) is never clipped on mobile
+
 ## [1.3-beta] — 2026-08-11
 
 ### Added

@@ -147,7 +147,7 @@ body.modal-open { overflow: hidden; }
 }
 
 /* ---------- View tabs ---------- */
-.view-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.view-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .tab {
   background: var(--panel-2); color: var(--muted); border: 1px solid var(--border);
   padding: 5px 18px; border-radius: 3px; cursor: pointer; font-size: 13px;

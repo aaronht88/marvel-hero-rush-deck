@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.3-beta";
+  const APP_VERSION = "1.4-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -500,10 +500,16 @@
   });
 
   // ---------- welcome / info overlay ----------
-  function showWelcome() { $("#wl-version").textContent = "v" + APP_VERSION; showOverlay($("#welcome-modal")); }
+  function showWelcome() {
+    const v = $("#wl-version");
+    if (v) v.textContent = "v" + APP_VERSION;
+    showOverlay($("#welcome-modal"));
+  }
   function hideWelcome() { hideOverlay($("#welcome-modal")); }
-  $("#wl-start").addEventListener("click", hideWelcome);
-  $("#version-badge").addEventListener("click", showWelcome);
+  const wlStart = $("#wl-start");
+  if (wlStart) wlStart.addEventListener("click", hideWelcome);
+  const versionBadge = $("#version-badge");
+  if (versionBadge) versionBadge.addEventListener("click", showWelcome);
 
   // ---------- visitor counter (GoatCounter public JSON) ----------
   function loadVisitorCount() {
@@ -573,10 +579,13 @@
     tab.addEventListener("click", () => setView(tab.dataset.view));
   });
   // welcome overlay: donate button jumps to the donation tab
-  $("#wl-donate").addEventListener("click", () => {
-    hideWelcome();
-    setView("donation");
-  });
+  const wlDonate = $("#wl-donate");
+  if (wlDonate) {
+    wlDonate.addEventListener("click", () => {
+      hideWelcome();
+      setView("donation");
+    });
+  }
 
   // donation: Buy Me a Coffee link
   const BMC_URL = "https://buymeacoffee.com/aaronht88";
