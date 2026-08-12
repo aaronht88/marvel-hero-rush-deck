@@ -2,7 +2,12 @@
 
 All notable changes to the Marvel Hero Rush Deck Builder.
 
-> 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.12-beta**。
+> 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.13-beta**。
+
+## [1.2.13-beta] — 2026-08-12
+
+### Added
+- **Simulator card tiles now show 3 chips**: card number (BP01-001), rarity (colored), series (BP01 · full name tooltip)
 
 ## [1.2.12-beta] — 2026-08-12
 

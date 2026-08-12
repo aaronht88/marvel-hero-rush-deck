@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.2.12-beta";
+  const APP_VERSION = "1.2.13-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -358,6 +358,11 @@
         t2.innerHTML = `
           <div class="sim-art"><img loading="lazy" src="${card.art}" alt="${card.name}" onerror="this.style.display='none'"></div>
           <div class="sim-name" title="${card.name}">${card.name}</div>
+          <div class="sim-chips">
+            <span class="sim-chip sim-chip-no">${card.card_no}</span>
+            <span class="rar rar-${card.rarity}">${card.rarity}</span>
+            <span class="sim-chip sim-chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
+          </div>
           <div class="sim-qty">×${qty}</div>`;
         t2.addEventListener("click", () => openModal(card.id));
         row.appendChild(t2);

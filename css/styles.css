@@ -341,7 +341,12 @@ body.modal-open { overflow: hidden; }
 .sim-card.attr-Green { border-top-color: var(--green); }
 .sim-art { aspect-ratio: 63/88; background: #0d1a30; }
 .sim-art img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-.sim-name { font-size: 10.5px; padding: 4px 6px 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sim-name { font-size: 10.5px; padding: 4px 6px 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; box-sizing: border-box; }
+.sim-chips { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; align-items: center; padding: 0 4px 2px; }
+.sim-chip { font-size: 9px; padding: 1px 5px; border-radius: 3px; letter-spacing: .4px; font-family: "Rajdhani", sans-serif; font-weight: 700; }
+.sim-chip-no { background: rgba(255, 255, 255, .08); color: var(--muted); border: 1px solid rgba(174, 191, 221, .25); }
+.sim-chip-set { background: linear-gradient(180deg, #39445e, #222c42); color: #aebfdd; border: 1px solid rgba(174, 191, 221, .35); cursor: help; }
+.sim-chip-set:hover { color: #fff; border-color: var(--cyan-dim); }
 .sim-qty {
   position: absolute; top: 4px; right: 4px; z-index: 2;
   background: rgba(0, 0, 0, .75); color: var(--gold); font-weight: 700; font-size: 10px;
