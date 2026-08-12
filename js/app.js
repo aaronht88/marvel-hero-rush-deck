@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.2.10-beta";
+  const APP_VERSION = "1.2.11-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -293,12 +293,14 @@
       row.className = "dm-row" + (d.id === currentDeckId ? " dm-current" : "");
       row.innerHTML = `
         <div class="dm-info">
-          <div class="dm-name">${d.name}${d.id === currentDeckId ? " ✓" : ""}</div>
+          <div class="dm-name"><span class="dm-name-text">${d.name}</span>
+            ${d.id === currentDeckId ? `<span class="dm-active-tag">${t("dmActive")}</span>` : ""}
+            <button class="dm-rename-btn" data-dm="rename" data-id="${d.id}" title="✎">✎</button>
+          </div>
           <div class="dm-count">${deckCardCount(d)} ${t("deckCountSuffix")}</div>
         </div>
         <div class="dm-actions">
           <button class="btn btn-sm" data-dm="copy" data-id="${d.id}">${t("dmCopy")}</button>
-          <button class="btn btn-sm" data-dm="rename" data-id="${d.id}">✎</button>
           <button class="btn btn-sm" data-dm="load" data-id="${d.id}">${t("dmLoad")}</button>
           <button class="btn btn-sm btn-danger" data-dm="delete" data-id="${d.id}">${t("dmDelete")}</button>
         </div>`;

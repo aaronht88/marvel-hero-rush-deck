@@ -365,7 +365,20 @@ body.modal-open { overflow: hidden; }
 .dm-row:hover { border-color: var(--cyan-dim); }
 .dm-row.dm-current { border-color: var(--cyan-dim); box-shadow: inset 3px 0 0 var(--cyan); }
 .dm-info { min-width: 0; }
-.dm-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dm-name { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.dm-name-text { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dm-active-tag {
+  flex: none; font-size: 9.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
+  color: var(--cyan); border: 1px solid var(--cyan-dim); border-radius: 3px;
+  padding: 1px 6px; background: rgba(0, 229, 255, .08);
+  font-family: "Rajdhani", sans-serif;
+}
+.dm-rename-btn {
+  flex: none; background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 13px; line-height: 1; padding: 1px 3px; border-radius: 3px;
+  transition: color 150ms ease, background 150ms ease;
+}
+.dm-rename-btn:hover { color: var(--cyan); background: rgba(0, 229, 255, .1); }
 .dm-count { font-size: 11px; color: var(--muted); }
 .dm-actions { display: flex; gap: 6px; flex: none; flex-wrap: wrap; justify-content: flex-end; }
 
