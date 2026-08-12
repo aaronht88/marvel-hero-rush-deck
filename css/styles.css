@@ -309,9 +309,6 @@ body.modal-open { overflow: hidden; }
 }
 #import-text:focus { outline: none; border-color: var(--cyan-dim); box-shadow: 0 0 10px rgba(0, 229, 255, .15); }
 .import-actions { display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; }
-.import-json-link { margin: 12px 0 0; font-size: 12px; text-align: center; }
-.import-json-link a { color: var(--cyan); text-decoration: none; border-bottom: 1px dashed var(--cyan-dim); }
-.import-json-link a:hover { color: #fff; }
 
 /* ---------- Deck simulator modal ---------- */
 .modal-sim { max-width: 900px; }

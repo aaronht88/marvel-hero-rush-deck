@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.2.11-beta";
+  const APP_VERSION = "1.2.12-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -528,31 +528,7 @@
       .catch(() => {});
   }
 
-  // ---------- export / import / share ----------
-  function deckToObj() {
-    return {
-      game: "Marvel Hero Rush TCG",
-      version: "v5",
-      appVersion: APP_VERSION,
-      rules: { deckSize: RULES.deckSize, copyLimitPerName: RULES.copyLimitPerName, maxColors: RULES.maxColors },
-      cards: [...deck.entries()].map(([id, qty]) => ({ id, qty })),
-    };
-  }
-  function download(obj, name) {
-    const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = name; a.click();
-    URL.revokeObjectURL(url);
-  }
-  function loadDeckObj(obj) {
-    deck = new Map();
-    (obj.cards || []).forEach(({ id, qty }) => {
-      if (getCard(id)) deck.set(id, Math.max(1, qty | 0));
-    });
-    saveDecks();
-    renderCards(); renderDeck(); renderDeckSelect();
-  }
+  // ---------- share code (only transfer method) ----------
   function encodeShare() {
     return encodeShareFor([...deck.entries()]);
   }
@@ -671,10 +647,6 @@
   $("#owned-inc").addEventListener("click", () => { if (modalCardId) incOwned(modalCardId); });
   $("#owned-dec").addEventListener("click", () => { if (modalCardId) decOwned(modalCardId); });
 
-  $("#btn-export").addEventListener("click", () => {
-    download(deckToObj(), "hero-rush-deck.json");
-    toast(t("toastExport"));
-  });
   $("#btn-share").addEventListener("click", () => {
     const code = encodeShare();
     navigator.clipboard?.writeText(code);
@@ -706,24 +678,6 @@
       else toast(t("toastBadCode"));
     });
   }
-  const importJsonLink = $("#import-json-link");
-  if (importJsonLink) {
-    importJsonLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      closeImportModal();
-      $("#file-import").click();
-    });
-  }
-  $("#file-import").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try { loadDeckObj(JSON.parse(reader.result)); toast(t("toastImportJson")); }
-      catch (err) { toast(t("toastBadJson")); }
-    };
-    reader.readAsText(file);
-  });
   $("#btn-clear").addEventListener("click", () => {
     deck = new Map(); saveDecks(); renderCards(); renderDeck(); renderDeckSelect(); toast(t("toastCleared"));
   });
