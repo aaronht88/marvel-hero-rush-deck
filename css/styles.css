@@ -547,4 +547,34 @@ body.modal-open { overflow: hidden; }
   .deck-panel { border-top: 1px solid var(--border-soft); max-height: 40vh; }
   .modal-body { grid-template-columns: 1fr; }
   .modal-art-wrap img { max-width: 200px; }
+
+  /* --- mobile polish: tighter topbar, bigger tap targets --- */
+  .topbar { padding: 10px 12px; gap: 8px; }
+  .topbar h1 { font-size: 15px; }
+  .topbar h1 small { font-size: 10px; letter-spacing: 1.5px; margin-left: 4px; }
+  .brand { gap: 8px; }
+  .logo { height: 24px; }
+  .version-badge, .visitor-badge, .btn-donate-chip { font-size: 10px; padding: 2px 7px; }
+  .btn { padding: 9px 14px; min-height: 40px; font-size: 13px; }
+  .btn-sm { padding: 7px 11px; min-height: 36px; }
+  .top-actions { gap: 6px; }
+  .lang-wrap { font-size: 11px; }
+  .modal { max-width: 94vw; }
+  .controls input[type="text"] { flex-basis: 100%; }
+  .controls select { flex: 1 1 30%; min-width: 0; }
+  .sim-card { width: 94px; }
+  .don-payme img { width: 170px; height: 170px; }
+  .card-grid { gap: 10px; }
+}
+
+@media (max-width: 480px) {
+  .subtitle, .author-credit { display: none; }
+  .topbar h1 small { display: none; }
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); }
+  .deck-header { flex-wrap: wrap; }
+  .deck-head-left { flex-wrap: wrap; }
+  .modal-actions { flex-wrap: wrap; }
+  .wl-actions { justify-content: center; }
+  .sim-row { padding: 8px; gap: 8px; }
+  .sim-card { width: 88px; }
 }

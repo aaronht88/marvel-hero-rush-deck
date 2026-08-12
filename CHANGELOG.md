@@ -2,7 +2,25 @@
 
 All notable changes to the Marvel Hero Rush Deck Builder.
 
-> 版本編號格式：由 v1.6-beta 起改用 **X.Y.Z-beta**（三個小數點位）— 目前版本為 **1.2.5-beta**。
+> 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.8-beta**。
+
+## [1.2.8-beta] — 2026-08-12
+
+### Changed
+- **Mobile-friendly pass**:
+  - ≤720px: tighter topbar (smaller logo/title/badges), bigger tap targets (buttons ≥40px min-height), search bar full-width, filter selects share rows, modal max-width 94vw, smaller simulator cards / PayMe QR
+  - ≤480px: hide subtitle + author credit + h1 suffix on tiny screens, denser card grid (128px min), wrapping deck header / modal actions
+- Device-ratio stats already tracked by GoatCounter (dashboard shows mobile/desktop split) — no code needed
+
+## [1.2.7-beta] — 2026-08-12
+
+### Changed
+- **PayMe QR cleaned**: cropped out the name header ("Aaron CHOI" + slogan), blanked the center profile photo — code-only QR (finder patterns intact; error-correction safe)
+
+## [1.2.6-beta] — 2026-08-12
+
+### Added
+- **Full self-introduction in the donation overlay**, localized in 繁中 / 简中 / EN (who aaronht88 is, the free tool, what donations fund, post-launch plans) — replaces the short blurb; modal scrolls if long
 
 ## [1.2.5-beta] — 2026-08-12
 
