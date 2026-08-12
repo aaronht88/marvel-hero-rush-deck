@@ -6,6 +6,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 ## [1.2.9-beta] — 2026-08-12
 
+### Fixed
+- **Mobile deck panel invisible**: root cause was `body { height: 100vh }` locking the page to viewport height — on single-column mobile the deck fell below the fold with no natural scroll. Mobile now flows naturally (body height auto) and the deck panel is a **sticky bottom bar** (always visible while scrolling cards; max 40vh). Verified at 390px viewport: deck pinned at viewport bottom at every scroll position.
+
+## [1.2.8-beta] — 2026-08-12
+
 ### Changed
 - **Mobile-friendly pass**:
   - ≤720px: tighter topbar (smaller logo/title/badges), bigger tap targets (buttons ≥40px min-height), search bar full-width, filter selects share rows, modal max-width 94vw, smaller simulator cards / PayMe QR
