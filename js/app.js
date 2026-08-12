@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.2-beta";
+  const APP_VERSION = "1.3-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -153,7 +153,15 @@
   }
 
   // ---------- render card browser ----------
+  function applyViewLayout() {
+    const don = view === "donation";
+    $(".controls").hidden = don;
+    $("#card-grid").hidden = don;
+    $("#donation-panel").hidden = !don;
+  }
   function renderCards() {
+    applyViewLayout();
+    if (view === "donation") return;
     cardGrid.innerHTML = "";
     const list = CARDS.filter(cardMatches);
     if (!list.length) {
@@ -575,6 +583,9 @@
       renderCards();
     });
   });
+
+  // donation: wire BMC URL constant (real link swapped on release)
+  const BMC_URL = "https://buymeacoffee.com/YOUR_BMC";
 
   // language
   $("#lang-select").addEventListener("change", (e) => {

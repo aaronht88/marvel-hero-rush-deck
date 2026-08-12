@@ -473,6 +473,35 @@ body.modal-open { overflow: hidden; }
 ::-webkit-scrollbar-thumb { background: #1e3354; border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: #2a4a7a; }
 
+/* ---------- Donation tab ---------- */
+.donation-panel { display: flex; justify-content: center; padding: 30px 10px; }
+.donation-panel[hidden] { display: none; }
+.don-card {
+  max-width: 420px; width: 100%;
+  background: linear-gradient(180deg, rgba(18, 32, 54, .6), rgba(10, 20, 36, .6));
+  border: 1px solid var(--border-soft); border-radius: 12px;
+  padding: 28px 24px; text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .4);
+}
+.don-emoji { font-size: 44px; line-height: 1; filter: drop-shadow(0 0 12px rgba(251, 191, 36, .4)); }
+.don-card h3 { font-family: "Russo One", sans-serif; font-size: 17px; letter-spacing: 1px; margin: 12px 0 8px; color: #fff; }
+.don-body { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 0 0 16px; }
+.don-bmc {
+  display: inline-block; font-size: 14px; font-weight: 700; padding: 10px 22px;
+  background: linear-gradient(180deg, #ffe14d, #ffb800); color: #1a1200 !important;
+  border: none; border-radius: 6px; box-shadow: 0 4px 14px rgba(255, 184, 0, .35);
+  text-decoration: none; letter-spacing: .5px;
+}
+.don-bmc:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(255, 184, 0, .5); }
+.don-divider { margin: 18px 0 6px; font-size: 11px; color: var(--muted); letter-spacing: 2px; }
+.don-payme-label { font-size: 12px; color: var(--text); margin-bottom: 10px; letter-spacing: .5px; }
+.don-payme img {
+  width: 200px; height: 200px; border-radius: 10px;
+  border: 1px solid var(--border); background: #fff; padding: 8px;
+}
+.don-note { font-size: 11.5px; color: var(--muted); margin: 16px 0 4px; }
+.don-thanks { font-size: 12px; color: var(--gold); margin: 0; letter-spacing: .5px; }
+
 /* reduced motion: gentler, not zero — keep opacity/color, drop movement */
 @media (prefers-reduced-motion: reduce) {
   .modal-overlay, .modal, .toast { transition: opacity 120ms ease-out; }

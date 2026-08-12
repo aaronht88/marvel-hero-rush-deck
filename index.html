@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=1.2-beta" />
+  <link rel="stylesheet" href="css/styles.css?v=1.3-beta" />
   <!-- GoatCounter privacy-friendly analytics -->
   <script data-goatcounter="https://aaronht88.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
@@ -21,7 +21,7 @@
         <p class="subtitle" data-i18n="subtitle">233 張實卡資料（BP01 The Avengers + SD01-04 預組）· 官方 cardlist</p>
         <p class="author-credit" data-i18n="byAuthor">by aaronht88</p>
       </div>
-      <span class="version-badge" id="version-badge">v1.2-beta</span>
+      <span class="version-badge" id="version-badge">v1.3-beta</span>
       <span class="visitor-badge" data-i18n-title="visitorViews" title="訪客瀏覽次數">👁 <span data-i18n="visitorLabel">訪客</span> <span id="visitor-count">–</span></span>
     </div>
     <div class="top-actions">
@@ -48,6 +48,7 @@
         <button class="tab active" data-view="all" data-i18n="viewAll">全部</button>
         <button class="tab" data-view="fav" data-i18n="viewFav">最愛</button>
         <button class="tab" data-view="owned" data-i18n="viewOwned">擁有</button>
+        <button class="tab" data-view="donation" data-i18n="tabDonation">支持</button>
       </div>
       <div class="controls">
         <input type="text" id="search" data-i18n-ph="searchPh" placeholder="搜尋卡名 / 編號 / 特徵 / 效果…" />
@@ -68,6 +69,21 @@
         </select>
       </div>
       <div id="card-grid" class="card-grid"><!-- cards injected --></div>
+      <div id="donation-panel" class="donation-panel" hidden>
+        <div class="don-card">
+          <div class="don-emoji">☕</div>
+          <h3 data-i18n="donTitle">請我飲杯咖啡</h3>
+          <p class="don-body" data-i18n="donBody">呢個 deck builder 係免費嘅 fans 工具。如果你覺得有用，可以用以下方式請我飲杯咖啡 ☕ 支持一下！</p>
+          <a id="don-bmc" class="btn don-bmc" href="https://buymeacoffee.com/YOUR_BMC" target="_blank" rel="noopener" data-i18n="donBmc">Buy me a coffee ☕</a>
+          <div class="don-divider" data-i18n="donOr">或者</div>
+          <div class="don-payme">
+            <div class="don-payme-label" data-i18n="donPayme">PayMe 掃碼支持</div>
+            <img id="don-payme-qr" src="img/payme_qr.png" alt="PayMe QR" onerror="this.style.display='none'" />
+          </div>
+          <p class="don-note" data-i18n="donNote">捐款係完全自願嘅 — 唔捐都一樣用到全部功能 😊</p>
+          <p class="don-thanks" data-i18n="donThanks">多謝支持！🙏</p>
+        </div>
+      </div>
     </section>
 
     <!-- RIGHT: deck panel (drag & drop target) -->
@@ -103,7 +119,7 @@
           <img class="wl-logo" src="img/logo.png" alt="Marvel Hero Rush" />
           <div class="wl-title">MARVEL HERO RUSH</div>
           <div class="wl-sub">DECK BUILDER</div>
-          <div class="wl-version" id="wl-version">v1.2-beta</div>
+          <div class="wl-version" id="wl-version">v1.3-beta</div>
           <div class="wl-visitors">👁 <span data-i18n="cumulativeUsers">累積使用人數</span>：<span id="wl-visitor-count">–</span></div>
         </div>
         <div class="modal-info wl-info">
@@ -119,6 +135,7 @@
               <li data-i18n="wn6">牌組模擬器：按 Grade 分組睇成副牌</li>
               <li data-i18n="wn7">每張卡顯示所屬系列（BP01 / SD01-04）</li>
               <li data-i18n="wn8">介面動畫打磨：modal / toast 過場、按鍵回饋、系統減動態支援</li>
+              <li data-i18n="wn9">支持 tab：Buy me a coffee + PayMe 捐款</li>
             </ul>
             <a class="wl-changelog" id="wl-changelog-link" href="https://github.com/aaronht88/marvel-hero-rush-deck/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-i18n="changelogLink">完整 Changelog →</a>
           </div>
@@ -216,9 +233,9 @@
   <div id="toast" class="toast" hidden></div>
 
   <!-- data + logic (versioned query = cache busting on release) -->
-  <script src="js/i18n.js?v=1.2-beta"></script>
-  <script src="js/cards.js?v=1.2-beta"></script>
-  <script src="js/rules.js?v=1.2-beta"></script>
-  <script src="js/app.js?v=1.2-beta"></script>
+  <script src="js/i18n.js?v=1.3-beta"></script>
+  <script src="js/cards.js?v=1.3-beta"></script>
+  <script src="js/rules.js?v=1.3-beta"></script>
+  <script src="js/app.js?v=1.3-beta"></script>
 </body>
 </html>
