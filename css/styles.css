@@ -379,7 +379,7 @@ body.modal-open { overflow: hidden; }
 .wl-author { margin: 0; font-size: 13px; color: var(--text); }
 .wl-author a { color: var(--cyan); text-decoration: none; border-bottom: 1px dashed var(--cyan-dim); }
 .wl-author a:hover { color: #fff; }
-.wl-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.wl-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
 .wl-action-group { display: flex; align-items: center; gap: 8px; }
 .btn-donate {
   background: linear-gradient(180deg, #ffe14d, #ffb800); color: #1a1200 !important;

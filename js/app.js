@@ -500,21 +500,9 @@
   });
 
   // ---------- welcome / info overlay ----------
-  const LS_SEEN_VERSION = "mhr_seen_version";
   function showWelcome() { $("#wl-version").textContent = "v" + APP_VERSION; showOverlay($("#welcome-modal")); }
   function hideWelcome() { hideOverlay($("#welcome-modal")); }
-  function maybeShowWelcome() {
-    try {
-      if (localStorage.getItem(LS_SEEN_VERSION) === APP_VERSION) return;
-    } catch (e) {}
-    showWelcome();
-  }
-  $("#wl-start").addEventListener("click", () => {
-    if ($("#wl-dontshow").checked) {
-      try { localStorage.setItem(LS_SEEN_VERSION, APP_VERSION); } catch (e) {}
-    }
-    hideWelcome();
-  });
+  $("#wl-start").addEventListener("click", hideWelcome);
   $("#version-badge").addEventListener("click", showWelcome);
 
   // ---------- visitor counter (GoatCounter public JSON) ----------
@@ -737,5 +725,5 @@
   renderCards();
   renderDeck();
   loadVisitorCount();
-  maybeShowWelcome();
+  showWelcome();
 })();
