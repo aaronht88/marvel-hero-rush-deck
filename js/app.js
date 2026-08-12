@@ -584,8 +584,8 @@
     });
   });
 
-  // donation: wire BMC URL constant (real link swapped on release)
-  const BMC_URL = "https://buymeacoffee.com/YOUR_BMC";
+  // donation: Buy Me a Coffee link
+  const BMC_URL = "https://buymeacoffee.com/aaronht88";
 
   // language
   $("#lang-select").addEventListener("change", (e) => {
