@@ -5,7 +5,8 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 ## [1.3-beta] — 2026-08-11
 
 ### Added
-- **Donation tab** (支持 / Support): new view tab with a "Buy me a coffee" button + PayMe QR code panel — fully voluntary, i18n for all 3 languages
+- **Donation tab** (支持 / Support): new view tab with a "Buy me a coffee" button, PayMe link button + PayMe QR code panel — fully voluntary, i18n for all 3 languages
+- **Welcome overlay donate button** (☕ 支持我): jumps straight to the donation tab
 
 ## [1.2-beta] — 2026-08-11
 

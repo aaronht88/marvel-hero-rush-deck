@@ -576,12 +576,18 @@
   filterAttr.addEventListener("change", renderCards);
 
   // view tabs
+  function setView(v) {
+    view = v;
+    document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x.dataset.view === v));
+    renderCards();
+  }
   document.querySelectorAll(".tab").forEach((tab) => {
-    tab.addEventListener("click", () => {
-      view = tab.dataset.view;
-      document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x === tab));
-      renderCards();
-    });
+    tab.addEventListener("click", () => setView(tab.dataset.view));
+  });
+  // welcome overlay: donate button jumps to the donation tab
+  $("#wl-donate").addEventListener("click", () => {
+    hideWelcome();
+    setView("donation");
   });
 
   // donation: Buy Me a Coffee link
