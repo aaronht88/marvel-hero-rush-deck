@@ -4,6 +4,17 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.13-beta**。
 
+## [1.2.20-beta] — 2026-08-12
+
+### Removed
+- **「擁有」(owned) 機制全面移除** — 令人混淆，一次過剷走：
+  - 擁有 view tab（得返 全部 / 最愛）
+  - 卡面/卡資料嘅擁有數量顯示
+  - 批量擁有/清除按鈕
+  - Modal 內嘅「我已擁有」+ / − 控制
+  - 相關 JS（owned state、toggle、bulk）、i18n keys、CSS
+  - 修復移除過程中誤刪 `modalCardId` 引起嘅 boot crash（fuzzy patch 吞咗行變數宣告）
+
 ## [1.2.19-beta] — 2026-08-12
 
 ### Fixed

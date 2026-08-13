@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.2.19-beta";
+  const APP_VERSION = "1.2.20-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -14,12 +14,11 @@
   let currentDeckId = null;
   let deck = new Map();      // working deck (current)
   let favs = new Set();      // card ids
-  let owned = {};            // id -> count
   let modalCardId = null;
-  let view = "all";          // "all" | "fav" | "owned"
+  let view = "all";          // "all" | "fav"
 
   // ---------- persistence ----------
-  const LS_DECKS = "mhr_decks_v3", LS_FAVS = "mhr_favs_v2", LS_OWNED = "mhr_owned_v2", LS_LEGACY_DECK = "mhr_deck_v2";
+  const LS_DECKS = "mhr_decks_v3", LS_FAVS = "mhr_favs_v2", LS_LEGACY_DECK = "mhr_deck_v2";
   function genId() { return "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
   function saveDecks() {
     try {
@@ -29,10 +28,8 @@
     } catch (e) {}
   }
   function saveFavs() { try { localStorage.setItem(LS_FAVS, JSON.stringify([...favs])); } catch (e) {} }
-  function saveOwned() { try { localStorage.setItem(LS_OWNED, JSON.stringify(owned)); } catch (e) {} }
   function loadPersist() {
     try { favs = new Set(JSON.parse(localStorage.getItem(LS_FAVS) || "[]").filter((id) => getCard(id))); } catch (e) { favs = new Set(); }
-    try { owned = JSON.parse(localStorage.getItem(LS_OWNED) || "{}"); } catch (e) { owned = {}; }
     let stored = null;
     try { stored = JSON.parse(localStorage.getItem(LS_DECKS) || "null"); } catch (e) { stored = null; }
     if (stored && Array.isArray(stored.decks) && stored.decks.length) {
@@ -144,7 +141,6 @@
     if (rng && String(card.attackRange) !== rng) return false;
     if (attr && card.attribute !== attr) return false;
     if (view === "fav" && !favs.has(card.id)) return false;
-    if (view === "owned" && !(owned[card.id] || 0)) return false;
     if (q) {
       const hay = (card.name + " " + card.card_no + " " + (card.feature || "") + " " + (card.effect || "")).toLowerCase();
       if (!hay.includes(q)) return false;
@@ -164,7 +160,6 @@
     list.forEach((card) => {
       const inDeck = deck.get(card.id) || 0;
       const inFav = favs.has(card.id);
-      const ownedN = owned[card.id] || 0;
       const el = document.createElement("div");
       el.className = "card attr-" + card.attribute + (inFav ? " is-fav" : "");
       el.draggable = true;
@@ -181,12 +176,9 @@
             <span class="chip chip-attr chip-${card.attribute}">${attrLabel(card.attribute)}</span>
             <span class="rar rar-${card.rarity}">${card.rarity}</span>
             <span class="chip chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
-            <button class="owned-count${ownedN ? " on" : ""}" data-own="${card.id}" title="${t("ownToggleTip")}">×${ownedN}</button>
           </div>
         </div>`;
       el.addEventListener("click", () => openModal(card.id));
-      const ownCountBtn = el.querySelector(".owned-count");
-      if (ownCountBtn) ownCountBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleOwned(card.id); });
       el.addEventListener("dragstart", (e) => {
         e.dataTransfer.setData("text/plain", card.id);
         e.dataTransfer.effectAllowed = "copy";
@@ -226,35 +218,12 @@
     renderCards(); renderDeck(); updateModalActions(); renderDeckSelect();
   }
 
-  // ---------- favorites / owned ----------
+  // ---------- favorites ----------
   function toggleFav(id) {
     if (favs.has(id)) { favs.delete(id); toast(t("toastFavOff")); }
     else { favs.add(id); toast(t("toastFavOn")); }
     saveFavs();
     renderCards(); updateModalActions();
-  }
-  function incOwned(id) { owned[id] = (owned[id] || 0) + 1; saveOwned(); renderCards(); updateModalActions(); toast(t("toastOwnedInc")); }
-  function decOwned(id) {
-    owned[id] = Math.max(0, (owned[id] || 0) - 1);
-    if (!owned[id]) delete owned[id];
-    saveOwned(); renderCards(); updateModalActions(); toast(t("toastOwnedDec"));
-  }
-  function toggleOwned(id) {
-    if (owned[id]) { delete owned[id]; toast(t("toastOwnedDec")); }
-    else { owned[id] = 1; toast(t("toastOwnedInc")); }
-    saveOwned(); renderCards(); updateModalActions();
-  }
-  // bulk owned: operate on the currently filtered cards
-  function bulkSetOwned(mark) {
-    const list = getFilteredCards();
-    let n = 0;
-    list.forEach((c) => {
-      const has = !!owned[c.id];
-      if (mark && !has) { owned[c.id] = 1; n++; }
-      if (!mark && has) { delete owned[c.id]; n++; }
-    });
-    saveOwned(); renderCards(); updateModalActions();
-    toast(mark ? t("bulkOwnDone", { n }) : t("bulkUnownDone", { n }));
   }
 
   // ---------- multi-deck ----------
@@ -344,14 +313,6 @@
     donationModal.addEventListener("click", (e) => { if (e.target === donationModal) closeDonation(); });
   }
 
-  const bulkOwnBtn = $("#bulk-own");
-  if (bulkOwnBtn) bulkOwnBtn.addEventListener("click", () => bulkSetOwned(true));
-  const bulkUnownBtn = $("#bulk-unown");
-  if (bulkUnownBtn) {
-    bulkUnownBtn.addEventListener("click", () => {
-      if (confirm(t("bulkUnownConfirm"))) bulkSetOwned(false);
-    });
-  }
   // ---------- deck simulator ----------
   function renderSimulator() {
     const content = $("#sim-content");
@@ -509,7 +470,6 @@
     const c = getCard(modalCardId);
     const favBtn = $("#modal-fav");
     favBtn.textContent = favs.has(modalCardId) ? t("unfavBtn") : t("favBtn");
-    $("#owned-count").textContent = owned[modalCardId] || 0;
     const inDeck = deck.get(modalCardId) || 0;
     $("#deck-count-modal").textContent = inDeck;
     const atLimit = RULES.enforce && countByName(c.name) >= RULES.copyLimitPerName;
@@ -675,8 +635,6 @@
   $("#deck-inc").addEventListener("click", () => { if (modalCardId) addCard(modalCardId); });
   $("#deck-dec").addEventListener("click", () => { if (modalCardId) removeCard(modalCardId); });
   $("#modal-fav").addEventListener("click", () => { if (modalCardId) toggleFav(modalCardId); });
-  $("#owned-inc").addEventListener("click", () => { if (modalCardId) incOwned(modalCardId); });
-  $("#owned-dec").addEventListener("click", () => { if (modalCardId) decOwned(modalCardId); });
 
   $("#btn-share").addEventListener("click", () => {
     const code = encodeShare();
