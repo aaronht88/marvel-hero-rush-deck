@@ -4,7 +4,7 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
-## [1.3.0-beta] — 2026-08-12
+## [1.3.1-beta] — 2026-08-12
 
 ### Added
 - **Welcome overlay 用法簡介**：新增「用法簡介」section（搜尋篩選 / 砌牌組 / 分享碼 / 模擬器 / 語言切換），三語（繁中 / 简中 / EN）
