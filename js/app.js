@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.3.1-beta";
+  const APP_VERSION = "1.3.2-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -129,6 +129,7 @@
   }
 
   function cardMatches(card) {
+    if (card.type === "impact") return false; // Rush Point cards live in their own 圖鑑 view
     const q = searchEl.value.trim().toLowerCase();
     const set = filterSet.value;
     const rar = filterRarity.value;
@@ -150,8 +151,41 @@
 
   // ---------- render card browser ----------
   function getFilteredCards() { return CARDS.filter(cardMatches); }
+
+  // ---------- Rush Point 圖鑑 (impact cards) ----------
+  function renderRushGallery() {
+    cardGrid.innerHTML = "";
+    const rush = CARDS.filter((c) => c.type === "impact").sort((a, b) =>
+      (a.set === b.set ? a.card_no.localeCompare(b.card_no) : a.set.localeCompare(b.set))
+    );
+    if (!rush.length) {
+      cardGrid.innerHTML = '<p style="color:var(--muted)">' + t("noMatch") + "</p>";
+      return;
+    }
+    const hint = document.createElement("p");
+    hint.className = "rush-hint";
+    hint.textContent = t("rushHint");
+    cardGrid.appendChild(hint);
+    rush.forEach((card) => {
+      const el = document.createElement("div");
+      el.className = "card rush-tile";
+      el.innerHTML = `
+        <div class="art"><img loading="lazy" src="${card.art}" alt="${card.name}" onerror="this.style.display='none'"></div>
+        <div class="meta">
+          <div class="cname" title="${card.name}">${card.name}</div>
+          <div class="ctags">${card.card_no}</div>
+          <div class="cmeta">
+            <span class="chip chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
+            <span class="rar rar-C">${card.rarity}</span>
+          </div>
+        </div>`;
+      cardGrid.appendChild(el);
+    });
+  }
+
   function renderCards() {
     cardGrid.innerHTML = "";
+    if (view === "rush") { renderRushGallery(); return; }
     const list = getFilteredCards();
     if (!list.length) {
       cardGrid.innerHTML = '<p style="color:var(--muted)">' + t("noMatch") + "</p>";
