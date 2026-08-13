@@ -415,6 +415,8 @@ body.modal-open { overflow: hidden; }
 }
 .wl-list { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7; color: var(--text); }
 .wl-changelog { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--cyan); text-decoration: none; border-bottom: 1px dashed var(--cyan-dim); }
+.wl-guide { margin: 6px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 5px; }
+.wl-guide li { font-size: 12px; line-height: 1.6; color: var(--text); }
 .wl-changelog:hover { color: #fff; }
 .wl-disclaimer { margin: 0; font-size: 12px; line-height: 1.65; color: var(--muted); }
 .wl-credit { margin: 0; font-size: 12px; line-height: 1.7; color: var(--text); }
