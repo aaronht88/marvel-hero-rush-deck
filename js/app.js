@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.2.15-beta";
+  const APP_VERSION = "1.2.16-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -412,20 +412,18 @@
       validationEl.innerHTML = '<span class="warn">⚠</span>';
       return;
     }
-    const issues = [];
-    const exact = RULES.deckSize.exact;
-    if (total < exact) issues.push(t("vTooFew"));
-    if (total > exact) issues.push(t("vTooMany"));
+    const okSize = total === RULES.deckSize.exact;
     const colors = new Set();
     deck.forEach((qty, id) => colors.add(getCard(id).attribute));
-    if (colors.size > RULES.maxColors) {
-      issues.push(t("vTooManyColors", { n: colors.size }));
-    }
-    if (issues.length === 0) {
-      validationEl.innerHTML = '<span class="ok">' + t("vOk") + "</span>";
-    } else {
-      validationEl.innerHTML = '<span class="warn">⚠ ' + issues.join(" · ") + "</span>";
-    }
+    const okColors = colors.size <= RULES.maxColors;
+    let okCopies = true;
+    deck.forEach((qty) => { if (qty > RULES.copyLimitPerName) okCopies = false; });
+    const mk = (ok, label) =>
+      `<span class="v-item ${ok ? "ok" : "bad"}"><span class="v-box">${ok ? "☑" : "☐"}</span>${label}</span>`;
+    validationEl.innerHTML =
+      mk(okSize, t("vSize", { n: RULES.deckSize.exact })) +
+      mk(okColors, t("vColors", { n: RULES.maxColors })) +
+      mk(okCopies, t("vCopies", { n: RULES.copyLimitPerName }));
   }
 
   // ---------- stats ----------
