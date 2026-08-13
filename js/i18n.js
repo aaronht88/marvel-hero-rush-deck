@@ -7,7 +7,7 @@
 const I18N = {
   "zh-HK": {
     appTitle: "Marvel Hero Rush Deck Builder",
-    subtitle: "233 張實卡資料（BP01 The Avengers + SD01-04 預組）· 官方 cardlist",
+    subtitle: "268 張官方卡資料（234 角色 + 34 Rush Point）· 官方 cardlist",
     langLabel: "語言",
     importBtn: "匯入 Deck",
     shareBtn: "複製分享碼",
@@ -31,7 +31,7 @@ const I18N = {
     viewRush: "Rush Point",
     rushHint: "Rush Point 卡圖鑑：官方 34 張（BP01-121~150 + 每個 Starter 各 1 張）— 用嚟追蹤遊戲內 9 點 Rush 勝利目標，唔入角色 deck",
     donTitle: "請我喝杯咖啡",
-    donIntro: "大家好，我是 aaronht88 — 一位香港的 Marvel TCG 玩家兼內容創作者。<br><br>這個 Deck Builder 最初是我自己在遊戲上市前排牌用的個人工具，沒有想過會得到這麼多同好支持，真的非常感謝！工具完全免費：收錄 233 張官方實卡資料、官方規則驗證（50 張牌組、最多 2 色、同名最多 3 張）、多牌組管理、Deck Simulator，還支援繁中／簡中／英文三語介面。所有卡圖和資料都是粉絲用途、引用官方公開資料，版權歸 Marvel／Card Fun 所有。<br><br>如果你覺得這個工具對你有幫助，請我喝杯咖啡 ☕ 就是最大的鼓勵 — 每一杯都會直接投入在伺服器成本、資料更新和新功能開發（例如：更多系列卡牌、收藏追蹤、牌組分享社群功能等）。<br><br>遊戲 8 月 15 日正式上市之後，我會繼續更新，希望這個工具可以陪伴大家一起玩 Marvel Hero Rush！<br><br>如果有任何建議、合作機會，或者想聊聊 MHR，歡迎 email 我：dose-tragedy-goes@duck.com。再次感謝你的支持 🙏",
+    donIntro: "大家好，我是 aaronht88 — 一位香港的 Marvel TCG 玩家兼內容創作者。<br><br>這個 Deck Builder 最初是我自己在遊戲上市前排牌用的個人工具，沒有想過會得到這麼多同好支持，真的非常感謝！工具完全免費：收錄 268 張官方卡資料（234 角色 + 34 Rush Point）、官方規則驗證（50 張牌組、最多 2 色、同名最多 3 張）、多牌組管理、Deck Simulator，還支援繁中／簡中／英文三語介面。所有卡圖和資料都是粉絲用途、引用官方公開資料，版權歸 Marvel／Card Fun 所有。<br><br>如果你覺得這個工具對你有幫助，請我喝杯咖啡 ☕ 就是最大的鼓勵 — 每一杯都會直接投入在伺服器成本、資料更新和新功能開發（例如：更多系列卡牌、收藏追蹤、牌組分享社群功能等）。<br><br>遊戲 8 月 15 日正式上市之後，我會繼續更新，希望這個工具可以陪伴大家一起玩 Marvel Hero Rush！<br><br>如果有任何建議、合作機會，或者想聊聊 MHR，歡迎 email 我：dose-tragedy-goes@duck.com。再次感謝你的支持 🙏",
     donBmc: "Buy me a coffee ☕",
     donOr: "或者",
     donPayme: "PayMe 點擊轉帳",
@@ -125,7 +125,7 @@ const I18N = {
   },
   "zh-CN": {
     appTitle: "Marvel Hero Rush Deck Builder",
-    subtitle: "233 张实卡资料（BP01 The Avengers + SD01-04 预组）· 官方 cardlist",
+    subtitle: "268 张官方卡资料（234 角色 + 34 Rush Point）· 官方 cardlist",
     langLabel: "语言",
     importBtn: "导入 Deck",
     shareBtn: "复制分享码",
@@ -149,7 +149,7 @@ const I18N = {
     viewRush: "Rush Point",
     rushHint: "Rush Point 卡图鉴：官方 34 张（BP01-121~150 + 每个 Starter 各 1 张）— 用于追踪游戏内 9 点 Rush 胜利目标，不加入角色牌组",
     donTitle: "请我喝杯咖啡",
-    donIntro: "大家好，我是 aaronht88 — 一位香港的 Marvel TCG 玩家兼内容创作者。<br><br>这个 Deck Builder 最初是我自己在游戏上市前排牌用的个人工具，没想到会得到这么多同好支持，真的非常感谢！工具完全免费：收录 233 张官方实卡资料、官方规则验证（50 张牌组、最多 2 色、同名最多 3 张）、多牌组管理、Deck Simulator，还支持繁中／简中／英文三语界面。所有卡图和资料都是粉丝用途、引用官方公开资料，版权归 Marvel／Card Fun 所有。<br><br>如果你觉得这个工具帮到你，请我喝杯咖啡 ☕ 就是最大的鼓励 — 每一杯都会直接投入到服务器成本、资料更新和新功能开发（例如：更多系列卡牌、收藏追踪、牌组分享社群功能等）。<br><br>游戏 8 月 15 日正式上市之后，我会继续更新，希望这个工具可以陪大家一起玩 Marvel Hero Rush！<br><br>如果有任何建议、合作机会，或者想聊聊 MHR，欢迎 email 我：dose-tragedy-goes@duck.com。再次感谢你的支持 🙏",
+    donIntro: "大家好，我是 aaronht88 — 一位香港的 Marvel TCG 玩家兼内容创作者。<br><br>这个 Deck Builder 最初是我自己在游戏上市前排牌用的个人工具，没想到会得到这么多同好支持，真的非常感谢！工具完全免费：收录 268 张官方卡资料（234 角色 + 34 Rush Point）、官方规则验证（50 张牌组、最多 2 色、同名最多 3 张）、多牌组管理、Deck Simulator，还支持繁中／简中／英文三语界面。所有卡图和资料都是粉丝用途、引用官方公开资料，版权归 Marvel／Card Fun 所有。<br><br>如果你觉得这个工具帮到你，请我喝杯咖啡 ☕ 就是最大的鼓励 — 每一杯都会直接投入到服务器成本、资料更新和新功能开发（例如：更多系列卡牌、收藏追踪、牌组分享社群功能等）。<br><br>游戏 8 月 15 日正式上市之后，我会继续更新，希望这个工具可以陪大家一起玩 Marvel Hero Rush！<br><br>如果有任何建议、合作机会，或者想聊聊 MHR，欢迎 email 我：dose-tragedy-goes@duck.com。再次感谢你的支持 🙏",
     donBmc: "Buy me a coffee ☕",
     donOr: "或者",
     donPayme: "PayMe 点击转账",
@@ -241,7 +241,7 @@ const I18N = {
   },
   en: {
     appTitle: "Marvel Hero Rush Deck Builder",
-    subtitle: "233 real cards (BP01 The Avengers + SD01-04 starters) · official cardlist",
+    subtitle: "268 official cards (234 characters + 34 Rush Points) · official cardlist",
     langLabel: "Language",
     importBtn: "Import Deck",
     shareBtn: "Copy Share Code",
@@ -265,7 +265,7 @@ const I18N = {
     viewRush: "Rush Point",
     rushHint: "Rush Point card gallery: all 34 official prints (BP01-121~150 + 1 per Starter) — used to track the 9-point Rush win goal, not part of character decks",
     donTitle: "Buy me a coffee",
-    donIntro: "Hi, I'm aaronht88 — a Marvel TCG player and content creator from Hong Kong.<br><br>This Deck Builder started as my personal tool for practicing deck-building before the official game launched. I never expected so many fellow players to find it useful — thank you! It's completely free: 233 real cards from the official cardlist, official rule validation (50-card deck, max 2 colors, max 3 same-name copies), multi-deck management, a Deck Simulator, and a UI in Traditional Chinese / Simplified Chinese / English. All card data and art are fan-use references from official public sources; copyright belongs to Marvel / Card Fun.<br><br>If this tool helps you, buying me a coffee ☕ is the biggest encouragement — every cup goes directly into hosting costs, data updates, and new features (more sets, collection tracking, deck-sharing community features…).<br><br>I'll keep updating it after the game's official launch on August 15 — hope this tool grows together with the Marvel Hero Rush community!<br><br>If you have any feedback, collaboration ideas, or just want to talk MHR, feel free to email me at dose-tragedy-goes@duck.com. Thanks again for your support 🙏",
+    donIntro: "Hi, I'm aaronht88 — a Marvel TCG player and content creator from Hong Kong.<br><br>This Deck Builder started as my personal tool for practicing deck-building before the official game launched. I never expected so many fellow players to find it useful — thank you! It's completely free: 268 official cards (234 characters + 34 Rush Points), official rule validation (50-card deck, max 2 colors, max 3 same-name copies), multi-deck management, a Deck Simulator, and a UI in Traditional Chinese / Simplified Chinese / English. All card data and art are fan-use references from official public sources; copyright belongs to Marvel / Card Fun.<br><br>If this tool helps you, buying me a coffee ☕ is the biggest encouragement — every cup goes directly into hosting costs, data updates, and new features (more sets, collection tracking, deck-sharing community features…).<br><br>I'll keep updating it after the game's official launch on August 15 — hope this tool grows together with the Marvel Hero Rush community!<br><br>If you have any feedback, collaboration ideas, or just want to talk MHR, feel free to email me at dose-tragedy-goes@duck.com. Thanks again for your support 🙏",
     donBmc: "Buy me a coffee ☕",
     donOr: "or",
     donPayme: "PayMe — tap to pay",
