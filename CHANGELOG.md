@@ -4,6 +4,13 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.13-beta**。
 
+## [1.2.17-beta] — 2026-08-12
+
+### Added
+- **Quick owned toggle on every card tile**: small ⭕/✓ circle at the art's top-left — one click marks/unmarks owned without opening the card modal
+- **Bulk owned buttons in the filter bar**: ☑ 全部標記擁有 / ☐ 全部清除擁有 (applies to the currently filtered cards; clear asks for confirmation) with toast counts
+- i18n ×3 for toggle tip / bulk buttons / confirm / toasts
+
 ## [1.2.16-beta] — 2026-08-12
 
 ### Changed

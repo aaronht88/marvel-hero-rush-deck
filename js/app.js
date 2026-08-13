@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.2.16-beta";
+  const APP_VERSION = "1.2.17-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -153,9 +153,10 @@
   }
 
   // ---------- render card browser ----------
+  function getFilteredCards() { return CARDS.filter(cardMatches); }
   function renderCards() {
     cardGrid.innerHTML = "";
-    const list = CARDS.filter(cardMatches);
+    const list = getFilteredCards();
     if (!list.length) {
       cardGrid.innerHTML = '<p style="color:var(--muted)">' + t("noMatch") + "</p>";
       return;
@@ -168,7 +169,9 @@
       el.className = "card attr-" + card.attribute + (inFav ? " is-fav" : "");
       el.draggable = true;
       el.innerHTML = `
-        <div class="art"><img loading="lazy" src="${card.art}" alt="${card.name}" onerror="this.style.display='none'"></div>
+        <div class="art"><img loading="lazy" src="${card.art}" alt="${card.name}" onerror="this.style.display='none'">
+          <button class="own-toggle${ownedN ? " on" : ""}" data-own="${card.id}" title="${t("ownToggleTip")}">${ownedN ? "✓" : ""}</button>
+        </div>
         <div class="badges">
           ${inFav ? '<span class="badge badge-fav">★</span>' : ""}
           ${ownedN ? `<span class="badge badge-owned">${ownedN}</span>` : ""}
@@ -184,6 +187,8 @@
           </div>
         </div>`;
       el.addEventListener("click", () => openModal(card.id));
+      const ownBtn = el.querySelector(".own-toggle");
+      if (ownBtn) ownBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleOwned(card.id); });
       el.addEventListener("dragstart", (e) => {
         e.dataTransfer.setData("text/plain", card.id);
         e.dataTransfer.effectAllowed = "copy";
@@ -235,6 +240,23 @@
     owned[id] = Math.max(0, (owned[id] || 0) - 1);
     if (!owned[id]) delete owned[id];
     saveOwned(); renderCards(); updateModalActions(); toast(t("toastOwnedDec"));
+  }
+  function toggleOwned(id) {
+    if (owned[id]) { delete owned[id]; toast(t("toastOwnedDec")); }
+    else { owned[id] = 1; toast(t("toastOwnedInc")); }
+    saveOwned(); renderCards(); updateModalActions();
+  }
+  // bulk owned: operate on the currently filtered cards
+  function bulkSetOwned(mark) {
+    const list = getFilteredCards();
+    let n = 0;
+    list.forEach((c) => {
+      const has = !!owned[c.id];
+      if (mark && !has) { owned[c.id] = 1; n++; }
+      if (!mark && has) { delete owned[c.id]; n++; }
+    });
+    saveOwned(); renderCards(); updateModalActions();
+    toast(mark ? t("bulkOwnDone", { n }) : t("bulkUnownDone", { n }));
   }
 
   // ---------- multi-deck ----------
@@ -324,6 +346,14 @@
     donationModal.addEventListener("click", (e) => { if (e.target === donationModal) closeDonation(); });
   }
 
+  const bulkOwnBtn = $("#bulk-own");
+  if (bulkOwnBtn) bulkOwnBtn.addEventListener("click", () => bulkSetOwned(true));
+  const bulkUnownBtn = $("#bulk-unown");
+  if (bulkUnownBtn) {
+    bulkUnownBtn.addEventListener("click", () => {
+      if (confirm(t("bulkUnownConfirm"))) bulkSetOwned(false);
+    });
+  }
   // ---------- deck simulator ----------
   function renderSimulator() {
     const content = $("#sim-content");
