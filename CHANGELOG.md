@@ -4,6 +4,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.13-beta**。
 
+## [1.2.15-beta] — 2026-08-12
+
+### Changed
+- **繁中介面全部文案改為書面語**（去除廣東話口語：嘅/唔/撳/睇/啲/呢個…），涵蓋 i18n zh-HK 全部字串 + HTML fallback 文字
+
 ## [1.2.14-beta] — 2026-08-12
 
 ### Added
