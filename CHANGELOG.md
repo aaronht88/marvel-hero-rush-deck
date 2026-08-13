@@ -4,6 +4,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.13-beta**。
 
+## [1.2.19-beta] — 2026-08-12
+
+### Fixed
+- **Owned ×N chip no longer wraps to a second line on wide chip rows** (e.g. SEC cards in EN): shrank chip/rarity/owned-count sizes + tightened gaps so [color][rarity][set][×N] always fits one line — verified 0 wraps across all 233 cards in EN & zh-HK
+
 ## [1.2.18-beta] — 2026-08-12
 
 ### Changed
