@@ -2,11 +2,11 @@
 
 A lightweight deck-building web app for the **Marvel Hero Rush TCG** (Card Fun / 杰森动漫).
 
-> **Build v1.2.17-beta** · 2026-08-11
+> **Build v1.2.18-beta** · 2026-08-11
 > ✅ **Real card data.** Cardlist published on the official site — this repo contains all **233 card entries** (192 unique card numbers, including alternate-art / rarity prints) scraped from the official API, with local card art thumbnails.
 > 🎨 UI themed on the official rulebook's dark sci-fi / tactical HUD design language.
 
-## Features (v1.2.17-beta)
+## Features (v1.2.18-beta)
 
 **Card database**
 - 233 real cards from the official cardlist (BP01 The Avengers booster + SD01-04 REALITY/MIND/SPACE/TIME starters)

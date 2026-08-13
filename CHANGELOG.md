@@ -4,6 +4,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta（三個小數點位）— 目前版本為 **1.2.13-beta**。
 
+## [1.2.18-beta] — 2026-08-12
+
+### Changed
+- **Owned indicator moved off the card art**: the top-left toggle circle (which covered the card's Lv) is gone; the owned count now lives in the **bottom-right of the card info** (×N chip, right-aligned in the chips row) — still clickable to toggle, and the top-right art badge count was removed (redundant)
+
 ## [1.2.17-beta] — 2026-08-12
 
 ### Added

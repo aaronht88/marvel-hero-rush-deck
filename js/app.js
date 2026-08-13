@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.2.17-beta";
+  const APP_VERSION = "1.2.18-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -169,12 +169,9 @@
       el.className = "card attr-" + card.attribute + (inFav ? " is-fav" : "");
       el.draggable = true;
       el.innerHTML = `
-        <div class="art"><img loading="lazy" src="${card.art}" alt="${card.name}" onerror="this.style.display='none'">
-          <button class="own-toggle${ownedN ? " on" : ""}" data-own="${card.id}" title="${t("ownToggleTip")}">${ownedN ? "✓" : ""}</button>
-        </div>
+        <div class="art"><img loading="lazy" src="${card.art}" alt="${card.name}" onerror="this.style.display='none'"></div>
         <div class="badges">
           ${inFav ? '<span class="badge badge-fav">★</span>' : ""}
-          ${ownedN ? `<span class="badge badge-owned">${ownedN}</span>` : ""}
           ${inDeck ? `<span class="badge badge-deck">×${inDeck}</span>` : ""}
         </div>
         <div class="meta">
@@ -184,11 +181,12 @@
             <span class="chip chip-attr chip-${card.attribute}">${attrLabel(card.attribute)}</span>
             <span class="rar rar-${card.rarity}">${card.rarity}</span>
             <span class="chip chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
+            <button class="owned-count${ownedN ? " on" : ""}" data-own="${card.id}" title="${t("ownToggleTip")}">×${ownedN}</button>
           </div>
         </div>`;
       el.addEventListener("click", () => openModal(card.id));
-      const ownBtn = el.querySelector(".own-toggle");
-      if (ownBtn) ownBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleOwned(card.id); });
+      const ownCountBtn = el.querySelector(".owned-count");
+      if (ownCountBtn) ownCountBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleOwned(card.id); });
       el.addEventListener("dragstart", (e) => {
         e.dataTransfer.setData("text/plain", card.id);
         e.dataTransfer.effectAllowed = "copy";
