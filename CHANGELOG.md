@@ -4,6 +4,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.3.5-beta] — 2026-08-14
+
+### Fixed
+- **輸出 PNG 個 QR 俾畫布斬咗一半**：QR 移到右上角（header 區夠空間），完整顯示 + caption
+
 ## [1.3.4-beta] — 2026-08-14
 
 ### Added

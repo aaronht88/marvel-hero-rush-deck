@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.3.4-beta";
+  const APP_VERSION = "1.3.5-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -391,8 +391,8 @@
     const cols = Math.max(1, Math.floor((W - PAD * 2) / (tileW + tileGap)));
     const rows = Math.ceil(entries.length / cols);
     const gridH = rows * tileH;
-    const headerH = withChrome ? 250 : 200;
-    const footerH = withChrome ? 170 : 30;
+    const headerH = withChrome ? 268 : 200;
+    const footerH = withChrome ? 120 : 30;
     const H = headerH + gridH + footerH;
 
     const loadAll = Promise.all([
@@ -424,16 +424,35 @@
 
       // ---- header ----
       if (withChrome && imgMap["__logo__"]) ctx.drawImage(imgMap["__logo__"], PAD, 22, 154, 64);
+      // QR code: top-right corner (chrome only — full QR fits here)
+      if (withChrome) {
+        const qr = qrcode(0, "M");
+        const importUrl = "https://mhrdeckbuild.duckdns.org/?deck=" + encodeURIComponent(encodeShare());
+        qr.addData(importUrl); qr.make();
+        const qrSize = 185, qx = W - PAD - qrSize - 10, qy = 22;
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(qx - 10, qy - 10, qrSize + 20, qrSize + 20);
+        const n = qr.getModuleCount(), cell = qrSize / n;
+        ctx.fillStyle = "#000000";
+        for (let r = 0; r < n; r++) {
+          for (let cc = 0; cc < n; cc++) {
+            if (qr.isDark(r, cc)) ctx.fillRect(qx + cc * cell, qy + r * cell, Math.ceil(cell), Math.ceil(cell));
+          }
+        }
+        ctx.fillStyle = "#aebfdd"; ctx.font = "15px 'Rajdhani', sans-serif"; ctx.textAlign = "center";
+        ctx.fillText(t("exportImgQR"), qx + qrSize / 2, qy + qrSize + 26);
+        ctx.textAlign = "left";
+      }
       ctx.textAlign = "left";
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 44px 'Russo One', 'Arial Black', sans-serif";
-      ctx.fillText(deckName, PAD, withChrome ? 150 : 70);
+      ctx.fillText(deckName, PAD, withChrome ? 152 : 70);
       ctx.fillStyle = "#7fd8ff";
       ctx.font = "20px 'Rajdhani', 'Segoe UI', sans-serif";
-      ctx.fillText(total + " " + t("deckCountSuffix") + " · " + t("exportImgComposition"), PAD, withChrome ? 186 : 106);
+      ctx.fillText(total + " " + t("deckCountSuffix") + " · " + t("exportImgComposition"), PAD, withChrome ? 190 : 106);
 
       // rarity chips
-      let cx = PAD, cy = withChrome ? 210 : 140;
+      let cx = PAD, cy = withChrome ? 228 : 140;
       rarOrder.forEach((r) => {
         const label = r + " ×" + rarCounts[r];
         ctx.font = "bold 17px 'Rajdhani', 'Segoe UI', sans-serif";
@@ -466,26 +485,8 @@
         ctx.fillText(c.card_no, tx + 2, ty + artH + 22);
       });
 
-      // ---- chrome: QR code (bottom-right) + footer ----
+      // ---- chrome: footer (bottom-left) ----
       if (withChrome) {
-        const code = encodeShare();
-        const importUrl = "https://mhrdeckbuild.duckdns.org/?deck=" + encodeURIComponent(code);
-        const qr = qrcode(0, "M");
-        qr.addData(importUrl); qr.make();
-        const qrSize = 200, qx = W - PAD - qrSize - 10, qy = H - footerH + 20;
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(qx - 10, qy - 10, qrSize + 20, qrSize + 20);
-        const n = qr.getModuleCount(), cell = qrSize / n;
-        ctx.fillStyle = "#000000";
-        for (let r = 0; r < n; r++) {
-          for (let cc = 0; cc < n; cc++) {
-            if (qr.isDark(r, cc)) ctx.fillRect(qx + cc * cell, qy + r * cell, Math.ceil(cell), Math.ceil(cell));
-          }
-        }
-        ctx.fillStyle = "#aebfdd"; ctx.font = "15px 'Rajdhani', sans-serif"; ctx.textAlign = "center";
-        ctx.fillText(t("exportImgQR"), qx + qrSize / 2, qy + qrSize + 30);
-        ctx.textAlign = "left";
-
         ctx.fillStyle = "#7fd8ff";
         ctx.font = "bold 22px 'Rajdhani', 'Segoe UI', sans-serif";
         ctx.fillText("Marvel Hero Rush TCG Deck Builder", PAD, H - 102);
