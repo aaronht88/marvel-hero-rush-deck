@@ -4,6 +4,19 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.3.4-beta] — 2026-08-14
+
+### Added
+- **Deck 一覽圖輸出（「匯出 Deck 圖」）**：模擬器一鍵輸出整副 deck 嘅 PNG — Deck 名 + 稀有度構成 + 全部卡圖（×N badge）
+- **Logo + Footer + QR Code 只出現喺輸出 PNG**：左上角官方 logo、footer（網址/作者/版本）、右下角 QR（一掃即經 ?deck= 匯入牌組）；modal 預覽保持乾淨版
+- **URL deck 匯入**：?deck=<share code> 自動載入牌組（QR scan 落點）
+- 本地 qrcode-generator library（零依賴）
+
+## [1.3.4-beta] — 2026-08-13
+
+### Added
+- **Deck 一覽圖輸出（prototype）**：模擬器新增「匯出 Deck 圖」— canvas 生成含 Deck 名 + 稀有度構成 + 全部卡圖 + QR code（一掃即匯入）嘅 PNG，附即時預覽
+
 ## [1.3.3-beta] — 2026-08-13
 
 ### Changed

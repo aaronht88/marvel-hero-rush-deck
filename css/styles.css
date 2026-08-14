@@ -321,6 +321,12 @@ body.modal-open { overflow: hidden; }
 
 /* ---------- Deck simulator modal ---------- */
 .modal-sim { max-width: 900px; }
+.sim-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.btn-export-img { border-color: var(--cyan-dim); color: var(--cyan); }
+.btn-export-img:hover { background: rgba(0, 229, 255, .12); }
+.sim-export-preview { margin-top: 14px; }
+#sim-export { display: none; }
+#sim-export:has(.sim-export-preview) { display: block; }
 .sim-info { padding: 22px; gap: 10px; }
 .sim-sub { font-size: 12px; color: var(--muted); letter-spacing: .5px; }
 #sim-content { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }

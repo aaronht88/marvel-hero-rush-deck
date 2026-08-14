@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.3.3-beta";
+  const APP_VERSION = "1.3.4-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -347,6 +347,158 @@
     donationModal.addEventListener("click", (e) => { if (e.target === donationModal) closeDonation(); });
   }
 
+  // ---------- export deck as one overview image (with QR import code) ----------
+  function exportDeckImage() {
+    if (!deck.size) { toast(t("toastEmptyDeck")); return; }
+    drawDeckImage(false).then((canvas) => {
+      const prev = document.createElement("div");
+      prev.className = "sim-export-preview";
+      canvas.style.maxWidth = "100%";
+      canvas.style.height = "auto";
+      canvas.style.border = "1px solid var(--border)";
+      canvas.style.borderRadius = "8px";
+      prev.appendChild(canvas);
+      const prevBox = $("#sim-export");
+      if (prevBox) { prevBox.innerHTML = ""; prevBox.appendChild(prev); prevBox.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+      // full chrome version (logo/footer/QR) goes into the exported PNG only
+      drawDeckImage(true).then((full) => {
+        const deckName = (decks.find((d) => d.id === currentDeckId) || {}).name || t("defaultDeckName");
+        const a = document.createElement("a");
+        a.href = full.toDataURL("image/png");
+        a.download = "hero-rush-deck-" + deckName.replace(/[^\w\u4e00-\u9fff-]+/g, "_") + ".png";
+        a.click();
+        toast(t("toastExportImg"));
+      });
+    });
+  }
+
+  // chrome=true: include logo, footer & QR (for the exported PNG); false: clean preview
+  function drawDeckImage(withChrome) {
+    const RAR_COLORS = { R: "#2a3242", SR: "#4a5a8a", GR: "#8a6a1a", MR: "#3a7a4a", UR: "#7a3a9a", SEC: "#9a3a2a", C: "#3a4458" };
+    const entries = [...deck.entries()].sort((a, b) => {
+      const ca = getCard(a[0]), cb = getCard(b[0]);
+      return ca.level - cb.level || ca.card_no.localeCompare(cb.card_no);
+    });
+    const total = entries.reduce((s, [, q]) => s + q, 0);
+    const rarCounts = {};
+    entries.forEach(([id, qty]) => { const c = getCard(id); rarCounts[c.rarity] = (rarCounts[c.rarity] || 0) + qty; });
+    const rarOrder = ["R", "SR", "GR", "MR", "UR", "SEC", "C"].filter((r) => rarCounts[r]);
+
+    const W = 1200, PAD = 30;
+    const tileW = 112, tileGap = 8;
+    const artH = Math.round((tileW * 88) / 63);
+    const tileH = artH + 34;
+    const cols = Math.max(1, Math.floor((W - PAD * 2) / (tileW + tileGap)));
+    const rows = Math.ceil(entries.length / cols);
+    const gridH = rows * tileH;
+    const headerH = withChrome ? 250 : 200;
+    const footerH = withChrome ? 170 : 30;
+    const H = headerH + gridH + footerH;
+
+    const loadAll = Promise.all([
+      ...entries.map(([id]) => new Promise((res) => {
+        const img = new Image();
+        img.onload = () => res({ id, img });
+        img.onerror = () => res({ id, img: null });
+        img.src = getCard(id).art;
+      })),
+      withChrome ? new Promise((res) => {
+        const logo = new Image();
+        logo.onload = () => res({ id: "__logo__", img: logo });
+        logo.onerror = () => res({ id: "__logo__", img: null });
+        logo.src = "img/logo.png";
+      }) : Promise.resolve({ id: "__logo__", img: null }),
+    ]);
+
+    return loadAll.then((imgs) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = W; canvas.height = H;
+      const ctx = canvas.getContext("2d");
+      const deckName = (decks.find((d) => d.id === currentDeckId) || {}).name || t("defaultDeckName");
+      const imgMap = {};
+      imgs.forEach(({ id, img }) => { imgMap[id] = img; });
+
+      // background
+      ctx.fillStyle = "#0b1526"; ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = "#0f1c33"; ctx.fillRect(PAD, headerH - 8, W - PAD * 2, gridH + 24);
+
+      // ---- header ----
+      if (withChrome && imgMap["__logo__"]) ctx.drawImage(imgMap["__logo__"], PAD, 22, 154, 64);
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 44px 'Russo One', 'Arial Black', sans-serif";
+      ctx.fillText(deckName, PAD, withChrome ? 150 : 70);
+      ctx.fillStyle = "#7fd8ff";
+      ctx.font = "20px 'Rajdhani', 'Segoe UI', sans-serif";
+      ctx.fillText(total + " " + t("deckCountSuffix") + " · " + t("exportImgComposition"), PAD, withChrome ? 186 : 106);
+
+      // rarity chips
+      let cx = PAD, cy = withChrome ? 210 : 140;
+      rarOrder.forEach((r) => {
+        const label = r + " ×" + rarCounts[r];
+        ctx.font = "bold 17px 'Rajdhani', 'Segoe UI', sans-serif";
+        const w = ctx.measureText(label).width + 26;
+        ctx.fillStyle = RAR_COLORS[r] || "#333";
+        ctx.beginPath(); ctx.roundRect(cx, cy, w, 30, 6); ctx.fill();
+        ctx.fillStyle = "#ffffff"; ctx.textAlign = "center";
+        ctx.fillText(label, cx + w / 2, cy + 21);
+        ctx.textAlign = "left";
+        cx += w + 10;
+      });
+
+      // ---- card grid ----
+      entries.forEach(([id, qty], i) => {
+        const c = getCard(id);
+        const col = i % cols, row = Math.floor(i / cols);
+        const tx = PAD + col * (tileW + tileGap);
+        const ty = headerH + row * tileH;
+        const img = imgMap[id];
+        if (img) ctx.drawImage(img, tx, ty, tileW, artH);
+        else { ctx.fillStyle = "#1a2a45"; ctx.fillRect(tx, ty, tileW, artH); }
+        ctx.strokeStyle = "rgba(127, 216, 255, .35)"; ctx.lineWidth = 1;
+        ctx.strokeRect(tx, ty, tileW, artH);
+        ctx.fillStyle = "rgba(0, 0, 0, .78)";
+        ctx.beginPath(); ctx.arc(tx + tileW - 14, ty + 14, 14, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = "#ffd740"; ctx.font = "bold 14px 'Rajdhani', sans-serif"; ctx.textAlign = "center";
+        ctx.fillText("×" + qty, tx + tileW - 14, ty + 19);
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#c8d2e4"; ctx.font = "13px 'Rajdhani', 'Segoe UI', sans-serif";
+        ctx.fillText(c.card_no, tx + 2, ty + artH + 22);
+      });
+
+      // ---- chrome: QR code (bottom-right) + footer ----
+      if (withChrome) {
+        const code = encodeShare();
+        const importUrl = "https://mhrdeckbuild.duckdns.org/?deck=" + encodeURIComponent(code);
+        const qr = qrcode(0, "M");
+        qr.addData(importUrl); qr.make();
+        const qrSize = 200, qx = W - PAD - qrSize - 10, qy = H - footerH + 20;
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(qx - 10, qy - 10, qrSize + 20, qrSize + 20);
+        const n = qr.getModuleCount(), cell = qrSize / n;
+        ctx.fillStyle = "#000000";
+        for (let r = 0; r < n; r++) {
+          for (let cc = 0; cc < n; cc++) {
+            if (qr.isDark(r, cc)) ctx.fillRect(qx + cc * cell, qy + r * cell, Math.ceil(cell), Math.ceil(cell));
+          }
+        }
+        ctx.fillStyle = "#aebfdd"; ctx.font = "15px 'Rajdhani', sans-serif"; ctx.textAlign = "center";
+        ctx.fillText(t("exportImgQR"), qx + qrSize / 2, qy + qrSize + 30);
+        ctx.textAlign = "left";
+
+        ctx.fillStyle = "#7fd8ff";
+        ctx.font = "bold 22px 'Rajdhani', 'Segoe UI', sans-serif";
+        ctx.fillText("Marvel Hero Rush TCG Deck Builder", PAD, H - 102);
+        ctx.fillStyle = "#5a6b85";
+        ctx.font = "16px 'Rajdhani', 'Segoe UI', sans-serif";
+        ctx.fillText("mhrdeckbuild.duckdns.org · by aaronht88 · " + APP_VERSION + " · " + new Date().toLocaleDateString(), PAD, H - 72);
+      }
+
+      return canvas;
+    });
+  }
+
+
   // ---------- deck simulator ----------
   function renderSimulator() {
     const content = $("#sim-content");
@@ -612,6 +764,8 @@
   });
   $("#btn-deck-manage").addEventListener("click", openDeckManager);
   $("#btn-simulator").addEventListener("click", openSimulator);
+  const exportImgBtn = $("#btn-export-img");
+  if (exportImgBtn) exportImgBtn.addEventListener("click", exportDeckImage);
   $("#sim-close").addEventListener("click", closeSimulator);
   $("#sim-modal").addEventListener("click", (e) => { if (e.target === $("#sim-modal")) closeSimulator(); });
   $("#dm-close").addEventListener("click", closeDeckManager);
@@ -725,6 +879,14 @@
 
   // ---------- boot ----------
   loadPersist();
+  // URL deck import (?deck=<share code>) — used by the exported deck image QR
+  try {
+    const urlDeck = new URLSearchParams(location.search).get("deck");
+    if (urlDeck) {
+      const m = decodeShare(decodeURIComponent(urlDeck));
+      if (m) { deck = m; saveDecks(); }
+    }
+  } catch (e) {}
   renderDeckSelect();
   $("#version-badge").textContent = "v" + APP_VERSION;
   // language: saved choice wins; otherwise auto-detect from browser
