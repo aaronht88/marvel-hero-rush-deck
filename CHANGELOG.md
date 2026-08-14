@@ -6,45 +6,22 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 ## [1.3.6-beta] — 2026-08-14
 
-### Changed
-- **分享碼大幅壓縮（compact 格式）**：BP01→A、SD01-04→B-E + 卡號 + 數量，50 卡 deck 碼 310 chars → 85 chars（-73%）；舊 base64 碼照常可匯入（向後兼容）
-- **輸出 PNG 解像度 1200 → 1600**；QR 185px → 300px（49×49 modules，6.1px/module — 手機 scan 到）
-
-## [1.3.5-beta] — 2026-08-14
-
-### Fixed
-- **輸出 PNG 個 QR 俾畫布斬咗一半**：QR 移到右上角（header 區夠空間），完整顯示 + caption
-
-## [1.3.4-beta] — 2026-08-14
-
 ### Added
-- **Deck 一覽圖輸出（「匯出 Deck 圖」）**：模擬器一鍵輸出整副 deck 嘅 PNG — Deck 名 + 稀有度構成 + 全部卡圖（×N badge）
-- **Logo + Footer + QR Code 只出現喺輸出 PNG**：左上角官方 logo、footer（網址/作者/版本）、右下角 QR（一掃即經 ?deck= 匯入牌組）；modal 預覽保持乾淨版
-- **URL deck 匯入**：?deck=<share code> 自動載入牌組（QR scan 落點）
-- 本地 qrcode-generator library（零依賴）
-
-## [1.3.4-beta] — 2026-08-13
-
-### Added
-- **Deck 一覽圖輸出（prototype）**：模擬器新增「匯出 Deck 圖」— canvas 生成含 Deck 名 + 稀有度構成 + 全部卡圖 + QR code（一掃即匯入）嘅 PNG，附即時預覽
-
-## [1.3.3-beta] — 2026-08-13
+- **Deck 一覽圖輸出（「匯出 Deck 圖」）**：模擬器一鍵輸出整副牌組 PNG — Deck 名 + 稀有度構成 + 全部卡圖（×N badge）+ 左上角官方 Logo + Footer
+- **QR Code 匯入**：輸出圖右上角 QR（300px / 49×49 modules，手機可掃），一掃即開 `?deck=` 自動匯入牌組；modal 預覽為乾淨版（不包含 Logo/Footer/QR）
+- **URL deck 匯入**：`?deck=<share code>` 自動載入牌組
 
 ### Changed
-- 卡數字眼更新：233 → 268（subtitle + 捐款自介，三語）
-
-## [1.3.2-beta] — 2026-08-13
-
-### Added
-- **Rush Point 圖鑑**：官方 API 新出 34 張 RUSH POINT 卡（card_type=impact，BP01-121~150 + SD01-04 各 019），新增「Rush Point」view tab 顯示全部真卡圖（本地 WebP）
-- 新角色卡 BP01-062-V4（「Freedom Will」Captain America SEC）
-- 卡庫更新至 268 張（234 角色 + 34 Rush Point）
-
-## [1.3.1-beta] — 2026-08-12
+- **分享碼壓縮（compact 格式）**：BP01→A、SD01-04→B-E + 卡號 + 數量，50 卡碼 310 chars → 85 chars（-73%）；舊 base64 碼照常可匯入（向後兼容）
+- 輸出 PNG 解像度 1200 → 1600px
 
 ### Fixed
-- **EN deck card count hidden by long buttons**: deck header now wraps + the deck-select shrinks (ellipsis) so the count is always visible — verified no overlap at 380px panel
+- 輸出圖 QR 曾被畫布邊緣斬半 → 移至右上角完整顯示
+- EN 版 deck 卡數曾被長按鈕遮擋 → header 可換行 + 牌組選單可收縮
+
+### Removed
+- 卡面「擁有」標記機制（避免混淆）—— 保留 全部/最愛 兩個 view tab
 
 ---
 
-*上一版：v1.3.0-beta（Welcome 用法簡介 + Changelog 精簡 + 版本格式統一）。完整歷史見 Git commit log。*
+*上一版：v1.3.5-beta（QR 位置修正）。完整歷史見 Git commit log。*
