@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.3.5-beta";
+  const APP_VERSION = "1.3.6-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -332,9 +332,52 @@
   }
   function openDeckManager() { renderDeckManager(); showOverlay(dmModal); }
   function closeDeckManager() { hideOverlay(dmModal); }
+  // ---------- share code (compact format; legacy base64 still decodable) ----------
+  const SERIES_LETTER = { BP01: "A", SD01: "B", SD02: "C", SD03: "D", SD04: "E" };
+  const LETTER_SERIES = { A: "BP01", B: "SD01", C: "SD02", D: "SD03", E: "SD04" };
   function encodeShareFor(cardsArr) {
-    const compact = cardsArr.map(([id, qty]) => [id, qty]);
-    return btoa(unescape(encodeURIComponent(JSON.stringify(compact))));
+    let out = "";
+    for (const [id, qty] of cardsArr) {
+      const m = id.match(/^(BP01|SD0[1-4])-(\d{3})(-V(\d+))?$/);
+      if (!m) return encodeShareForLegacy(cardsArr); // unknown id → fall back to legacy
+      out += SERIES_LETTER[m[1]] + m[2] + (m[4] ? "v" + m[4] : "") + Math.min(qty | 0, 35).toString(36);
+    }
+    return out;
+  }
+  function encodeShareForLegacy(cardsArr) {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(cardsArr.map(([id, qty]) => [id, qty])))));
+  }
+  function decodeShare(code) {
+    try {
+      const s = (code || "").trim();
+      // compact format: starts with a series letter
+      if (/^[A-E]/.test(s)) {
+        const m = new Map();
+        let i = 0;
+        while (i < s.length) {
+          const letter = s[i++];
+          const num = s.substr(i, 3); i += 3;
+          if (!LETTER_SERIES[letter] || !/^\d{3}$/.test(num)) return null;
+          let id = LETTER_SERIES[letter] + "-" + num;
+          if (s[i] === "v") {
+            i++;
+            let v = "";
+            while (i < s.length && /\d/.test(s[i])) v += s[i++];
+            if (!v) return null;
+            id += "-V" + v;
+          }
+          if (i >= s.length) return null;
+          const qty = parseInt(s[i++], 36);
+          if (qty > 0 && getCard(id)) m.set(id, qty);
+        }
+        return m;
+      }
+      // legacy base64 JSON
+      const arr = JSON.parse(decodeURIComponent(escape(atob(s))));
+      const m = new Map();
+      arr.forEach(([id, qty]) => { if (getCard(id)) m.set(id, qty | 0); });
+      return m;
+    } catch (e) { return null; }
   }
 
   // ---------- donation overlay ----------
@@ -384,14 +427,14 @@
     entries.forEach(([id, qty]) => { const c = getCard(id); rarCounts[c.rarity] = (rarCounts[c.rarity] || 0) + qty; });
     const rarOrder = ["R", "SR", "GR", "MR", "UR", "SEC", "C"].filter((r) => rarCounts[r]);
 
-    const W = 1200, PAD = 30;
-    const tileW = 112, tileGap = 8;
+    const W = 1600, PAD = 40;
+    const tileW = 132, tileGap = 10;
     const artH = Math.round((tileW * 88) / 63);
     const tileH = artH + 34;
     const cols = Math.max(1, Math.floor((W - PAD * 2) / (tileW + tileGap)));
     const rows = Math.ceil(entries.length / cols);
     const gridH = rows * tileH;
-    const headerH = withChrome ? 268 : 200;
+    const headerH = withChrome ? 350 : 200;
     const footerH = withChrome ? 120 : 30;
     const H = headerH + gridH + footerH;
 
@@ -429,7 +472,7 @@
         const qr = qrcode(0, "M");
         const importUrl = "https://mhrdeckbuild.duckdns.org/?deck=" + encodeURIComponent(encodeShare());
         qr.addData(importUrl); qr.make();
-        const qrSize = 185, qx = W - PAD - qrSize - 10, qy = 22;
+        const qrSize = 300, qx = W - PAD - qrSize - 14, qy = 24;
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(qx - 10, qy - 10, qrSize + 20, qrSize + 20);
         const n = qr.getModuleCount(), cell = qrSize / n;
@@ -446,13 +489,13 @@
       ctx.textAlign = "left";
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 44px 'Russo One', 'Arial Black', sans-serif";
-      ctx.fillText(deckName, PAD, withChrome ? 152 : 70);
+      ctx.fillText(deckName, PAD, withChrome ? 160 : 70);
       ctx.fillStyle = "#7fd8ff";
       ctx.font = "20px 'Rajdhani', 'Segoe UI', sans-serif";
-      ctx.fillText(total + " " + t("deckCountSuffix") + " · " + t("exportImgComposition"), PAD, withChrome ? 190 : 106);
+      ctx.fillText(total + " " + t("deckCountSuffix") + " · " + t("exportImgComposition"), PAD, withChrome ? 200 : 106);
 
       // rarity chips
-      let cx = PAD, cy = withChrome ? 228 : 140;
+      let cx = PAD, cy = withChrome ? 238 : 140;
       rarOrder.forEach((r) => {
         const label = r + " ×" + rarCounts[r];
         ctx.font = "bold 17px 'Rajdhani', 'Segoe UI', sans-serif";
@@ -709,14 +752,6 @@
   // ---------- share code (only transfer method) ----------
   function encodeShare() {
     return encodeShareFor([...deck.entries()]);
-  }
-  function decodeShare(code) {
-    try {
-      const arr = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
-      const m = new Map();
-      arr.forEach(([id, qty]) => { if (getCard(id)) m.set(id, qty | 0); });
-      return m;
-    } catch (e) { return null; }
   }
 
   // ---------- events ----------
