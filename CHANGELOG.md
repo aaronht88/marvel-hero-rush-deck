@@ -4,6 +4,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.3.8-beta] — 2026-08-18
+
+### Fixed
+- **QR / 連結匯入牌組 bug**：之前匯入會直接覆寫用戶現有 deck（通常係「預設牌組」）；而家匯入會開新 deck（「匯入牌組」/「匯入牌組 2」…），原有牌組不會被覆寫；重複匯入同一副 deck 會自動去重
+- 匯入成功會顯示提示
+
 ## [1.3.7-beta] — 2026-08-14
 
 ### Changed

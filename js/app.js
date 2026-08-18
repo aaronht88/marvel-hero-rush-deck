@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.3.7-beta";
+  const APP_VERSION = "1.3.8-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -16,6 +16,7 @@
   let favs = new Set();      // card ids
   let modalCardId = null;
   let view = "all";          // "all" | "fav"
+  let urlImportDone = false; // set when ?deck= import created/switched a deck
 
   // ---------- persistence ----------
   const LS_DECKS = "mhr_decks_v3", LS_FAVS = "mhr_favs_v2", LS_LEGACY_DECK = "mhr_deck_v2";
@@ -916,11 +917,32 @@
   // ---------- boot ----------
   loadPersist();
   // URL deck import (?deck=<share code>) — used by the exported deck image QR
+  // NOTE: creates a NEW deck instead of overwriting the current one
   try {
     const urlDeck = new URLSearchParams(location.search).get("deck");
     if (urlDeck) {
-      const m = decodeShare(decodeURIComponent(urlDeck));
-      if (m) { deck = m; saveDecks(); }
+      let raw = urlDeck;
+      try { raw = decodeURIComponent(urlDeck); } catch (e) {}
+      const m = decodeShare(raw);
+      if (m && m.size) {
+        // reuse an identical deck if it already exists (avoid duplicates)
+        const same = decks.find((d) => d.cards.length === m.size && d.cards.every(([cid, q]) => m.get(cid) === q));
+        if (same) {
+          currentDeckId = same.id;
+        } else {
+          let dname = t("importedDeckName");
+          const names = new Set(decks.map((d) => d.name));
+          let n = 2;
+          while (names.has(dname + " " + n)) n++;
+          if (n > 2) dname = dname + " " + n;
+          const nd = { id: genId(), name: dname, cards: [...m.entries()] };
+          decks.push(nd);
+          currentDeckId = nd.id;
+        }
+        deck = new Map(m);
+        saveDecks();
+        urlImportDone = true;
+      }
     }
   } catch (e) {}
   renderDeckSelect();
@@ -943,5 +965,6 @@
   renderCards();
   renderDeck();
   loadVisitorCount();
+  if (urlImportDone) toast(t("toastUrlImported"));
   showWelcome();
 })();
