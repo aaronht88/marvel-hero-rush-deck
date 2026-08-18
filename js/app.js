@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.3.8-beta";
+  const APP_VERSION = "1.3.9-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -336,12 +336,16 @@
   // ---------- share code (compact format; legacy base64 still decodable) ----------
   const SERIES_LETTER = { BP01: "A", SD01: "B", SD02: "C", SD03: "D", SD04: "E" };
   const LETTER_SERIES = { A: "BP01", B: "SD01", C: "SD02", D: "SD03", E: "SD04" };
-  function encodeShareFor(cardsArr) {
+  function encodeShareFor(cardsArr, deckName) {
     let out = "";
     for (const [id, qty] of cardsArr) {
       const m = id.match(/^(BP01|SD0[1-4])-(\d{3})(-V(\d+))?$/);
       if (!m) return encodeShareForLegacy(cardsArr); // unknown id → fall back to legacy
       out += SERIES_LETTER[m[1]] + m[2] + (m[4] ? "v" + m[4] : "") + Math.min(qty | 0, 35).toString(36);
+    }
+    if (deckName && deckName.trim()) {
+      const n = encodeURIComponent(deckName.trim().slice(0, 60));
+      out = "1|" + n + "|" + out;
     }
     return out;
   }
@@ -351,33 +355,43 @@
   function decodeShare(code) {
     try {
       const s = (code || "").trim();
-      // compact format: starts with a series letter
-      if (/^[A-E]/.test(s)) {
-        const m = new Map();
+      let cardsPart = s;
+      let deckName = null;
+      if (s.startsWith("1|")) {
+        const idx = s.indexOf("|", 2);
+        if (idx === -1) return null;
+        deckName = s.slice(2, idx);
+        try { deckName = decodeURIComponent(deckName); } catch (e) {}
+        cardsPart = s.slice(idx + 1);
+      }
+      let m;
+      if (/^[A-E]/.test(cardsPart)) {
+        // compact format: starts with a series letter
+        m = new Map();
         let i = 0;
-        while (i < s.length) {
-          const letter = s[i++];
-          const num = s.substr(i, 3); i += 3;
+        while (i < cardsPart.length) {
+          const letter = cardsPart[i++];
+          const num = cardsPart.substr(i, 3); i += 3;
           if (!LETTER_SERIES[letter] || !/^\d{3}$/.test(num)) return null;
           let id = LETTER_SERIES[letter] + "-" + num;
-          if (s[i] === "v") {
+          if (cardsPart[i] === "v") {
             i++;
             let v = "";
-            while (i < s.length && /\d/.test(s[i])) v += s[i++];
+            while (i < cardsPart.length && /\d/.test(cardsPart[i])) v += cardsPart[i++];
             if (!v) return null;
             id += "-V" + v;
           }
-          if (i >= s.length) return null;
-          const qty = parseInt(s[i++], 36);
+          if (i >= cardsPart.length) return null;
+          const qty = parseInt(cardsPart[i++], 36);
           if (qty > 0 && getCard(id)) m.set(id, qty);
         }
-        return m;
+      } else {
+        // legacy base64 JSON
+        const arr = JSON.parse(decodeURIComponent(escape(atob(cardsPart))));
+        m = new Map();
+        arr.forEach(([id, qty]) => { if (getCard(id)) m.set(id, qty | 0); });
       }
-      // legacy base64 JSON
-      const arr = JSON.parse(decodeURIComponent(escape(atob(s))));
-      const m = new Map();
-      arr.forEach(([id, qty]) => { if (getCard(id)) m.set(id, qty | 0); });
-      return m;
+      return { deck: m, name: deckName };
     } catch (e) { return null; }
   }
 
@@ -752,7 +766,29 @@
 
   // ---------- share code (only transfer method) ----------
   function encodeShare() {
-    return encodeShareFor([...deck.entries()]);
+    const cur = decks.find((d) => d.id === currentDeckId);
+    return encodeShareFor([...deck.entries()], cur ? cur.name : "");
+  }
+
+  // ---------- import a decoded deck as a NEW deck (never overwrite existing) ----------
+  function importDeckAsNew(m, srcName) {
+    const same = decks.find((d) => d.cards.length === m.size && d.cards.every(([cid, q]) => m.get(cid) === q));
+    if (same) {
+      currentDeckId = same.id;
+    } else {
+      let dname = srcName ? srcName + t("importedSuffix") : t("importedDeckName");
+      const names = new Set(decks.map((d) => d.name));
+      let n = 2;
+      while (names.has(dname + " " + n)) n++;
+      if (n > 2) dname = dname + " " + n;
+      const nd = { id: genId(), name: dname, cards: [...m.entries()] };
+      decks.push(nd);
+      currentDeckId = nd.id;
+    }
+    deck = new Map(m);
+    saveDecks();
+    renderDeckSelect();
+    renderDeck();
   }
 
   // ---------- events ----------
@@ -819,7 +855,7 @@
     if (act === "copy") {
       const d = decks.find((x) => x.id === id);
       if (d) {
-        const code = encodeShareFor(d.cards);
+        const code = encodeShareFor(d.cards, d.name);
         navigator.clipboard?.writeText(code);
         toast(t("toastDeckCopied") + "：" + d.name);
       }
@@ -882,13 +918,18 @@
   if (importModalEl) {
     importModalEl.addEventListener("click", (e) => { if (e.target === importModalEl) closeImportModal(); });
   }
-  const importOkBtn = $("#import-ok");
+  const importOkBtn = $(" #import-ok");
   if (importOkBtn) {
     importOkBtn.addEventListener("click", () => {
       const code = (importTextEl ? importTextEl.value : "").trim();
       if (!code) { toast(t("toastBadCode")); return; }
-      const m = decodeShare(code);
-      if (m) { deck = m; saveDecks(); renderCards(); renderDeck(); renderDeckSelect(); closeImportModal(); toast(t("toastImportCode")); }
+      const r = decodeShare(code);
+      if (r && r.deck.size) {
+        importDeckAsNew(r.deck, r.name);
+        renderCards();
+        closeImportModal();
+        toast(t("toastImportCode"));
+      }
       else toast(t("toastBadCode"));
     });
   }
@@ -923,24 +964,9 @@
     if (urlDeck) {
       let raw = urlDeck;
       try { raw = decodeURIComponent(urlDeck); } catch (e) {}
-      const m = decodeShare(raw);
-      if (m && m.size) {
-        // reuse an identical deck if it already exists (avoid duplicates)
-        const same = decks.find((d) => d.cards.length === m.size && d.cards.every(([cid, q]) => m.get(cid) === q));
-        if (same) {
-          currentDeckId = same.id;
-        } else {
-          let dname = t("importedDeckName");
-          const names = new Set(decks.map((d) => d.name));
-          let n = 2;
-          while (names.has(dname + " " + n)) n++;
-          if (n > 2) dname = dname + " " + n;
-          const nd = { id: genId(), name: dname, cards: [...m.entries()] };
-          decks.push(nd);
-          currentDeckId = nd.id;
-        }
-        deck = new Map(m);
-        saveDecks();
+      const r = decodeShare(raw);
+      if (r && r.deck.size) {
+        importDeckAsNew(r.deck, r.name);
         urlImportDone = true;
       }
     }
