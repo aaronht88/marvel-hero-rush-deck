@@ -4,6 +4,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.4.0-beta] — 2026-08-27
+
+### Added
+- **⚔️ 試玩對戰（Battle Test）**：一鍵將當前 deck 帶入 Battle Sim（aaronht88.github.io/marvel-hero-rush-sim/?deck=<share code>）——share code v2 格式直通 sim，sim 端自動載入 deck 並開始對戰（唔使手動貼 code）
+
 ## [1.3.9-beta] — 2026-08-18
 
 ### Changed

@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.3.9-beta";
+  const APP_VERSION = "1.4.0-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -837,6 +837,18 @@
   });
   $("#btn-deck-manage").addEventListener("click", openDeckManager);
   $("#btn-simulator").addEventListener("click", openSimulator);
+  const simBattleBtn = $("#btn-sim-battle");
+  if (simBattleBtn) simBattleBtn.addEventListener("click", openSimBattle);
+
+  // ---------- M3: 試玩對戰（帶 deck 入 battle sim） ----------
+  function openSimBattle() {
+    if (!deck.size) { toast(t("toastEmptyDeck")); return; }
+    const name = (decks.find((d) => d.id === currentDeckId) || {}).name || t("defaultDeckName");
+    const code = encodeShareFor([...deck.entries()], name);
+    const url = "https://aaronht88.github.io/marvel-hero-rush-sim/?deck=" + encodeURIComponent(code);
+    window.open(url, "_blank", "noopener");
+  }
+
   const exportImgBtn = $("#btn-export-img");
   if (exportImgBtn) exportImgBtn.addEventListener("click", exportDeckImage);
   $("#sim-close").addEventListener("click", closeSimulator);
