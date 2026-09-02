@@ -334,12 +334,12 @@
   function openDeckManager() { renderDeckManager(); showOverlay(dmModal); }
   function closeDeckManager() { hideOverlay(dmModal); }
   // ---------- share code (compact format; legacy base64 still decodable) ----------
-  const SERIES_LETTER = { BP01: "A", SD01: "B", SD02: "C", SD03: "D", SD04: "E" };
-  const LETTER_SERIES = { A: "BP01", B: "SD01", C: "SD02", D: "SD03", E: "SD04" };
+  const SERIES_LETTER = { EB01: "F", BP01: "A", SD01: "B", SD02: "C", SD03: "D", SD04: "E" };
+  const LETTER_SERIES = { A: "BP01", B: "SD01", C: "SD02", D: "SD03", E: "SD04", F: "EB01" };
   function encodeShareFor(cardsArr, deckName) {
     let out = "";
     for (const [id, qty] of cardsArr) {
-      const m = id.match(/^(BP01|SD0[1-4])-(\d{3})(-V(\d+))?$/);
+      const m = id.match(/^(EB01|BP01|SD0[1-4])-(\d{3})(-V(\d+))?$/);
       if (!m) return encodeShareForLegacy(cardsArr); // unknown id → fall back to legacy
       out += SERIES_LETTER[m[1]] + m[2] + (m[4] ? "v" + m[4] : "") + Math.min(qty | 0, 35).toString(36);
     }
@@ -365,7 +365,7 @@
         cardsPart = s.slice(idx + 1);
       }
       let m;
-      if (/^[A-E]/.test(cardsPart)) {
+      if (/^[A-F]/.test(cardsPart)) {
         // compact format: starts with a series letter
         m = new Map();
         let i = 0;
@@ -432,7 +432,7 @@
 
   // chrome=true: include logo, footer & QR (for the exported PNG); false: clean preview
   function drawDeckImage(withChrome) {
-    const RAR_COLORS = { R: "#2a3242", SR: "#4a5a8a", GR: "#8a6a1a", MR: "#3a7a4a", UR: "#7a3a9a", SEC: "#9a3a2a", C: "#3a4458" };
+    const RAR_COLORS = { R: "#2a3242", SR: "#4a5a8a", GR: "#8a6a1a", MR: "#3a7a4a", UR: "#7a3a9a", SEC: "#9a3a2a", ER: "#0f7a8c", C: "#3a4458" };
     const entries = [...deck.entries()].sort((a, b) => {
       const ca = getCard(a[0]), cb = getCard(b[0]);
       return ca.level - cb.level || ca.card_no.localeCompare(cb.card_no);

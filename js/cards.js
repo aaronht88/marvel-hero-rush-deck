@@ -25,6 +25,7 @@
 // =============================================================
 
 const CARD_SETS = {
+  EB01: "EB01 · EVENT PACK",
   BP01: "BP01 · The Avengers (Booster)",
   SD01: "SD01 · REALITY (Starter)",
   SD02: "SD02 · MIND (Starter)",
@@ -33,7 +34,7 @@ const CARD_SETS = {
 };
 
 // rarity codes in official display order
-const RARITIES = ["R", "SR", "GR", "MR", "UR", "SEC"];
+const RARITIES = ["R", "SR", "GR", "MR", "UR", "SEC", "ER"];
 
 // card colors (attribute)
 const ATTRIBUTES = ["Red", "Yellow", "Blue", "Green"];
@@ -305,7 +306,8 @@ const CARDS = [{"id": "BP01-001", "card_no": "BP01-001", "name": "「Antimatter�
 {"id": "SD02-019", "card_no": "SD02-019", "name": "RUSH POINT", "type": "impact", "level": "", "power": "", "attackRange": "", "attribute": "", "feature": "", "effect": "", "rarity": "C", "set": "SD02", "art": "img/cards/rush_SD02-019.webp"},
 {"id": "SD03-019", "card_no": "SD03-019", "name": "RUSH POINT", "type": "impact", "level": "", "power": "", "attackRange": "", "attribute": "", "feature": "", "effect": "", "rarity": "C", "set": "SD03", "art": "img/cards/rush_SD03-019.webp"},
 {"id": "SD04-019", "card_no": "SD04-019", "name": "RUSH POINT", "type": "impact", "level": "", "power": "", "attackRange": "", "attribute": "", "feature": "", "effect": "", "rarity": "C", "set": "SD04", "art": "img/cards/rush_SD04-019.webp"},
-{"id": "BP01-062-V4", "card_no": "BP01-062", "name": "「Freedom Will」Captain America", "type": "Character", "level": "4", "power": "1000", "attackRange": "3", "attribute": "Blue", "feature": "Human/Avengers", "effect": "COUNTER·ACTI【FIELD/ONCE PER TURN】:This card takes BATTLE-BASE Move once. If you do, 1 of your characters in BATTLE gets Power+1000 in this turn.\nAUTO【BASE】:This card can not affected by the effect of the characters with Lv4 or below.", "rarity": "SEC", "set": "BP01", "art": "img/cards/BP01-062-V4.webp"}];
+{"id": "BP01-062-V4", "card_no": "BP01-062", "name": "「Freedom Will」Captain America", "type": "Character", "level": "4", "power": "1000", "attackRange": "3", "attribute": "Blue", "feature": "Human/Avengers", "effect": "COUNTER·ACTI【FIELD/ONCE PER TURN】:This card takes BATTLE-BASE Move once. If you do, 1 of your characters in BATTLE gets Power+1000 in this turn.\nAUTO【BASE】:This card can not affected by the effect of the characters with Lv4 or below.", "rarity": "SEC", "set": "BP01", "art": "img/cards/BP01-062-V4.webp"}  ,
+  {"id": "EB01-006", "card_no": "EB01-006", "name": "「Super Strike」Hulk", "type": "Character", "level": "6", "power": "6000", "attackRange": "1", "attribute": "Red", "feature": "Human/Avengers", "effect": "TRIG【BATTLE】:When your opponent's character with Lv6 enters the Battle Area, this card gets Power +1000 in this turn.", "rarity": "ER", "set": "EB01", "art": "img/cards/EB01-006.webp"}];
 
 // expose for app.js
 window.MHR_DATA = { CARDS, CARD_SETS, RARITIES, ATTRIBUTES };

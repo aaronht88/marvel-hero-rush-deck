@@ -252,6 +252,7 @@ body.modal-open { overflow: hidden; }
 .rar-UR { background: linear-gradient(180deg, #7a3a9a, #4a2a5a); color: #e8c8ff; }
 .rar-SEC { background: linear-gradient(180deg, #9a3a2a, #5a2a1a); color: #ffc8b8; }
 .rar-C { background: linear-gradient(180deg, #3a4458, #232b3a); color: #c8d2e4; }
+.rar-ER { background: linear-gradient(180deg, #0f7a8c, #0a4a56); color: #c8f4ff; }
 
 /* ---------- Deck panel ---------- */
 .deck-header {

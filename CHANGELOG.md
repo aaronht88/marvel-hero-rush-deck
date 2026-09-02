@@ -9,6 +9,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 ### Added
 - **⚔️ 試玩對戰（Battle Test）**：一鍵將當前 deck 帶入 Battle Sim（aaronht88.github.io/marvel-hero-rush-sim/?deck=<share code>）——share code v2 格式直通 sim，sim 端自動載入 deck 並開始對戰（唔使手動貼 code）
 
+## [1.3.10-beta] — 2026-08-18
+
+### Added
+- **EB01 EVENT PACK 系列 + 新稀有度 ER**：EB01-006「Super Strike」Hulk（Lv6 / 6000 / Red）
+- 卡庫 268 → 269（share code 支援 EB01 = F 字母）
+
 ## [1.3.9-beta] — 2026-08-18
 
 ### Changed
