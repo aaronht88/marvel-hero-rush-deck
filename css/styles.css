@@ -253,6 +253,8 @@ body.modal-open { overflow: hidden; }
 .rar-SEC { background: linear-gradient(180deg, #9a3a2a, #5a2a1a); color: #ffc8b8; }
 .rar-C { background: linear-gradient(180deg, #3a4458, #232b3a); color: #c8d2e4; }
 .rar-ER { background: linear-gradient(180deg, #0f7a8c, #0a4a56); color: #c8f4ff; }
+.rar-PR { background: linear-gradient(180deg, #b04a9a, #6e2a5e); color: #ffd0f0; }
+.rar-TR { background: linear-gradient(180deg, #a8741a, #5e3c08); color: #ffe8b8; }
 
 /* ---------- Deck panel ---------- */
 .deck-header {

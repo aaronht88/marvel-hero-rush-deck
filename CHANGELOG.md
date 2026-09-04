@@ -9,6 +9,15 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 ### Added
 - **⚔️ 試玩對戰（Battle Test）**：一鍵將當前 deck 帶入 Battle Sim（aaronht88.github.io/marvel-hero-rush-sim/?deck=<share code>）——share code v2 格式直通 sim，sim 端自動載入 deck 並開始對戰（唔使手動貼 code）
 
+## [1.3.11-beta] — 2026-08-18
+
+### Added
+- **官方卡表更新 268 → 297 張**：
+  - **EB01 EVENT PACK** 擴充至 15 張（EB01-001~005 Rush Point + 角色卡，包括「Echo of Fate」Spider-Man 雙版本）
+  - **PB01 Promotion Pack A/B**（11 張 PR 稀有度）：A = 銀河守護隊（Drax/Rocket/Star-Lord/Nebula/Gamora/Groot），B = Iron Man/Thor/Hulk/Captain America/Doctor Strange
+  - **TB01 Treasure Booster**（3 張 TR 稀有度）：「Lord of Battleworld」Doctor Doom ×3
+- 新稀有度 ER/PR/TR、分享碼格式支援（F=EB01, G=PB01, H=TB01）
+
 ## [1.3.10-beta] — 2026-08-18
 
 ### Added
