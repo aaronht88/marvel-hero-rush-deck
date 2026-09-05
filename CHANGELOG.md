@@ -9,6 +9,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 ### Added
 - **⚔️ 試玩對戰（Battle Test）**：一鍵將當前 deck 帶入 Battle Sim（aaronht88.github.io/marvel-hero-rush-sim/?deck=<share code>）——share code v2 格式直通 sim，sim 端自動載入 deck 並開始對戰（唔使手動貼 code）
 
+## [1.4.1-beta] — 2026-08-18
+
+### Removed
+- **「⚔️ 試玩對戰」按鈕**：battle sim 尚未適合公開，暫時下架（deck header + 相關 code/i18n 移除）
+
 ## [1.3.11-beta] — 2026-08-18
 
 ### Added
