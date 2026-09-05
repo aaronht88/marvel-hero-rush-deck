@@ -9,6 +9,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 ### Added
 - **⚔️ 試玩對戰（Battle Test）**：一鍵將當前 deck 帶入 Battle Sim（aaronht88.github.io/marvel-hero-rush-sim/?deck=<share code>）——share code v2 格式直通 sim，sim 端自動載入 deck 並開始對戰（唔使手動貼 code）
 
+## [1.4.2-beta] — 2026-08-18
+
+### Added
+- **卡牌詳情 3D + Holo 效果**（自製 CSS，非 GPL library）：UR/SEC/ER/PR/TR 稀有度卡喺詳情 modal 有 3D tilt（滑鼠跟隨）+ 七彩 holo 箔光 + 光暈；touch / reduced-motion 自動靜態化
+
 ## [1.4.1-beta] — 2026-08-18
 
 ### Removed

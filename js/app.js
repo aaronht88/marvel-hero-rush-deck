@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.4.1-beta";
+  const APP_VERSION = "1.4.2-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -694,6 +694,55 @@
     $("#modal-set").textContent = CARD_SETS[c.set] || c.set;
     $("#modal-effect-text").textContent = c.effect || "—";
   }
+  // ---------- 3D tilt + holo stage for the card modal (custom CSS, no external lib) ----------
+  const FOIL_RARITIES = ["UR", "SEC", "ER", "PR", "TR"];
+  let clearCardStage = null;
+  function setupCardStage(rarity) {
+    const wrap = document.querySelector(".modal-art-wrap");
+    const art = $("#modal-art");
+    if (!wrap || !art) return;
+    if (clearCardStage) { clearCardStage(); clearCardStage = null; }
+    wrap.querySelectorAll(".h-layer").forEach((n) => n.remove());
+    wrap.classList.remove("stage-3d");
+    art.classList.remove("holo");
+    art.style.transform = "";
+    if (!FOIL_RARITIES.includes(rarity)) return;
+    wrap.classList.add("stage-3d");
+    art.classList.add("holo");
+    const glow = document.createElement("span"); glow.className = "h-layer h-glow";
+    const beam = document.createElement("span"); beam.className = "h-layer h-beam";
+    wrap.appendChild(glow);
+    wrap.appendChild(beam);
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fine = window.matchMedia && window.matchMedia("(pointer: fine)").matches;
+    if (reduce || !fine) return; // static foil on touch / reduced-motion
+    let raf = null;
+    const onMove = (e) => {
+      const r = wrap.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        art.style.transform = "rotateX(" + (-py * 14).toFixed(2) + "deg) rotateY(" + (px * 14).toFixed(2) + "deg)";
+      });
+      wrap.style.setProperty("--mx", ((px + 0.5) * 100).toFixed(1) + "%");
+      wrap.style.setProperty("--my", ((py + 0.5) * 100).toFixed(1) + "%");
+    };
+    const onLeave = () => {
+      if (raf) cancelAnimationFrame(raf);
+      art.style.transform = "";
+      wrap.style.setProperty("--mx", "50%");
+      wrap.style.setProperty("--my", "50%");
+    };
+    wrap.addEventListener("mousemove", onMove);
+    wrap.addEventListener("mouseleave", onLeave);
+    clearCardStage = () => {
+      wrap.removeEventListener("mousemove", onMove);
+      wrap.removeEventListener("mouseleave", onLeave);
+    };
+  }
+
   function openModal(id) {
     const c = getCard(id);
     if (!c) return;
@@ -702,10 +751,19 @@
     $("#modal-name").textContent = c.name;
     fillModalDetails(c);
     updateModalActions();
+    setupCardStage(c.rarity);
     showOverlay(modal);
     document.body.classList.add("modal-open");
   }
   function closeModal() {
+    if (clearCardStage) { clearCardStage(); clearCardStage = null; }
+    const wrap = document.querySelector(".modal-art-wrap");
+    if (wrap) {
+      wrap.classList.remove("stage-3d");
+      wrap.querySelectorAll(".h-layer").forEach((n) => n.remove());
+    }
+    const artEl = $("#modal-art");
+    if (artEl) artEl.style.transform = "";
     hideOverlay(modal);
     modalCardId = null;
     document.body.classList.remove("modal-open");

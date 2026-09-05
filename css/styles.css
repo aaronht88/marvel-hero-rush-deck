@@ -498,6 +498,48 @@ body.modal-open { overflow: hidden; }
   width: 100%; max-width: 264px; border-radius: 8px;
   box-shadow: 0 10px 36px rgba(0, 0, 0, .65), 0 0 24px rgba(0, 229, 255, .12);
 }
+/* ---------- 3D + holo card stage (modal art) ---------- */
+.modal-art-wrap.stage-3d { perspective: 1100px; }
+.modal-art-wrap.stage-3d img {
+  transform-style: preserve-3d;
+  transition: transform .12s ease-out;
+  will-change: transform;
+}
+.modal-art-wrap .h-layer {
+  position: absolute; inset: 0; margin: auto;
+  width: 100%; max-width: 264px;
+  aspect-ratio: 63 / 88;
+  border-radius: 8px;
+  pointer-events: none;
+}
+.h-glow {
+  opacity: .35;
+  background:
+    radial-gradient(85% 85% at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .9), rgba(255, 255, 255, 0) 60%),
+    repeating-linear-gradient(115deg,
+      rgba(255, 80, 180, .5) 0 3px,
+      rgba(0, 229, 255, .42) 10px,
+      rgba(140, 255, 80, .4) 20px,
+      rgba(255, 255, 120, .42) 30px,
+      rgba(255, 80, 180, .5) 40px);
+  background-size: 100% 100%, 460% 100%;
+  mix-blend-mode: color-dodge;
+  animation: holo-pan 6s linear infinite;
+  transition: opacity .25s;
+}
+.modal-art-wrap.stage-3d:hover .h-glow { opacity: .85; }
+.h-beam {
+  opacity: 0;
+  background: radial-gradient(120% 90% at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 55%);
+  mix-blend-mode: screen;
+  transition: opacity .2s;
+}
+.modal-art-wrap.stage-3d:hover .h-beam { opacity: .5; }
+@keyframes holo-pan { from { background-position: 0 0, 0 0; } to { background-position: 0 0, -900px 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .h-glow { animation: none; }
+  .modal-art-wrap.stage-3d img { transition: none; }
+}
 .modal-info { padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .modal-no { font-size: 11px; color: var(--muted); letter-spacing: 1px; font-family: "Rajdhani", sans-serif; }
 .modal-name { margin: 0; font-size: 20px; line-height: 1.3; }
@@ -603,7 +645,7 @@ body.modal-open { overflow: hidden; }
   }
   .deck-list { max-height: 30vh; }
   .modal-body { grid-template-columns: 1fr; }
-  .modal-art-wrap img { max-width: 200px; }
+  .modal-art-wrap img, .modal-art-wrap .h-layer { max-width: 200px; }
 
   /* --- mobile polish: tighter topbar, bigger tap targets --- */
   .topbar { padding: 10px 12px; gap: 8px; }
