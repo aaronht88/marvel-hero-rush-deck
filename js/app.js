@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.4.4-beta";
+  const APP_VERSION = "1.4.5-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -128,6 +128,16 @@
     if (l === "zh-CN") return ATTR_COLOR_ZHCN[a] || a;
     return ATTR_LABEL[a] || a;
   }
+  // 簡中卡名/特徵/效果: 當 UI = zh-CN 用官方簡中文字（cards_cn.js），否則 fallback 英文
+  function cnCard(c, field) {
+    try {
+      if (window.MHR_I18N && window.MHR_I18N.getLang() === "zh-CN" && window.MHR_CARD_CN && window.MHR_CARD_CN[c.card_no]) {
+        const v = window.MHR_CARD_CN[c.card_no][field];
+        if (v) return v;
+      }
+    } catch (e) {}
+    return c[field];
+  }
 
   function cardMatches(card) {
     if (card.type === "impact") return false; // Rush Point cards live in their own 圖鑑 view
@@ -144,7 +154,7 @@
     if (attr && card.attribute !== attr) return false;
     if (view === "fav" && !favs.has(card.id)) return false;
     if (q) {
-      const hay = (card.name + " " + card.card_no + " " + (card.feature || "") + " " + (card.effect || "")).toLowerCase();
+      const hay = (card.name + " " + cnCard(card, "name") + " " + card.card_no + " " + (card.feature || "") + " " + cnCard(card, "feature") + " " + (card.effect || "") + " " + cnCard(card, "effect")).toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -171,9 +181,9 @@
       const el = document.createElement("div");
       el.className = "card rush-tile";
       el.innerHTML = `
-        <div class="art"><img loading="lazy" src="${card.art}" alt="${card.name}" onerror="this.style.display='none'"></div>
+        <div class="art"><img loading="lazy" src="${card.art}" alt="${cnCard(card, "name")}" onerror="this.style.display='none'"></div>
         <div class="meta">
-          <div class="cname" title="${card.name}">${card.name}</div>
+          <div class="cname" title="${cnCard(card, "name")}">${cnCard(card, "name")}</div>
           <div class="ctags">${card.card_no}</div>
           <div class="cmeta">
             <span class="chip chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
@@ -199,13 +209,13 @@
       el.className = "card attr-" + card.attribute + (inFav ? " is-fav" : "");
       el.draggable = true;
       el.innerHTML = `
-        <div class="art"><img loading="lazy" src="${card.art}" alt="${card.name}" onerror="this.style.display='none'"></div>
+        <div class="art"><img loading="lazy" src="${card.art}" alt="${cnCard(card, "name")}" onerror="this.style.display='none'"></div>
         <div class="badges">
           ${inFav ? '<span class="badge badge-fav">★</span>' : ""}
           ${inDeck ? `<span class="badge badge-deck">×${inDeck}</span>` : ""}
         </div>
         <div class="meta">
-          <div class="cname" title="${card.name}">${card.name}</div>
+          <div class="cname" title="${cnCard(card, "name")}">${cnCard(card, "name")}</div>
           <div class="ctags">${card.id} · ${t("lvPrefix")} ${card.level} · PWR ${card.power} · ${t("rangePrefix")} ${card.attackRange}</div>
           <div class="cmeta">
             <span class="chip chip-attr chip-${card.attribute}">${attrLabel(card.attribute)}</span>
@@ -236,7 +246,7 @@
     const card = getCard(id);
     const cur = deck.get(id) || 0;
     if (RULES.enforce && countByName(card.name) >= RULES.copyLimitPerName) {
-      toast(t("toastCopyLimit", { name: card.name }));
+      toast(t("toastCopyLimit", { name: cnCard(card, "name") }));
       return false;
     }
     deck.set(id, cur + 1);
@@ -591,7 +601,7 @@
         t2.className = "sim-card attr-" + card.attribute;
         t2.innerHTML = `
           <div class="sim-art"><img loading="lazy" src="${card.art}" alt="${card.name}" onerror="this.style.display='none'"></div>
-          <div class="sim-name" title="${card.name}">${card.name}</div>
+          <div class="sim-name" title="${cnCard(card, "name")}">${cnCard(card, "name")}</div>
           <div class="sim-chips">
             <span class="sim-chip sim-chip-no">${card.card_no}</span>
             <span class="rar rar-${card.rarity}">${card.rarity}</span>
@@ -627,7 +637,7 @@
       row.className = "deck-row";
       row.innerHTML = `
         <img class="dthumb" src="${card.art}" alt="">
-        <div class="dname">${card.name}<small>${card.id} · ${t("lvPrefix")} ${card.level} · ${card.rarity} · ${attrLabel(card.attribute)}</small></div>
+        <div class="dname">${cnCard(card, "name")}<small>${card.id} · ${t("lvPrefix")} ${card.level} · ${card.rarity} · ${attrLabel(card.attribute)}</small></div>
         <div class="qty">
           <button data-act="dec" data-id="${id}">−</button>
           <span>${qty}</span>
@@ -689,17 +699,17 @@
     $("#modal-power").textContent = c.power;
     $("#modal-range").textContent = c.attackRange;
     $("#modal-attr").textContent = c.attribute + " (" + attrLabel(c.attribute) + ")";
-    $("#modal-feature").textContent = c.feature || "—";
+    $("#modal-feature").textContent = cnCard(c, "feature") || "—";
     $("#modal-rarity").textContent = c.rarity;
     $("#modal-set").textContent = CARD_SETS[c.set] || c.set;
-    $("#modal-effect-text").textContent = c.effect || "—";
+    $("#modal-effect-text").textContent = cnCard(c, "effect") || "—";
   }
   function openModal(id) {
     const c = getCard(id);
     if (!c) return;
     modalCardId = id;
     $("#modal-art").src = c.art;
-    $("#modal-name").textContent = c.name;
+    $("#modal-name").textContent = cnCard(c, "name");
     fillModalDetails(c);
     updateModalActions();
     showOverlay(modal);

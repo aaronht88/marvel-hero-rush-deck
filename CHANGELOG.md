@@ -4,6 +4,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.4.5-beta] — 2026-08-18
+
+### Added
+- **簡中介面顯示官方簡中卡名 / 特徵 / 效果**（js/cards_cn.js，官方 API zh-CN 448 條）：切換去簡中就自動用中文卡文字（如「毒液」「蜘蛛侠」）；搜尋同時支援中英文；繁中/英文維持英文卡資料
+
 ## [1.4.4-beta] — 2026-08-18
 
 ### Added
