@@ -120,6 +120,31 @@ body.modal-open { overflow: hidden; }
   padding: 6px 8px; border-radius: 6px; font-size: 12px;
 }
 
+/* ---------- Google Drive sync chip ---------- */
+.google-sync-chip {
+  display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  max-width: 100%;
+}
+.google-sync-user {
+  display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.google-sync-email {
+  font-size: 11px; color: var(--muted); max-width: 140px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: "Rajdhani", system-ui, sans-serif; letter-spacing: 0.02em;
+}
+.google-sync-status {
+  font-size: 10px; color: var(--muted); opacity: 0.85;
+  max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.google-sync-status[data-status="syncing"] { color: var(--cyan); }
+.google-sync-status[data-status="synced"] { color: #6ee7a8; }
+.google-sync-status[data-status="error"] { color: var(--bad); }
+.google-conflict-msg {
+  font-size: 13px; color: var(--muted); line-height: 1.45; margin: 8px 0 14px;
+}
+.google-conflict-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
 /* ---------- Buttons (sci-fi angled) ---------- */
 .btn {
   position: relative;

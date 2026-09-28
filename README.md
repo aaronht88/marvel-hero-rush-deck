@@ -61,7 +61,14 @@ python3 -m http.server 8765
 | `js/cards.js` | Card database (233 real entries) |
 | `js/rules.js` | Deck-building rules (official: 50 cards / 2 colors / 3 same-name) |
 | `js/app.js` | App logic: browse, build, validate, share, multi-deck, favorites/owned |
+| `js/google-config.js` | Public OAuth Client ID placeholder (Drive sync) |
+| `js/google-sync.js` | Experimental Google Identity + Drive sync |
+| `docs/GOOGLE_DRIVE_SYNC.md` | Drive sync setup guide |
 | `img/cards/` | Local card art thumbnails (WebP) |
+
+## Experimental
+
+**Google Drive sync** (branch `feat/google-drive-sync`, app **v1.4.7-beta**): optional sign-in so decks / favorites / language sync to a JSON file in the user’s own Drive (`drive.file`). Production Pages still ships from `main` only. Setup: see [`docs/GOOGLE_DRIVE_SYNC.md`](docs/GOOGLE_DRIVE_SYNC.md). Paste your OAuth Web Client ID into `js/google-config.js` (empty = offline-only, no crash).
 
 ## Roadmap
 - [x] Real card data (233 entries) from official API

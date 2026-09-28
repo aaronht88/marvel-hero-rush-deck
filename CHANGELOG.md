@@ -4,6 +4,17 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.4.7-beta] — 2026-09-28
+
+### Added
+- **實驗性 Google Drive 同步**（僅 `feat/google-drive-sync` 分支；production Pages 仍只部署 `main`）
+  - Google Identity Services OAuth（token client）+ `drive.file` 將牌組／最愛／語言寫入使用者自己的 Drive（`mhr-deck-builder-sync.json`）
+  - `localStorage` 仍作離線快取；登入後 debounce 上傳；衝突時可選保留本機／使用雲端
+  - 未設定 Client ID 時 UI 顯示設定提示、不崩潰（見 `docs/GOOGLE_DRIVE_SYNC.md`、`js/google-config.js`）
+
+### Changed
+- 版本徽章／cache-bust → **v1.4.7-beta**
+
 ## [1.4.6-beta] — 2026-09-28
 
 ### Changed
