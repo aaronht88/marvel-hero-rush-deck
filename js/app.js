@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.4.5-beta";
+  const APP_VERSION = "1.4.6-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -68,28 +68,64 @@
   const toastEl = $("#toast");
   const modal = $("#card-modal");
 
-  // ---------- init filters ----------
-  Object.keys(CARD_SETS).forEach((s) => {
-    const o = document.createElement("option");
-    o.value = s; o.textContent = CARD_SETS[s]; filterSet.appendChild(o);
-  });
-  RARITIES.forEach((r) => {
-    const o = document.createElement("option");
-    o.value = r; o.textContent = r; filterRarity.appendChild(o);
-  });
-  for (let lv = 1; lv <= RULES.characterLevels; lv++) {
-    const o = document.createElement("option");
-    o.value = String(lv); o.textContent = t("lvPrefix") + " " + lv; filterLevel.appendChild(o);
+  // ---------- init filters (checkbox multi-select) ----------
+  function makeFilterChip(value, labelText, extraClass) {
+    const lab = document.createElement("label");
+    lab.className = "filter-chip" + (extraClass ? " " + extraClass : "");
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.value = value;
+    const span = document.createElement("span");
+    span.className = "filter-chip-label";
+    span.textContent = labelText;
+    lab.appendChild(input);
+    lab.appendChild(span);
+    return lab;
   }
-  for (let rng = 0; rng <= 5; rng++) {
-    const o = document.createElement("option");
-    o.value = String(rng); o.textContent = t("rangePrefix") + " " + rng; filterRange.appendChild(o);
+  function buildFilterChecks() {
+    filterSet.innerHTML = "";
+    Object.keys(CARD_SETS).forEach((s) => {
+      filterSet.appendChild(makeFilterChip(s, CARD_SETS[s] || s));
+    });
+    filterRarity.innerHTML = "";
+    RARITIES.forEach((r) => {
+      filterRarity.appendChild(makeFilterChip(r, r));
+    });
+    filterLevel.innerHTML = "";
+    for (let lv = 1; lv <= RULES.characterLevels; lv++) {
+      filterLevel.appendChild(makeFilterChip(String(lv), t("lvPrefix") + " " + lv));
+    }
+    filterRange.innerHTML = "";
+    for (let rng = 0; rng <= 5; rng++) {
+      filterRange.appendChild(makeFilterChip(String(rng), t("rangePrefix") + " " + rng));
+    }
+    filterAttr.innerHTML = "";
+    ATTRIBUTES.forEach((a) => {
+      filterAttr.appendChild(makeFilterChip(a, attrLabel(a)));
+    });
   }
-  ATTRIBUTES.forEach((a) => {
-    const o = document.createElement("option");
-    o.value = a; o.textContent = a; filterAttr.appendChild(o);
-  });
-
+  function checkedValues(container) {
+    return [...container.querySelectorAll("input[type=checkbox]:checked")].map((i) => i.value);
+  }
+  function clearAllFilters() {
+    [filterSet, filterRarity, filterLevel, filterRange, filterAttr].forEach((el) => {
+      el.querySelectorAll("input[type=checkbox]").forEach((cb) => { cb.checked = false; });
+    });
+  }
+  function refreshFilterLabels() {
+    filterLevel.querySelectorAll("label.filter-chip").forEach((lab) => {
+      const v = lab.querySelector("input").value;
+      lab.querySelector(".filter-chip-label").textContent = t("lvPrefix") + " " + v;
+    });
+    filterRange.querySelectorAll("label.filter-chip").forEach((lab) => {
+      const v = lab.querySelector("input").value;
+      lab.querySelector(".filter-chip-label").textContent = t("rangePrefix") + " " + v;
+    });
+    filterAttr.querySelectorAll("label.filter-chip").forEach((lab) => {
+      const v = lab.querySelector("input").value;
+      lab.querySelector(".filter-chip-label").textContent = attrLabel(v);
+    });
+  }
   // ---------- helpers ----------
   function toast(msg) {
     toastEl.textContent = msg;
@@ -139,19 +175,22 @@
     return c[field];
   }
 
+  buildFilterChecks();
+
   function cardMatches(card) {
     if (card.type === "impact") return false; // Rush Point cards live in their own 圖鑑 view
     const q = searchEl.value.trim().toLowerCase();
-    const set = filterSet.value;
-    const rar = filterRarity.value;
-    const lv = filterLevel.value;
-    const rng = filterRange.value;
-    const attr = filterAttr.value;
-    if (set && card.set !== set) return false;
-    if (rar && card.rarity !== rar) return false;
-    if (lv && String(card.level) !== lv) return false;
-    if (rng && String(card.attackRange) !== rng) return false;
-    if (attr && card.attribute !== attr) return false;
+    // Within category: OR; across categories: AND; empty category = no restriction
+    const sets = checkedValues(filterSet);
+    const rars = checkedValues(filterRarity);
+    const lvs = checkedValues(filterLevel);
+    const rngs = checkedValues(filterRange);
+    const attrs = checkedValues(filterAttr);
+    if (sets.length && !sets.includes(card.set)) return false;
+    if (rars.length && !rars.includes(card.rarity)) return false;
+    if (lvs.length && !lvs.includes(String(card.level))) return false;
+    if (rngs.length && !rngs.includes(String(card.attackRange))) return false;
+    if (attrs.length && !attrs.includes(card.attribute)) return false;
     if (view === "fav" && !favs.has(card.id)) return false;
     if (q) {
       const hay = (card.name + " " + cnCard(card, "name") + " " + card.card_no + " " + (card.feature || "") + " " + cnCard(card, "feature") + " " + (card.effect || "") + " " + cnCard(card, "effect")).toLowerCase();
@@ -803,11 +842,17 @@
 
   // ---------- events ----------
   searchEl.addEventListener("input", renderCards);
-  filterSet.addEventListener("change", renderCards);
-  filterRarity.addEventListener("change", renderCards);
-  filterLevel.addEventListener("change", renderCards);
-  filterRange.addEventListener("change", renderCards);
-  filterAttr.addEventListener("change", renderCards);
+  // event delegation on filter containers
+  [filterSet, filterRarity, filterLevel, filterRange, filterAttr].forEach((el) => {
+    el.addEventListener("change", renderCards);
+  });
+  const filterClearBtn = $("#filter-clear");
+  if (filterClearBtn) {
+    filterClearBtn.addEventListener("click", () => {
+      clearAllFilters();
+      renderCards();
+    });
+  }
 
   // view tabs
   function setView(v) {
@@ -950,15 +995,8 @@
   // language change re-render hook (called by i18n.js setLang)
   window.MHR_APP = {
     onLangChange() {
-      // rebuild dynamic option labels
-      for (let lv = 1; lv <= RULES.characterLevels; lv++) {
-        const opt = filterLevel.querySelector(`option[value="${lv}"]`);
-        if (opt) opt.textContent = t("lvPrefix") + " " + lv;
-      }
-      for (let rng = 0; rng <= 5; rng++) {
-        const opt = filterRange.querySelector(`option[value="${rng}"]`);
-        if (opt) opt.textContent = t("rangePrefix") + " " + rng;
-      }
+      // refresh checkbox labels (level/range prefixes, attr colors)
+      refreshFilterLabels();
       if (modalCardId) fillModalDetails(getCard(modalCardId));
       renderDeckManager();
       renderCards(); renderDeck(); updateModalActions();

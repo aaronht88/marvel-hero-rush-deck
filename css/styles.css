@@ -176,14 +176,79 @@ body.modal-open { overflow: hidden; }
 }
 
 /* ---------- Controls ---------- */
-.controls { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
-.controls input, .controls select {
+.controls { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: flex-start; }
+.controls input[type="text"] {
   background: var(--panel-2); color: var(--text); border: 1px solid var(--border);
   padding: 8px 10px; border-radius: 6px; font-size: 13px; transition: border-color .15s, box-shadow .15s;
+  flex: 1 1 100%; min-width: 160px;
 }
-.controls input:focus, .controls select:focus { outline: none; border-color: var(--cyan-dim); box-shadow: 0 0 10px rgba(0, 229, 255, .15); }
-.controls input[type="text"] { flex: 1; min-width: 160px; }
+.controls input[type="text"]:focus { outline: none; border-color: var(--cyan-dim); box-shadow: 0 0 10px rgba(0, 229, 255, .15); }
 .fav-toggle { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--muted); cursor: pointer; user-select: none; }
+
+/* ---------- Checkbox filter panels ---------- */
+.filter-panels {
+  display: flex; flex-direction: column; gap: 6px;
+  flex: 1 1 100%;
+  width: 100%;
+}
+.filter-group {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px;
+  padding: 4px 0;
+}
+.filter-group-title {
+  flex: 0 0 auto;
+  min-width: 4.5em;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+.filter-checks {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  flex: 1 1 auto;
+}
+.filter-chip {
+  display: inline-flex; align-items: center; gap: 0;
+  cursor: pointer; user-select: none;
+  margin: 0;
+  position: relative;
+}
+.filter-chip input {
+  position: absolute;
+  opacity: 0;
+  width: 0; height: 0;
+  pointer-events: none;
+}
+.filter-chip .filter-chip-label {
+  display: inline-block;
+  background: var(--panel-2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+  transition: color 140ms ease, border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+}
+.filter-chip:hover .filter-chip-label {
+  color: var(--text);
+  border-color: var(--cyan-dim);
+}
+.filter-chip input:checked + .filter-chip-label {
+  background: linear-gradient(180deg, rgba(0, 229, 255, .22), rgba(0, 229, 255, .08));
+  color: var(--cyan);
+  border-color: var(--cyan-dim);
+  box-shadow: 0 0 10px rgba(0, 229, 255, .18);
+  text-shadow: 0 0 6px rgba(0, 229, 255, .45);
+}
+.filter-chip input:focus-visible + .filter-chip-label {
+  outline: 1px solid var(--cyan);
+  outline-offset: 1px;
+}
+#filter-clear { flex: 0 0 auto; align-self: flex-start; margin-top: 2px; }
 
 /* ---------- Card grid & tiles ---------- */
 .card-grid { animation: grid-in 260ms var(--ease-out) both; }
@@ -619,7 +684,8 @@ body.modal-open { overflow: hidden; }
   .lang-wrap { font-size: 11px; }
   .modal { max-width: 94vw; }
   .controls input[type="text"] { flex-basis: 100%; }
-  .controls select { flex: 1 1 30%; min-width: 0; }
+  .filter-group-title { min-width: 3.2em; font-size: 10px; }
+  .filter-chip .filter-chip-label { padding: 4px 8px; font-size: 11px; min-height: 28px; }
   .sim-card { width: 94px; }
   .don-payme img { width: 170px; height: 170px; }
   .card-grid { gap: 10px; }

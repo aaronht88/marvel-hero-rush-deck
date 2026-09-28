@@ -4,6 +4,16 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.4.6-beta] — 2026-09-28
+
+### Changed
+- **篩選改為 Checkbox 多選**：系列／稀有度／等級／攻擊範圍／顏色由單一 `<select>` 改為勾選 chips
+  - 同類別內：**OR**（例如勾 Red + Blue → 紅或藍）
+  - 跨類別：**AND**（例如再勾 SR → 只顯示紅 SR 與藍 SR）
+  - 某類別零勾選＝不限（等同舊「全部」）
+  - 搜尋文字與最愛視圖仍與篩選 AND；Rush Point 圖鑑 tab 不變
+- 新增「清除篩選」按鈕；語言切換時同步更新等級／範圍／顏色標籤
+
 ## [1.4.5-beta] — 2026-08-18
 
 ### Added
