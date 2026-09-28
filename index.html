@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=1.3.3-beta" />
+  <link rel="stylesheet" href="css/styles.css?v=1.4.6-beta" />
   <!-- GoatCounter privacy-friendly analytics -->
   <script data-goatcounter="https://aaronht88.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
@@ -21,7 +21,7 @@
         <p class="subtitle" data-i18n="subtitle">233 張實卡資料（BP01 The Avengers + SD01-04 預組）· 官方 cardlist</p>
         <p class="author-credit" data-i18n="byAuthor">by aaronht88</p>
       </div>
-      <span class="version-badge" id="version-badge">v1.4.5-beta</span>
+      <span class="version-badge" id="version-badge">v1.4.6-beta</span>
       <span class="visitor-badge" data-i18n-title="visitorViews" title="訪客瀏覽次數">👁 <span data-i18n="visitorLabel">訪客</span> <span id="visitor-count">–</span></span>
       <button id="btn-donate-top" class="btn-donate-chip" data-i18n="donateBtn">☕ 支持我</button>
     </div>
@@ -50,21 +50,29 @@
       </div>
       <div class="controls">
         <input type="text" id="search" data-i18n-ph="searchPh" placeholder="搜尋卡名 / 編號 / 特徵 / 效果…" />
-        <select id="filter-set" data-i18n-first="allSeries">
-          <option value="">全部系列</option>
-        </select>
-        <select id="filter-rarity" data-i18n-first="allRarity">
-          <option value="">全部稀有度</option>
-        </select>
-        <select id="filter-level" data-i18n-first="allLevel">
-          <option value="">全部等級</option>
-        </select>
-        <select id="filter-range" data-i18n-first="allRange">
-          <option value="">全部攻擊範圍</option>
-        </select>
-        <select id="filter-attr" data-i18n-first="allColor">
-          <option value="">全部顏色</option>
-        </select>
+        <div class="filter-panels">
+          <div class="filter-group">
+            <div class="filter-group-title" data-i18n="filterSeries">系列</div>
+            <div class="filter-checks" id="filter-set"></div>
+          </div>
+          <div class="filter-group">
+            <div class="filter-group-title" data-i18n="filterRarity">稀有度</div>
+            <div class="filter-checks" id="filter-rarity"></div>
+          </div>
+          <div class="filter-group">
+            <div class="filter-group-title" data-i18n="filterLevel">等級</div>
+            <div class="filter-checks" id="filter-level"></div>
+          </div>
+          <div class="filter-group">
+            <div class="filter-group-title" data-i18n="filterRange">攻擊範圍</div>
+            <div class="filter-checks" id="filter-range"></div>
+          </div>
+          <div class="filter-group">
+            <div class="filter-group-title" data-i18n="filterColor">顏色</div>
+            <div class="filter-checks" id="filter-attr"></div>
+          </div>
+        </div>
+        <button type="button" id="filter-clear" class="btn btn-sm" data-i18n="filterClear">清除篩選</button>
       </div>
       <div id="card-grid" class="card-grid"><!-- cards injected --></div>
     </section>
@@ -97,7 +105,7 @@
           <img class="wl-logo" src="img/logo.png" alt="Marvel Hero Rush" />
           <div class="wl-title">MARVEL HERO RUSH</div>
           <div class="wl-sub">DECK BUILDER</div>
-          <div class="wl-version" id="wl-version">v1.4.5-beta</div>
+          <div class="wl-version" id="wl-version">v1.4.6-beta</div>
           <div class="wl-visitors">👁 <span data-i18n="cumulativeUsers">累積使用人數</span>：<span id="wl-visitor-count">–</span></div>
         </div>
         <div class="modal-info wl-info">
@@ -105,7 +113,7 @@
           <div class="wl-section">
             <h3 data-i18n="whatsNewTitle">本版更新</h3>
             <ul class="wl-list" id="wl-whatsnew">
-              <li data-i18n="wn1">Deck 一覽圖輸出：一鍵匯出整副牌組 PNG（Deck 名 + 稀有度構成 + 全部卡圖）</li>
+              <li data-i18n="wn1">多選 Checkbox 篩選：同類 OR、跨類 AND；一鍵清除篩選</li>
               <li data-i18n="wn2">QR Code 匯入：一掃即自動載入牌組（分享碼已壓縮 -73%，手機可掃）</li>
               <li data-i18n="wn3">卡庫 449 張：377 角色 + 72 Rush Point 圖鑑（SP01 蜘蛛紀元登場！）</li>
             </ul>
@@ -114,7 +122,7 @@
           <div class="wl-section">
             <h3 data-i18n="guideTitle">用法簡介</h3>
             <ol class="wl-guide">
-              <li data-i18n="guide1">搜尋與篩選：卡名 / 編號 / 系列 / 稀有度 / 等級 / 顏色</li>
+              <li data-i18n="guide1">搜尋與多選篩選：同類或（OR）、跨類且（AND）；未勾選＝不限</li>
               <li data-i18n="guide2">點擊卡片加入 Deck，或直接拖曳；牌組需 50 張、最多 2 色、同名最多 3 張</li>
               <li data-i18n="guide3">「複製分享碼」分享牌組；「匯入 Deck」貼上別人的分享碼</li>
               <li data-i18n="guide4">「模擬器」按等級檢視整副牌組</li>
@@ -253,11 +261,11 @@
   <div id="toast" class="toast" hidden></div>
 
   <!-- data + logic (versioned query = cache busting on release) -->
-  <script src="js/i18n.js?v=1.4.5-beta"></script>
-  <script src="js/cards.js?v=1.4.5-beta"></script>
-  <script src="js/cards_cn.js?v=1.4.5-beta"></script>
-  <script src="js/rules.js?v=1.4.5-beta"></script>
-  <script src="js/qrcode.min.js?v=1.4.5-beta"></script>
-  <script src="js/app.js?v=1.4.5-beta"></script>
+  <script src="js/i18n.js?v=1.4.6-beta"></script>
+  <script src="js/cards.js?v=1.4.6-beta"></script>
+  <script src="js/cards_cn.js?v=1.4.6-beta"></script>
+  <script src="js/rules.js?v=1.4.6-beta"></script>
+  <script src="js/qrcode.min.js?v=1.4.6-beta"></script>
+  <script src="js/app.js?v=1.4.6-beta"></script>
 </body>
 </html>
