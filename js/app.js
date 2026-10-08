@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.4.6-beta";
+  const APP_VERSION = "1.5.0-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -126,6 +126,42 @@
       lab.querySelector(".filter-chip-label").textContent = attrLabel(v);
     });
   }
+  // ---------- filter dropdowns (tap to open, multi-select inside) ----------
+  const FILTER_ELS = () => [filterSet, filterRarity, filterLevel, filterRange, filterAttr];
+  function updateFilterSummaries() {
+    FILTER_ELS().forEach((el) => {
+      const sum = document.querySelector('[data-summary-for="' + el.id + '"]');
+      if (!sum) return;
+      const picked = [...el.querySelectorAll("input[type=checkbox]:checked")]
+        .map((i) => i.parentElement.querySelector(".filter-chip-label").textContent);
+      sum.textContent = !picked.length ? t("ddAll") : picked.length <= 2 ? picked.join("、") : t("ddCount", { n: picked.length });
+      el.closest(".filter-dd").classList.toggle("has-value", picked.length > 0);
+    });
+  }
+  function closeFilterDropdowns(except) {
+    document.querySelectorAll(".filter-dd").forEach((dd) => {
+      if (dd === except) return;
+      dd.classList.remove("open");
+      dd.querySelector(".filter-dd-btn").setAttribute("aria-expanded", "false");
+      dd.querySelector(".filter-dd-panel").hidden = true;
+    });
+  }
+  document.querySelectorAll(".filter-dd").forEach((dd) => {
+    const btn = dd.querySelector(".filter-dd-btn");
+    const panel = dd.querySelector(".filter-dd-panel");
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = panel.hidden;
+      closeFilterDropdowns(dd);
+      panel.hidden = !open;
+      dd.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", String(open));
+    });
+    panel.addEventListener("click", (e) => e.stopPropagation());
+  });
+  document.addEventListener("click", () => closeFilterDropdowns());
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeFilterDropdowns(); });
+
   // ---------- helpers ----------
   function toast(msg) {
     toastEl.textContent = msg;
@@ -844,12 +880,13 @@
   searchEl.addEventListener("input", renderCards);
   // event delegation on filter containers
   [filterSet, filterRarity, filterLevel, filterRange, filterAttr].forEach((el) => {
-    el.addEventListener("change", renderCards);
+    el.addEventListener("change", () => { updateFilterSummaries(); renderCards(); });
   });
   const filterClearBtn = $("#filter-clear");
   if (filterClearBtn) {
     filterClearBtn.addEventListener("click", () => {
       clearAllFilters();
+      updateFilterSummaries();
       renderCards();
     });
   }
@@ -857,10 +894,10 @@
   // view tabs
   function setView(v) {
     view = v;
-    document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x.dataset.view === v));
+    document.querySelectorAll(".view-tabs .tab").forEach((x) => x.classList.toggle("active", x.dataset.view === v));
     renderCards();
   }
-  document.querySelectorAll(".tab").forEach((tab) => {
+  document.querySelectorAll(".view-tabs .tab").forEach((tab) => {
     tab.addEventListener("click", () => setView(tab.dataset.view));
   });
   // welcome overlay: donate button closes welcome + opens donation overlay
@@ -994,9 +1031,20 @@
 
   // language change re-render hook (called by i18n.js setLang)
   window.MHR_APP = {
+    // import a share code as a NEW deck (used by the Deck reference tab)
+    importCode(code) {
+      const r = decodeShare(code);
+      if (!r || !r.deck.size) { toast(t("toastBadCode")); return false; }
+      importDeckAsNew(r.deck, r.name);
+      renderCards();
+      return true;
+    },
+    toast,
     onLangChange() {
       // refresh checkbox labels (level/range prefixes, attr colors)
       refreshFilterLabels();
+      updateFilterSummaries();
+      if (window.MHR_PAGES) window.MHR_PAGES.render();
       if (modalCardId) fillModalDetails(getCard(modalCardId));
       renderDeckManager();
       renderCards(); renderDeck(); updateModalActions();

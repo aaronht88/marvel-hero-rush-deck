@@ -4,6 +4,19 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.5.0-beta] — 2026-10-08
+
+### Added
+- **頂部分頁**：Deck Builder／News／Deck 參考，可用 `#news`、`#decks` 直接開
+- **News Tab**：香港（代理 Saka Saka 喺 Mato 嘅賽事活動）＋國際（官方網站新聞 API，簡中）
+  - `scripts/fetch_news.py` 抓取並寫入 `data/news.json`；GitHub Actions `news.yml` 每日 09:17 HKT 自動更新並重新部署
+  - `data/news_overrides.json` 可按 id 加廣東話標題（`title_zh`）同摘要（`summary_zh`），每次抓取都會保留
+- **Deck 參考 Tab**：讀 `data/decks.json`，一鍵匯入做新 Deck（唔覆蓋現有牌組）或複製分享碼；第一批為 4 副 SP01 構築
+
+### Changed
+- 篩選由常駐 chips 改為**下拉選單**：㩒開先多項剔選，按鈕顯示已揀項目（多過 2 項顯示「已揀 N 項」）；㩒外面或 Esc 收起；手機版面板全寬
+- 篩選邏輯不變（同類 OR、跨類 AND）
+
 ## [1.4.6-beta] — 2026-09-28
 
 ### Changed

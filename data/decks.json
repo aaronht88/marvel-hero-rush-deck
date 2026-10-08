@@ -1,0 +1,468 @@
+{
+ "updated": "2026-10-08",
+ "decks": [
+  {
+   "id": "sp01-01",
+   "name": "SP01 Web Legion 黃綠蜘蛛網",
+   "colors": [
+    "Yellow",
+    "Green"
+   ],
+   "set": "SP01",
+   "author": "TCG 卡牌專家",
+   "source": "精選構築",
+   "source_url": "",
+   "date": "2026-10-08",
+   "total": 50,
+   "code": "1|SP01%20Web%20Legion%20%E9%BB%83%E7%B6%A0%E8%9C%98%E8%9B%9B%E7%B6%B2|I0213I0223I0242I0253I0262I0293I0302I0312I0332I0362I0372I0633I0662I0692I0701I0712I0723I0743I0782I0793I0803",
+   "cards": [
+    {
+     "no": "SP01-021",
+     "name": "「The Web of Destiny」Spider-Man",
+     "qty": 3
+    },
+    {
+     "no": "SP01-022",
+     "name": "「Phantom Strike」Ghost-Spider",
+     "qty": 3
+    },
+    {
+     "no": "SP01-024",
+     "name": "「Driving Mecha」Peni Parker",
+     "qty": 2
+    },
+    {
+     "no": "SP01-025",
+     "name": "「Gunfire Negotiation」Spider-Man Noir",
+     "qty": 3
+    },
+    {
+     "no": "SP01-026",
+     "name": "「Vigil of Love」Amazing Spider-Man",
+     "qty": 2
+    },
+    {
+     "no": "SP01-029",
+     "name": "「Spider-Mech」SP//dr",
+     "qty": 3
+    },
+    {
+     "no": "SP01-030",
+     "name": "「Invitation of Multiverse」Spider-Ham",
+     "qty": 2
+    },
+    {
+     "no": "SP01-031",
+     "name": "「Straight and Narrow」Uncle Ben",
+     "qty": 2
+    },
+    {
+     "no": "SP01-033",
+     "name": "「Spider-Mentor」Spider-Man",
+     "qty": 2
+    },
+    {
+     "no": "SP01-036",
+     "name": "「Spider-Sense」Spiderling",
+     "qty": 2
+    },
+    {
+     "no": "SP01-037",
+     "name": "「Spider-Mentor」Spider-Woman",
+     "qty": 2
+    },
+    {
+     "no": "SP01-063",
+     "name": "「Spider-Companion」Black Cat",
+     "qty": 3
+    },
+    {
+     "no": "SP01-066",
+     "name": "「Restoration of Multiverse」Doctor Strange",
+     "qty": 2
+    },
+    {
+     "no": "SP01-069",
+     "name": "「Spider-Companion」Mary Jane Watson",
+     "qty": 2
+    },
+    {
+     "no": "SP01-070",
+     "name": "「Sense of Multiverse」Silk",
+     "qty": 1
+    },
+    {
+     "no": "SP01-071",
+     "name": "「Spider-Archenemy」Venom 2099",
+     "qty": 2
+    },
+    {
+     "no": "SP01-072",
+     "name": "「The Biggest Hater」J. Jonah Jameson",
+     "qty": 3
+    },
+    {
+     "no": "SP01-074",
+     "name": "「Endgame Blip」Spider-Man",
+     "qty": 3
+    },
+    {
+     "no": "SP01-078",
+     "name": "「Heart's Haven」Aunt May",
+     "qty": 2
+    },
+    {
+     "no": "SP01-079",
+     "name": "「Spider-Companion」Gwen Stacy",
+     "qty": 3
+    },
+    {
+     "no": "SP01-080",
+     "name": "「Spider-Archenemy」Shocker",
+     "qty": 3
+    }
+   ]
+  },
+  {
+   "id": "sp01-02",
+   "name": "SP01 Sinister Tempo 藍綠宿敵",
+   "colors": [
+    "Blue",
+    "Green"
+   ],
+   "set": "SP01",
+   "author": "TCG 卡牌專家",
+   "source": "精選構築",
+   "source_url": "",
+   "date": "2026-10-08",
+   "total": 50,
+   "code": "1|SP01%20Sinister%20Tempo%20%E8%97%8D%E7%B6%A0%E5%AE%BF%E6%95%B5|I0413I0423I0432I0462I0503I0523I0533I0543I0563I0572I0582I0593I0602I0672I0682I0713I0723I0733I0803",
+   "cards": [
+    {
+     "no": "SP01-041",
+     "name": "「Spider-Archenemy」Doctor Octopus",
+     "qty": 3
+    },
+    {
+     "no": "SP01-042",
+     "name": "「Spider-Archenemy」Green Goblin",
+     "qty": 3
+    },
+    {
+     "no": "SP01-043",
+     "name": "「Spider-Archenemy」Kingpin",
+     "qty": 2
+    },
+    {
+     "no": "SP01-046",
+     "name": "「Chaos Surge」Scarlet Witch",
+     "qty": 2
+    },
+    {
+     "no": "SP01-050",
+     "name": "「Spider-Archenemy」Phage",
+     "qty": 3
+    },
+    {
+     "no": "SP01-052",
+     "name": "「Spider-Archenemy」Scream",
+     "qty": 3
+    },
+    {
+     "no": "SP01-053",
+     "name": "「Spider-Archenemy」Riot",
+     "qty": 3
+    },
+    {
+     "no": "SP01-054",
+     "name": "「Spider-Archenemy」Lasher",
+     "qty": 3
+    },
+    {
+     "no": "SP01-056",
+     "name": "「Spider-Archenemy」Rhino",
+     "qty": 3
+    },
+    {
+     "no": "SP01-057",
+     "name": "「Pillage & Plunder」Crowds of The Hand",
+     "qty": 2
+    },
+    {
+     "no": "SP01-058",
+     "name": "「Spider-Archenemy」Tombstone",
+     "qty": 2
+    },
+    {
+     "no": "SP01-059",
+     "name": "「Genetic Reversal」Man-Spider",
+     "qty": 3
+    },
+    {
+     "no": "SP01-060",
+     "name": "「Spider-Archenemy」Lizard",
+     "qty": 2
+    },
+    {
+     "no": "SP01-067",
+     "name": "「Spider-Ally」Anti-Venom",
+     "qty": 2
+    },
+    {
+     "no": "SP01-068",
+     "name": "「The Legacy」Superior Spider-Man",
+     "qty": 2
+    },
+    {
+     "no": "SP01-071",
+     "name": "「Spider-Archenemy」Venom 2099",
+     "qty": 3
+    },
+    {
+     "no": "SP01-072",
+     "name": "「The Biggest Hater」J. Jonah Jameson",
+     "qty": 3
+    },
+    {
+     "no": "SP01-073",
+     "name": "「Spider-Archenemy」Scorpion",
+     "qty": 3
+    },
+    {
+     "no": "SP01-080",
+     "name": "「Spider-Archenemy」Shocker",
+     "qty": 3
+    }
+   ]
+  },
+  {
+   "id": "sp01-03",
+   "name": "SP01 Symbiote Knull 紅藍共生體",
+   "colors": [
+    "Red",
+    "Blue"
+   ],
+   "set": "SP01",
+   "author": "TCG 卡牌專家",
+   "source": "精選構築",
+   "source_url": "",
+   "date": "2026-10-08",
+   "total": 50,
+   "code": "1|SP01%20Symbiote%20Knull%20%E7%B4%85%E8%97%8D%E5%85%B1%E7%94%9F%E9%AB%94|I0012I0063I0082I0103I0122I0172I0201I0412I0423I0462I0472I0482I0503I0513I0523I0533I0543I0563I0573I0593",
+   "cards": [
+    {
+     "no": "SP01-001",
+     "name": "「Spider-Archenemy」Carnage",
+     "qty": 2
+    },
+    {
+     "no": "SP01-006",
+     "name": "「Spider-Archenemy」Red Goblin",
+     "qty": 3
+    },
+    {
+     "no": "SP01-008",
+     "name": "「Spider-Companion」Silver Sablinova",
+     "qty": 2
+    },
+    {
+     "no": "SP01-010",
+     "name": "「Spider-Ally」Jessica Jones",
+     "qty": 3
+    },
+    {
+     "no": "SP01-012",
+     "name": "「Spider-Ally」Magik",
+     "qty": 2
+    },
+    {
+     "no": "SP01-017",
+     "name": "「Spider-Archenemy」Sandman",
+     "qty": 2
+    },
+    {
+     "no": "SP01-020",
+     "name": "「Spider-Archenemy」Tarantula",
+     "qty": 1
+    },
+    {
+     "no": "SP01-041",
+     "name": "「Spider-Archenemy」Doctor Octopus",
+     "qty": 2
+    },
+    {
+     "no": "SP01-042",
+     "name": "「Spider-Archenemy」Green Goblin",
+     "qty": 3
+    },
+    {
+     "no": "SP01-046",
+     "name": "「Chaos Surge」Scarlet Witch",
+     "qty": 2
+    },
+    {
+     "no": "SP01-047",
+     "name": "「God of Symbiotes」Knull",
+     "qty": 2
+    },
+    {
+     "no": "SP01-048",
+     "name": "「Spider-Ally」Daredevil",
+     "qty": 2
+    },
+    {
+     "no": "SP01-050",
+     "name": "「Spider-Archenemy」Phage",
+     "qty": 3
+    },
+    {
+     "no": "SP01-051",
+     "name": "「Spider-Archenemy」Agony",
+     "qty": 3
+    },
+    {
+     "no": "SP01-052",
+     "name": "「Spider-Archenemy」Scream",
+     "qty": 3
+    },
+    {
+     "no": "SP01-053",
+     "name": "「Spider-Archenemy」Riot",
+     "qty": 3
+    },
+    {
+     "no": "SP01-054",
+     "name": "「Spider-Archenemy」Lasher",
+     "qty": 3
+    },
+    {
+     "no": "SP01-056",
+     "name": "「Spider-Archenemy」Rhino",
+     "qty": 3
+    },
+    {
+     "no": "SP01-057",
+     "name": "「Pillage & Plunder」Crowds of The Hand",
+     "qty": 3
+    },
+    {
+     "no": "SP01-059",
+     "name": "「Genetic Reversal」Man-Spider",
+     "qty": 3
+    }
+   ]
+  },
+  {
+   "id": "sp01-04",
+   "name": "SP01 Level Hunter 紅綠等級獵殺",
+   "colors": [
+    "Red",
+    "Green"
+   ],
+   "set": "SP01",
+   "author": "TCG 卡牌專家",
+   "source": "精選構築",
+   "source_url": "",
+   "date": "2026-10-08",
+   "total": 50,
+   "code": "1|SP01%20Level%20Hunter%20%E7%B4%85%E7%B6%A0%E7%AD%89%E7%B4%9A%E7%8D%B5%E6%AE%BA|I0012I0031I0063I0082I0103I0113I0123I0163I0173I0183I0193I0203I0662I0672I0713I0722I0733I0763I0803",
+   "cards": [
+    {
+     "no": "SP01-001",
+     "name": "「Spider-Archenemy」Carnage",
+     "qty": 2
+    },
+    {
+     "no": "SP01-003",
+     "name": "「Phoenix Host」Jean Grey",
+     "qty": 1
+    },
+    {
+     "no": "SP01-006",
+     "name": "「Spider-Archenemy」Red Goblin",
+     "qty": 3
+    },
+    {
+     "no": "SP01-008",
+     "name": "「Spider-Companion」Silver Sablinova",
+     "qty": 2
+    },
+    {
+     "no": "SP01-010",
+     "name": "「Spider-Ally」Jessica Jones",
+     "qty": 3
+    },
+    {
+     "no": "SP01-011",
+     "name": "「Rage Release」Hulk",
+     "qty": 3
+    },
+    {
+     "no": "SP01-012",
+     "name": "「Spider-Ally」Magik",
+     "qty": 3
+    },
+    {
+     "no": "SP01-016",
+     "name": "「Spider-Ally」Luke Cage",
+     "qty": 3
+    },
+    {
+     "no": "SP01-017",
+     "name": "「Spider-Archenemy」Sandman",
+     "qty": 3
+    },
+    {
+     "no": "SP01-018",
+     "name": "「Spider-Archenemy」Kraven the Hunter",
+     "qty": 3
+    },
+    {
+     "no": "SP01-019",
+     "name": "「Spider-Companion」Silver Sable",
+     "qty": 3
+    },
+    {
+     "no": "SP01-020",
+     "name": "「Spider-Archenemy」Tarantula",
+     "qty": 3
+    },
+    {
+     "no": "SP01-066",
+     "name": "「Restoration of Multiverse」Doctor Strange",
+     "qty": 2
+    },
+    {
+     "no": "SP01-067",
+     "name": "「Spider-Ally」Anti-Venom",
+     "qty": 2
+    },
+    {
+     "no": "SP01-071",
+     "name": "「Spider-Archenemy」Venom 2099",
+     "qty": 3
+    },
+    {
+     "no": "SP01-072",
+     "name": "「The Biggest Hater」J. Jonah Jameson",
+     "qty": 2
+    },
+    {
+     "no": "SP01-073",
+     "name": "「Spider-Archenemy」Scorpion",
+     "qty": 3
+    },
+    {
+     "no": "SP01-076",
+     "name": "「Spider-Archenemy」Morbius",
+     "qty": 3
+    },
+    {
+     "no": "SP01-080",
+     "name": "「Spider-Archenemy」Shocker",
+     "qty": 3
+    }
+   ]
+  }
+ ]
+}

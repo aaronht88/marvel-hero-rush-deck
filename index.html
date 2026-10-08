@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=1.4.6-beta" />
+  <link rel="stylesheet" href="css/styles.css?v=1.5.0-beta" />
   <!-- GoatCounter privacy-friendly analytics -->
   <script data-goatcounter="https://aaronht88.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
@@ -21,7 +21,7 @@
         <p class="subtitle" data-i18n="subtitle">233 張實卡資料（BP01 The Avengers + SD01-04 預組）· 官方 cardlist</p>
         <p class="author-credit" data-i18n="byAuthor">by aaronht88</p>
       </div>
-      <span class="version-badge" id="version-badge">v1.4.6-beta</span>
+      <span class="version-badge" id="version-badge">v1.5.0-beta</span>
       <span class="visitor-badge" data-i18n-title="visitorViews" title="訪客瀏覽次數">👁 <span data-i18n="visitorLabel">訪客</span> <span id="visitor-count">–</span></span>
       <button id="btn-donate-top" class="btn-donate-chip" data-i18n="donateBtn">☕ 支持我</button>
     </div>
@@ -40,7 +40,13 @@
     </div>
   </header>
 
-  <main class="layout">
+  <nav class="page-tabs" role="tablist">
+    <button class="page-tab active" data-page="builder" role="tab" data-i18n="pageBuilder">Deck Builder</button>
+    <button class="page-tab" data-page="news" role="tab" data-i18n="pageNews">News</button>
+    <button class="page-tab" data-page="decks" role="tab" data-i18n="pageDecks">Deck 參考</button>
+  </nav>
+
+  <main class="layout page" id="page-builder">
     <!-- LEFT: card browser -->
     <section class="browser">
       <div class="view-tabs">
@@ -51,25 +57,45 @@
       <div class="controls">
         <input type="text" id="search" data-i18n-ph="searchPh" placeholder="搜尋卡名 / 編號 / 特徵 / 效果…" />
         <div class="filter-panels">
-          <div class="filter-group">
-            <div class="filter-group-title" data-i18n="filterSeries">系列</div>
-            <div class="filter-checks" id="filter-set"></div>
+          <div class="filter-group filter-dd" data-filter="filter-set">
+            <button type="button" class="filter-dd-btn" aria-expanded="false" aria-controls="filter-set">
+              <span class="filter-group-title" data-i18n="filterSeries"></span>
+              <span class="filter-dd-summary" data-summary-for="filter-set"></span>
+              <span class="filter-dd-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="filter-checks filter-dd-panel" id="filter-set" hidden></div>
           </div>
-          <div class="filter-group">
-            <div class="filter-group-title" data-i18n="filterRarity">稀有度</div>
-            <div class="filter-checks" id="filter-rarity"></div>
+          <div class="filter-group filter-dd" data-filter="filter-rarity">
+            <button type="button" class="filter-dd-btn" aria-expanded="false" aria-controls="filter-rarity">
+              <span class="filter-group-title" data-i18n="filterRarity"></span>
+              <span class="filter-dd-summary" data-summary-for="filter-rarity"></span>
+              <span class="filter-dd-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="filter-checks filter-dd-panel" id="filter-rarity" hidden></div>
           </div>
-          <div class="filter-group">
-            <div class="filter-group-title" data-i18n="filterLevel">等級</div>
-            <div class="filter-checks" id="filter-level"></div>
+          <div class="filter-group filter-dd" data-filter="filter-level">
+            <button type="button" class="filter-dd-btn" aria-expanded="false" aria-controls="filter-level">
+              <span class="filter-group-title" data-i18n="filterLevel"></span>
+              <span class="filter-dd-summary" data-summary-for="filter-level"></span>
+              <span class="filter-dd-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="filter-checks filter-dd-panel" id="filter-level" hidden></div>
           </div>
-          <div class="filter-group">
-            <div class="filter-group-title" data-i18n="filterRange">攻擊範圍</div>
-            <div class="filter-checks" id="filter-range"></div>
+          <div class="filter-group filter-dd" data-filter="filter-range">
+            <button type="button" class="filter-dd-btn" aria-expanded="false" aria-controls="filter-range">
+              <span class="filter-group-title" data-i18n="filterRange"></span>
+              <span class="filter-dd-summary" data-summary-for="filter-range"></span>
+              <span class="filter-dd-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="filter-checks filter-dd-panel" id="filter-range" hidden></div>
           </div>
-          <div class="filter-group">
-            <div class="filter-group-title" data-i18n="filterColor">顏色</div>
-            <div class="filter-checks" id="filter-attr"></div>
+          <div class="filter-group filter-dd" data-filter="filter-attr">
+            <button type="button" class="filter-dd-btn" aria-expanded="false" aria-controls="filter-attr">
+              <span class="filter-group-title" data-i18n="filterColor"></span>
+              <span class="filter-dd-summary" data-summary-for="filter-attr"></span>
+              <span class="filter-dd-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="filter-checks filter-dd-panel" id="filter-attr" hidden></div>
           </div>
         </div>
         <button type="button" id="filter-clear" class="btn btn-sm" data-i18n="filterClear">清除篩選</button>
@@ -97,6 +123,25 @@
     </aside>
   </main>
 
+  <!-- NEWS PAGE -->
+  <section class="page page-news" id="page-news" hidden>
+    <div class="news-head">
+      <div class="sub-tabs" role="tablist">
+        <button class="tab active" data-news="hk" data-i18n="newsHK">香港</button>
+        <button class="tab" data-news="intl" data-i18n="newsIntl">國際</button>
+      </div>
+      <span class="news-updated" id="news-updated"></span>
+    </div>
+    <div id="news-list" class="news-list"></div>
+    <p class="page-note" id="news-note"></p>
+  </section>
+
+  <!-- DECK REFERENCE PAGE -->
+  <section class="page page-decks" id="page-decks" hidden>
+    <p class="page-note" data-i18n="decksIntro">精選參考卡組，一鍵匯入做新 Deck，唔會覆蓋你現有嘅牌組。</p>
+    <div id="ref-decks" class="ref-decks"></div>
+  </section>
+
   <!-- WELCOME / INFO OVERLAY (shown before first use) -->
   <div id="welcome-modal" class="modal-overlay" hidden>
     <div class="modal modal-welcome">
@@ -105,7 +150,7 @@
           <img class="wl-logo" src="img/logo.png" alt="Marvel Hero Rush" />
           <div class="wl-title">MARVEL HERO RUSH</div>
           <div class="wl-sub">DECK BUILDER</div>
-          <div class="wl-version" id="wl-version">v1.4.6-beta</div>
+          <div class="wl-version" id="wl-version">v1.5.0-beta</div>
           <div class="wl-visitors">👁 <span data-i18n="cumulativeUsers">累積使用人數</span>：<span id="wl-visitor-count">–</span></div>
         </div>
         <div class="modal-info wl-info">
@@ -113,8 +158,8 @@
           <div class="wl-section">
             <h3 data-i18n="whatsNewTitle">本版更新</h3>
             <ul class="wl-list" id="wl-whatsnew">
-              <li data-i18n="wn1">多選 Checkbox 篩選：同類 OR、跨類 AND；一鍵清除篩選</li>
-              <li data-i18n="wn2">QR Code 匯入：一掃即自動載入牌組（分享碼已壓縮 -73%，手機可掃）</li>
+              <li data-i18n="wn1">新增 News 同 Deck 參考 Tab：香港賽事、官方消息，一鍵匯入參考卡組</li>
+              <li data-i18n="wn2">篩選改成下拉選單：㩒開先多項剔選，畫面更清爽</li>
               <li data-i18n="wn3">卡庫 449 張：377 角色 + 72 Rush Point 圖鑑（SP01 蜘蛛紀元登場！）</li>
             </ul>
             <a class="wl-changelog" id="wl-changelog-link" href="https://github.com/aaronht88/marvel-hero-rush-deck/blob/main/CHANGELOG.md" target="_blank" rel="noopener" data-i18n="changelogLink">完整 Changelog →</a>
@@ -261,11 +306,12 @@
   <div id="toast" class="toast" hidden></div>
 
   <!-- data + logic (versioned query = cache busting on release) -->
-  <script src="js/i18n.js?v=1.4.6-beta"></script>
-  <script src="js/cards.js?v=1.4.6-beta"></script>
-  <script src="js/cards_cn.js?v=1.4.6-beta"></script>
-  <script src="js/rules.js?v=1.4.6-beta"></script>
-  <script src="js/qrcode.min.js?v=1.4.6-beta"></script>
-  <script src="js/app.js?v=1.4.6-beta"></script>
+  <script src="js/i18n.js?v=1.5.0-beta"></script>
+  <script src="js/cards.js?v=1.5.0-beta"></script>
+  <script src="js/cards_cn.js?v=1.5.0-beta"></script>
+  <script src="js/rules.js?v=1.5.0-beta"></script>
+  <script src="js/qrcode.min.js?v=1.5.0-beta"></script>
+  <script src="js/app.js?v=1.5.0-beta"></script>
+  <script src="js/pages.js?v=1.5.0-beta"></script>
 </body>
 </html>
