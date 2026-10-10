@@ -9,7 +9,7 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 ### Added
 - **頂部分頁**：Deck Builder／News／Deck 參考，可用 `#news`、`#decks` 直接開
 - **News Tab**：香港（代理 Saka Saka 喺 Mato 嘅賽事活動）＋國際（官方網站新聞 API，簡中）
-  - `scripts/fetch_news.py` 抓取並寫入 `data/news.json`；GitHub Actions `news.yml` 每日 09:17 HKT 自動更新並重新部署
+  - `scripts/fetch_news.py` 抓取並寫入 `data/news.json`；每日自動更新嘅 workflow 暫放 `docs/news-workflow.yml`，搬去 `.github/workflows/news.yml` 先會啟用
   - `data/news_overrides.json` 可按 id 加廣東話標題（`title_zh`）同摘要（`summary_zh`），每次抓取都會保留
 - **Deck 參考 Tab**：讀 `data/decks.json`，一鍵匯入做新 Deck（唔覆蓋現有牌組）或複製分享碼；第一批為 4 副 SP01 構築
 
