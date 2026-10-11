@@ -7,6 +7,10 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 ## [Unreleased]
 
 ### Changed
+- Top tab label is now **Vault** only (was 卡庫（Vault）).
+
+
+### Changed
 - **卡庫（Vault）升為頂層主分頁**：與 Deck Builder／News／Deck 參考同級（`#vault`）；Builder 內「全部／最愛／Rush Point」不再含 Vault 子 tab
   - 獨立全寬圖鑑頁（`#page-vault`／`#vault-grid`）：進度、顯示模式／卡面大小、搜尋與篩選、卡面 ＋／− `xN`
   - 資料模型不變：`mhr_vault_v1`／`mhr_vault_ui_v1`、詳情頁已擁有數量、Google 同步
