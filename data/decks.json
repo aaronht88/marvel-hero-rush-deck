@@ -478,7 +478,7 @@
       "date": "2026-10-10",
       "total": 50,
       "code": "1|Fire%20Support%20Loop|B0033A0243A0292A0303A0233A0343C0063C0102A0513A0603B0073A0332A0163A0213B0012A0582A0011A0442C0092A0082",
-      "note": "紅黃火力加成鏈：用 Synchronize、Leverage、Aid Attack 抬 Range 或 Power，觸發 Fire Support 每回合 −1000，再靠 Ordnance Drop、Anti-Tank 疊削。場上有 Pulse Uninstall，喺共生體多嘅局拆附著用。",
+      "note": "紅黃火力加成鏈：以 Synchronize、Leverage、Aid Attack 提升 Range 或 Power，觸發 Fire Support 每回合 −1000，再以 Ordnance Drop、Anti-Tank 疊加削弱。牌組內含 Pulse Uninstall，於共生體較多的對局可用以拆解附著。",
       "cards": [
         {
           "no": "SD01-003",
@@ -596,7 +596,7 @@
       "date": "2026-10-10",
       "total": 50,
       "code": "1|Attach%20Strip%20RG|A0083A0983A1063A1083I0673E0013A0953E0093A1192A0942A1152A0023A1122A1002A0172B0072A0112B0032A0162I0122A0011",
-      "note": "紅綠拆附著專用：Falcon、Airbag 棄牌起動，Clairvoyance 拆走附著並鎖攻擊目標，Pulse Uninstall 清晒全場附著，再配 Anti-Venom、God of Trick 壓共生體同 Knull。",
+      "note": "紅綠拆附著專用：以 Falcon、Airbag 棄牌起動，Clairvoyance 拆解附著並鎖定攻擊目標，Pulse Uninstall 清除全場附著，再配合 Anti-Venom、God of Trick 壓制共生體與 Knull。",
       "cards": [
         {
           "no": "BP01-008",
@@ -719,7 +719,7 @@
       "date": "2026-10-10",
       "total": 50,
       "code": "1|Discard%20Story%20GY|A1063A1083A0983A0953E0093A1192A0943A1152E0013C0033A0603A0332A0321A0512C0092I0232I0211I0342E0022A1072A1002A1121",
-      "note": "綠黃棄牌控制：Falcon、Airbag 棄牌換 Sacrifice、Clairvoyance、True Justice 等回報，收尾靠 God Of Story 按你冇攻擊嘅隻數逼對手退場。對 Knull 可用 Venom 或 Ultimate Mode 軟解。",
+      "note": "綠黃棄牌控制：以 Falcon、Airbag 棄牌換取 Sacrifice、Clairvoyance、True Justice 等回報，收尾依靠 God Of Story，按己方未攻擊的角色數量迫使對手退場。對陣 Knull 時可運用 Venom 或 Ultimate Mode 作軟性解場。",
       "cards": [
         {
           "no": "BP01-106",
@@ -847,7 +847,7 @@
       "date": "2026-10-10",
       "total": 50,
       "code": "1|P500%20Time%20Control|I0453A0703A0632A0763A0793A0873A0902D0013F0082I0422I0461A1103A0983A0773A0812A0822D0022A0942A1152E0022A1062",
-      "note": "藍綠 Range 操控：盡量舖原 Power 500 角色上戰場，Time Control 將全場 Range 統一成嗰個數量，Time Guide 喺藍卡入場時堆 BASE；End Of Time 再靠撤退區 Loki 放大。",
+      "note": "藍綠 Range 操控：盡量將原 Power 500 的角色配置於戰場，Time Control 將全場 Range 統一為該數量，Time Guide 於藍色卡牌入場時累積 BASE；End Of Time 再依靠撤退區的 Loki 放大效果。",
       "cards": [
         {
           "no": "SP01-045",
