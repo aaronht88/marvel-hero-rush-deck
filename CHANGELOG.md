@@ -6,13 +6,18 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 ## [Unreleased]
 
+### Changed
+- **卡庫（Vault）升為頂層主分頁**：與 Deck Builder／News／Deck 參考同級（`#vault`）；Builder 內「全部／最愛／Rush Point」不再含 Vault 子 tab
+  - 獨立全寬圖鑑頁（`#page-vault`／`#vault-grid`）：進度、顯示模式／卡面大小、搜尋與篩選、卡面 ＋／− `xN`
+  - 資料模型不變：`mhr_vault_v1`／`mhr_vault_ui_v1`、詳情頁已擁有數量、Google 同步
+
+ — 1.5.3-beta (draft)
+
 ### Fixed
 - Display mode / card size controls now apply on all browser tabs (not only Vault); fixed toolbar `hidden` overridden by CSS `display:flex`.
 
- — 1.5.2-beta (draft)
-
 ### Added
-- **卡庫（Vault）圖鑑**：Deck Builder 新增「卡庫（Vault）」視圖；未擁有卡牌灰階、已擁有全彩並顯示數量；卡牌詳情可設定「已擁有數量」（按卡 id／印刷分別計算，收藏數量不設 3 張上限）
+- **卡庫（Vault）圖鑑**：未擁有卡牌灰階、已擁有全彩並顯示數量；卡牌詳情可設定「已擁有數量」（按卡 id／印刷分別計算，收藏數量不設 3 張上限）
   - 本機：`localStorage` `mhr_vault_v1`；Google 登入後與 decks／favs／lang 一併雲端同步
   - 保留系列／顏色等篩選；進度「已收集 {owned}／{total}」
   - 文案：`docs/vault-i18n.zh-HK.snippet.js`（PR #9）

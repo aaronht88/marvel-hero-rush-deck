@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.5.2-beta";
+  const APP_VERSION = "1.5.3-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -17,7 +17,8 @@
   let vault = {};            // { [cardId]: ownedQty } — per print/id; no 3-copy cap
   let vaultUi = { mode: "normal", size: "m" }; // Vault display prefs (local only)
   let modalCardId = null;
-  let view = "all";          // "all" | "fav" | "vault" | "rush"
+  let view = "all";          // "all" | "fav" | "rush" (Vault is its own page)
+  let activePage = "builder"; // synced via MHR_APP.onPageShow from pages.js
   let urlImportDone = false; // set when ?deck= import created/switched a deck
 
   // ---------- persistence ----------
@@ -108,17 +109,16 @@
   function saveVaultUi() {
     try { localStorage.setItem(LS_VAULT_UI, JSON.stringify({ mode: vaultUi.mode, size: vaultUi.size })); } catch (e) {}
   }
+  function isVaultPage() {
+    return activePage === "vault";
+  }
   function applyVaultUiChrome() {
-    // Toolbar + face/size modes apply on all browser tabs (全部／最愛／卡庫／Rush).
-    // Owned qty +/- overlays remain Vault-only (see renderCards).
-    const toolbar = $("#vault-toolbar");
-    if (toolbar) toolbar.hidden = false;
-    if (cardGrid) {
-      cardGrid.classList.add("vault-ui");
-      cardGrid.classList.toggle("vault-view", view === "vault");
-      cardGrid.classList.toggle("vault-face", vaultUi.mode === "face");
-      cardGrid.classList.remove("vault-size-s", "vault-size-m", "vault-size-l");
-      cardGrid.classList.add("vault-size-" + vaultUi.size);
+    // Face/size modes apply to the Vault page grid only.
+    if (vaultGrid) {
+      vaultGrid.classList.add("vault-ui", "vault-view");
+      vaultGrid.classList.toggle("vault-face", vaultUi.mode === "face");
+      vaultGrid.classList.remove("vault-size-s", "vault-size-m", "vault-size-l");
+      vaultGrid.classList.add("vault-size-" + vaultUi.size);
     }
     document.querySelectorAll(".vault-mode-btn").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.vaultMode === vaultUi.mode);
@@ -129,13 +129,7 @@
   }
   function updateVaultChrome() {
     const prog = $("#vault-progress");
-    const hint = $("#vault-hint");
-    const showVaultExtras = view === "vault";
-    if (prog) {
-      prog.hidden = !showVaultExtras;
-      if (showVaultExtras) prog.textContent = t("vaultProgress", { owned: vaultOwnedUniqueCount(), total: CARDS.length });
-    }
-    if (hint) hint.hidden = !showVaultExtras;
+    if (prog) prog.textContent = t("vaultProgress", { owned: vaultOwnedUniqueCount(), total: CARDS.length });
     applyVaultUiChrome();
   }
   function loadPersist() {
@@ -161,6 +155,7 @@
   // ---------- DOM refs ----------
   const $ = (sel) => document.querySelector(sel);
   const cardGrid = $("#card-grid");
+  const vaultGrid = $("#vault-grid");
   const deckListEl = $("#deck-list");
   const deckPanel = $("#deck-panel");
   const deckCountEl = $("#deck-count");
@@ -172,6 +167,12 @@
   const filterLevel = $("#filter-level");
   const filterRange = $("#filter-range");
   const filterAttr = $("#filter-attr");
+  const vaultSearchEl = $("#vault-search");
+  const vaultFilterSet = $("#vault-filter-set");
+  const vaultFilterRarity = $("#vault-filter-rarity");
+  const vaultFilterLevel = $("#vault-filter-level");
+  const vaultFilterRange = $("#vault-filter-range");
+  const vaultFilterAttr = $("#vault-filter-attr");
   const deckSelect = $("#deck-select");
   const dmModal = $("#deck-manager");
   const dmList = $("#dm-list");
@@ -193,52 +194,73 @@
     lab.appendChild(span);
     return lab;
   }
-  function buildFilterChecks() {
-    filterSet.innerHTML = "";
+  function fillFilterPanels(setEl, rarEl, lvEl, rngEl, attrEl) {
+    if (!setEl) return;
+    setEl.innerHTML = "";
     Object.keys(CARD_SETS).forEach((s) => {
-      filterSet.appendChild(makeFilterChip(s, CARD_SETS[s] || s));
+      setEl.appendChild(makeFilterChip(s, CARD_SETS[s] || s));
     });
-    filterRarity.innerHTML = "";
+    rarEl.innerHTML = "";
     RARITIES.forEach((r) => {
-      filterRarity.appendChild(makeFilterChip(r, r));
+      rarEl.appendChild(makeFilterChip(r, r));
     });
-    filterLevel.innerHTML = "";
+    lvEl.innerHTML = "";
     for (let lv = 1; lv <= RULES.characterLevels; lv++) {
-      filterLevel.appendChild(makeFilterChip(String(lv), t("lvPrefix") + " " + lv));
+      lvEl.appendChild(makeFilterChip(String(lv), t("lvPrefix") + " " + lv));
     }
-    filterRange.innerHTML = "";
+    rngEl.innerHTML = "";
     for (let rng = 0; rng <= 5; rng++) {
-      filterRange.appendChild(makeFilterChip(String(rng), t("rangePrefix") + " " + rng));
+      rngEl.appendChild(makeFilterChip(String(rng), t("rangePrefix") + " " + rng));
     }
-    filterAttr.innerHTML = "";
+    attrEl.innerHTML = "";
     ATTRIBUTES.forEach((a) => {
-      filterAttr.appendChild(makeFilterChip(a, attrLabel(a)));
+      attrEl.appendChild(makeFilterChip(a, attrLabel(a)));
     });
+  }
+  function buildFilterChecks() {
+    fillFilterPanels(filterSet, filterRarity, filterLevel, filterRange, filterAttr);
+    fillFilterPanels(vaultFilterSet, vaultFilterRarity, vaultFilterLevel, vaultFilterRange, vaultFilterAttr);
   }
   function checkedValues(container) {
+    if (!container) return [];
     return [...container.querySelectorAll("input[type=checkbox]:checked")].map((i) => i.value);
   }
-  function clearAllFilters() {
-    [filterSet, filterRarity, filterLevel, filterRange, filterAttr].forEach((el) => {
+  function clearFilterGroup(els) {
+    els.forEach((el) => {
+      if (!el) return;
       el.querySelectorAll("input[type=checkbox]").forEach((cb) => { cb.checked = false; });
     });
   }
-  function refreshFilterLabels() {
-    filterLevel.querySelectorAll("label.filter-chip").forEach((lab) => {
+  function clearAllFilters() {
+    clearFilterGroup([filterSet, filterRarity, filterLevel, filterRange, filterAttr]);
+  }
+  function clearVaultFilters() {
+    clearFilterGroup([vaultFilterSet, vaultFilterRarity, vaultFilterLevel, vaultFilterRange, vaultFilterAttr]);
+  }
+  function refreshFilterLabelsIn(lvEl, rngEl, attrEl) {
+    if (!lvEl) return;
+    lvEl.querySelectorAll("label.filter-chip").forEach((lab) => {
       const v = lab.querySelector("input").value;
       lab.querySelector(".filter-chip-label").textContent = t("lvPrefix") + " " + v;
     });
-    filterRange.querySelectorAll("label.filter-chip").forEach((lab) => {
+    rngEl.querySelectorAll("label.filter-chip").forEach((lab) => {
       const v = lab.querySelector("input").value;
       lab.querySelector(".filter-chip-label").textContent = t("rangePrefix") + " " + v;
     });
-    filterAttr.querySelectorAll("label.filter-chip").forEach((lab) => {
+    attrEl.querySelectorAll("label.filter-chip").forEach((lab) => {
       const v = lab.querySelector("input").value;
       lab.querySelector(".filter-chip-label").textContent = attrLabel(v);
     });
   }
+  function refreshFilterLabels() {
+    refreshFilterLabelsIn(filterLevel, filterRange, filterAttr);
+    refreshFilterLabelsIn(vaultFilterLevel, vaultFilterRange, vaultFilterAttr);
+  }
   // ---------- filter dropdowns (tap to open, multi-select inside) ----------
-  const FILTER_ELS = () => [filterSet, filterRarity, filterLevel, filterRange, filterAttr];
+  const FILTER_ELS = () => [
+    filterSet, filterRarity, filterLevel, filterRange, filterAttr,
+    vaultFilterSet, vaultFilterRarity, vaultFilterLevel, vaultFilterRange, vaultFilterAttr,
+  ].filter(Boolean);
   function updateFilterSummaries() {
     FILTER_ELS().forEach((el) => {
       const sum = document.querySelector('[data-summary-for="' + el.id + '"]');
@@ -324,31 +346,40 @@
 
   buildFilterChecks();
 
-  function cardMatches(card) {
-    // Rush Point: own tab, or included in Vault 圖鑑
-    if (card.type === "impact" && view !== "vault") return false;
-    const q = searchEl.value.trim().toLowerCase();
+  function cardMatchesFilters(card, q, setEl, rarEl, lvEl, rngEl, attrEl) {
     // Within category: OR; across categories: AND; empty category = no restriction
-    const sets = checkedValues(filterSet);
-    const rars = checkedValues(filterRarity);
-    const lvs = checkedValues(filterLevel);
-    const rngs = checkedValues(filterRange);
-    const attrs = checkedValues(filterAttr);
+    const sets = checkedValues(setEl);
+    const rars = checkedValues(rarEl);
+    const lvs = checkedValues(lvEl);
+    const rngs = checkedValues(rngEl);
+    const attrs = checkedValues(attrEl);
     if (sets.length && !sets.includes(card.set)) return false;
     if (rars.length && !rars.includes(card.rarity)) return false;
     if (lvs.length && !lvs.includes(String(card.level))) return false;
     if (rngs.length && !rngs.includes(String(card.attackRange))) return false;
     if (attrs.length && !attrs.includes(card.attribute)) return false;
-    if (view === "fav" && !favs.has(card.id)) return false;
     if (q) {
       const hay = (card.name + " " + cnCard(card, "name") + " " + card.card_no + " " + (card.feature || "") + " " + cnCard(card, "feature") + " " + (card.effect || "") + " " + cnCard(card, "effect")).toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
   }
+  function cardMatches(card) {
+    // Builder: Rush Point only on its own tab (Vault page includes them separately)
+    if (card.type === "impact") return false;
+    if (view === "fav" && !favs.has(card.id)) return false;
+    const q = searchEl ? searchEl.value.trim().toLowerCase() : "";
+    return cardMatchesFilters(card, q, filterSet, filterRarity, filterLevel, filterRange, filterAttr);
+  }
+  function cardMatchesVault(card) {
+    // Vault atlas includes characters + Rush Point prints
+    const q = vaultSearchEl ? vaultSearchEl.value.trim().toLowerCase() : "";
+    return cardMatchesFilters(card, q, vaultFilterSet, vaultFilterRarity, vaultFilterLevel, vaultFilterRange, vaultFilterAttr);
+  }
 
   // ---------- render card browser ----------
   function getFilteredCards() { return CARDS.filter(cardMatches); }
+  function getVaultFilteredCards() { return CARDS.filter(cardMatchesVault); }
 
   // ---------- Rush Point 圖鑑 (impact cards) ----------
   function renderRushGallery() {
@@ -384,40 +415,40 @@
     });
   }
 
-  function renderCards() {
-    cardGrid.innerHTML = "";
+  function bindVaultQtyButtons(el, cardId) {
+    el.querySelectorAll(".vault-qty-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const dir = Number(btn.dataset.dir) || 0;
+        setVaultQty(cardId, getVaultQty(cardId) + dir);
+      });
+    });
+  }
+  function renderVaultGrid() {
+    if (!vaultGrid) return;
+    vaultGrid.innerHTML = "";
     updateVaultChrome();
-    if (view === "rush") { renderRushGallery(); return; }
-    const list = getFilteredCards();
+    const list = getVaultFilteredCards();
     if (!list.length) {
       const ownedAny = vaultOwnedUniqueCount() > 0;
-      const emptyText = (view === "vault" && !ownedAny && !searchEl.value.trim() && !checkedValues(filterSet).length && !checkedValues(filterRarity).length && !checkedValues(filterLevel).length && !checkedValues(filterRange).length && !checkedValues(filterAttr).length)
-        ? t("vaultEmpty")
-        : t("noMatch");
-      cardGrid.innerHTML = '<p style="color:var(--muted)">' + emptyText + "</p>";
+      const q = vaultSearchEl ? vaultSearchEl.value.trim() : "";
+      const noFilters = !q
+        && !checkedValues(vaultFilterSet).length
+        && !checkedValues(vaultFilterRarity).length
+        && !checkedValues(vaultFilterLevel).length
+        && !checkedValues(vaultFilterRange).length
+        && !checkedValues(vaultFilterAttr).length;
+      const emptyText = (!ownedAny && noFilters) ? t("vaultEmpty") : t("noMatch");
+      vaultGrid.innerHTML = '<p style="color:var(--muted)">' + emptyText + "</p>";
       return;
     }
     list.forEach((card) => {
-      const inDeck = deck.get(card.id) || 0;
-      const inFav = favs.has(card.id);
       const ownedQty = getVaultQty(card.id);
-      const isVault = view === "vault";
       const el = document.createElement("div");
       const attrClass = card.attribute ? (" attr-" + card.attribute) : "";
-      let cls = "card" + attrClass + (inFav && !isVault ? " is-fav" : "");
-      if (isVault) cls += ownedQty > 0 ? " is-owned" : " is-unowned";
-      el.className = cls;
-      el.draggable = !isVault && card.type !== "impact";
-      const vaultBadge = !isVault && ownedQty > 0
-        ? `<span class="badge badge-vault">x${ownedQty}</span>`
-        : "";
-      const vaultQtyCtl = isVault
-        ? `<div class="vault-qty" data-vault-qty="${card.id}">
-            <button type="button" class="vault-qty-btn vault-qty-dec" data-dir="-1" title="${t("vaultDec")}" aria-label="${t("vaultDec")}">−</button>
-            <span class="vault-qty-num" title="${ownedQty > 0 ? t("vaultOwned") : t("vaultNotOwned")}">x${ownedQty}</span>
-            <button type="button" class="vault-qty-btn vault-qty-inc" data-dir="1" title="${t("vaultInc")}" aria-label="${t("vaultInc")}">+</button>
-          </div>`
-        : "";
+      el.className = "card" + attrClass + (ownedQty > 0 ? " is-owned" : " is-unowned");
+      el.draggable = false;
       const tags = card.type === "impact"
         ? `${card.card_no}`
         : `${card.id} · ${t("lvPrefix")} ${card.level} · PWR ${card.power} · ${t("rangePrefix")} ${card.attackRange}`;
@@ -426,12 +457,12 @@
         : "";
       el.innerHTML = `
         <div class="art"><img loading="lazy" src="${card.art}" alt="${cnCard(card, "name")}" onerror="this.style.display='none'"></div>
-        <div class="badges">
-          ${!isVault && inFav ? '<span class="badge badge-fav">★</span>' : ""}
-          ${!isVault && inDeck ? `<span class="badge badge-deck">×${inDeck}</span>` : ""}
-          ${vaultBadge}
+        <div class="badges"></div>
+        <div class="vault-qty" data-vault-qty="${card.id}">
+          <button type="button" class="vault-qty-btn vault-qty-dec" data-dir="-1" title="${t("vaultDec")}" aria-label="${t("vaultDec")}">−</button>
+          <span class="vault-qty-num" title="${ownedQty > 0 ? t("vaultOwned") : t("vaultNotOwned")}">x${ownedQty}</span>
+          <button type="button" class="vault-qty-btn vault-qty-inc" data-dir="1" title="${t("vaultInc")}" aria-label="${t("vaultInc")}">+</button>
         </div>
-        ${vaultQtyCtl}
         <div class="meta">
           <div class="cname" title="${cnCard(card, "name")}">${cnCard(card, "name")}</div>
           <div class="ctags">${tags}</div>
@@ -441,16 +472,50 @@
             <span class="chip chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
           </div>
         </div>`;
-      if (isVault) {
-        el.querySelectorAll(".vault-qty-btn").forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const dir = Number(btn.dataset.dir) || 0;
-            setVaultQty(card.id, getVaultQty(card.id) + dir);
-          });
-        });
-      }
+      bindVaultQtyButtons(el, card.id);
+      el.addEventListener("click", () => openModal(card.id));
+      vaultGrid.appendChild(el);
+    });
+  }
+  function renderBuilderCards() {
+    cardGrid.innerHTML = "";
+    if (view === "rush") { renderRushGallery(); return; }
+    const list = getFilteredCards();
+    if (!list.length) {
+      cardGrid.innerHTML = '<p style="color:var(--muted)">' + t("noMatch") + "</p>";
+      return;
+    }
+    list.forEach((card) => {
+      const inDeck = deck.get(card.id) || 0;
+      const inFav = favs.has(card.id);
+      const ownedQty = getVaultQty(card.id);
+      const el = document.createElement("div");
+      const attrClass = card.attribute ? (" attr-" + card.attribute) : "";
+      el.className = "card" + attrClass + (inFav ? " is-fav" : "");
+      el.draggable = card.type !== "impact";
+      const vaultBadge = ownedQty > 0
+        ? `<span class="badge badge-vault">x${ownedQty}</span>`
+        : "";
+      const tags = `${card.id} · ${t("lvPrefix")} ${card.level} · PWR ${card.power} · ${t("rangePrefix")} ${card.attackRange}`;
+      const attrChip = card.attribute
+        ? `<span class="chip chip-attr chip-${card.attribute}">${attrLabel(card.attribute)}</span>`
+        : "";
+      el.innerHTML = `
+        <div class="art"><img loading="lazy" src="${card.art}" alt="${cnCard(card, "name")}" onerror="this.style.display='none'"></div>
+        <div class="badges">
+          ${inFav ? '<span class="badge badge-fav">★</span>' : ""}
+          ${inDeck ? `<span class="badge badge-deck">×${inDeck}</span>` : ""}
+          ${vaultBadge}
+        </div>
+        <div class="meta">
+          <div class="cname" title="${cnCard(card, "name")}">${cnCard(card, "name")}</div>
+          <div class="ctags">${tags}</div>
+          <div class="cmeta">
+            ${attrChip}
+            <span class="rar rar-${card.rarity}">${card.rarity}</span>
+            <span class="chip chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
+          </div>
+        </div>`;
       el.addEventListener("click", () => openModal(card.id));
       if (el.draggable) {
         el.addEventListener("dragstart", (e) => {
@@ -462,6 +527,13 @@
       }
       cardGrid.appendChild(el);
     });
+  }
+  function renderCards() {
+    if (isVaultPage()) {
+      renderVaultGrid();
+      return;
+    }
+    renderBuilderCards();
   }
 
   // ---------- deck mutations ----------
@@ -1051,9 +1123,24 @@
       renderCards();
     });
   }
+  if (vaultSearchEl) vaultSearchEl.addEventListener("input", () => { if (isVaultPage()) renderVaultGrid(); });
+  [vaultFilterSet, vaultFilterRarity, vaultFilterLevel, vaultFilterRange, vaultFilterAttr].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("change", () => { updateFilterSummaries(); if (isVaultPage()) renderVaultGrid(); });
+  });
+  const vaultFilterClearBtn = $("#vault-filter-clear");
+  if (vaultFilterClearBtn) {
+    vaultFilterClearBtn.addEventListener("click", () => {
+      clearVaultFilters();
+      updateFilterSummaries();
+      if (isVaultPage()) renderVaultGrid();
+    });
+  }
 
   // view tabs
   function setView(v) {
+    if (v === "vault") v = "all"; // Vault moved to top-level page
+    if (v !== "all" && v !== "fav" && v !== "rush") v = "all";
     view = v;
     document.querySelectorAll(".view-tabs .tab").forEach((x) => x.classList.toggle("active", x.dataset.view === v));
     renderCards();
@@ -1066,6 +1153,7 @@
       vaultUi.mode = btn.dataset.vaultMode === "face" ? "face" : "normal";
       saveVaultUi();
       applyVaultUiChrome();
+      if (isVaultPage()) renderVaultGrid();
     });
   });
   document.querySelectorAll(".vault-size-btn").forEach((btn) => {
@@ -1075,6 +1163,7 @@
       vaultUi.size = s;
       saveVaultUi();
       applyVaultUiChrome();
+      if (isVaultPage()) renderVaultGrid();
     });
   });
   // welcome overlay: donate button closes welcome + opens donation overlay
@@ -1286,6 +1375,15 @@
     analyzeShareCode,
     getShareCode: () => encodeShare(),
     toast,
+    onPageShow(page) {
+      activePage = page || "builder";
+      if (activePage === "vault") {
+        updateFilterSummaries();
+        renderVaultGrid();
+      } else if (activePage === "builder") {
+        renderBuilderCards();
+      }
+    },
     onLangChange() {
       // refresh checkbox labels (level/range prefixes, attr colors)
       refreshFilterLabels();

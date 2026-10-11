@@ -6,7 +6,7 @@
   const { t } = window.MHR_I18N;
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const PAGES = ["builder", "news", "decks"];
+  const PAGES = ["builder", "vault", "news", "decks"];
   const COLOR_VAR = { Red: "var(--red)", Yellow: "var(--yellow)", Blue: "var(--blue)", Green: "var(--green)" };
   const CHECK_LABELS = {
     card_count_50: "A1 · 剛好 50 張角色卡",
@@ -64,6 +64,11 @@
       }
       refreshCommunity();
     }
+    try {
+      if (window.MHR_APP && typeof window.MHR_APP.onPageShow === "function") {
+        window.MHR_APP.onPageShow(p);
+      }
+    } catch (e) {}
     render();
   }
   document.querySelectorAll(".page-tab").forEach((b) => b.addEventListener("click", () => showPage(b.dataset.page, true)));
