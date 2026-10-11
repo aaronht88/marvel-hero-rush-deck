@@ -23,6 +23,7 @@
   let lastStatus = "idle";
   let lastStatusDetail = "";
   let lastSyncedAt = null;
+  let authListeners = [];
 
   function t(key, vars) {
     try { return hooks.t ? hooks.t(key, vars) : key; } catch (e) { return key; }
@@ -81,6 +82,7 @@
   function clearSession() {
     session = null;
     try { sessionStorage.removeItem(SS_SESSION); } catch (e) {}
+    notifyAuth();
   }
   function restoreSession() {
     try {
@@ -255,6 +257,7 @@
         toast(t("googleSyncApiMissing"));
       }
     }
+    notifyAuth();
   }
 
   // ---------- Worker API ----------
@@ -729,6 +732,15 @@
     updateUI();
   }
 
+  function notifyAuth() {
+    authListeners.forEach((fn) => {
+      try { fn({ signedIn: isSignedIn(), email: (session && session.email) || "" }); } catch (e) {}
+    });
+  }
+  function onAuthChange(fn) {
+    if (typeof fn === "function") authListeners.push(fn);
+  }
+
   window.MHRGoogleSync = {
     init,
     onLocalChange,
@@ -739,6 +751,9 @@
     signOut,
     syncNow,
     refreshLabels,
+    apiFetch,
+    onAuthChange,
     getUserEmail: () => (session && session.email) || "",
+    getSyncApiBase: () => syncApiBase(),
   };
 })();

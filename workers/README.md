@@ -61,6 +61,19 @@ npm run dev
 | DELETE | `/api/auth` | cookie optional | clears cookie |
 | GET | `/api/sync` | Bearer session / id_token or cookie | returns `{ empty, payload }` |
 | PUT | `/api/sync` | same | body `{ payload }` — decks / favs / lang / updatedAt |
+| GET | `/api/me` | Bearer / cookie | `{ sub, email, is_admin }` |
+| GET | `/api/decks?status=published` | optional | public community decks + `my_vote` if signed in |
+| GET | `/api/decks?status=pending` | admin | pending queue |
+| GET | `/api/decks?mine=1` | auth | caller's submissions |
+| POST | `/api/decks` | auth | create **pending** (A/B hard checks); never instant-publish |
+| PATCH | `/api/decks/:id` | admin | `{ action: pass|reject|revise, checklist, reject_reason }` — reject/revise need reason (A/C) |
+| PATCH | `/api/decks/:id` | owner | `{ action: resubmit, ... }` when status is `revise` |
+| POST | `/api/decks/:id/vote` | auth | `{ value: 1|-1 }` — **published only**; toggle off if same value |
+
+Admin allowlist: `ADMIN_EMAILS` in `wrangler.toml` `[vars]` (comma-separated). Default `aaronht88@gmail.com`.
+
+Community tables: `migrations/0002_community_decks.sql` (`community_decks`, `community_votes`).
+
 
 CORS allows `https://mhrdeckbuild.duckdns.org` and localhost:5500 (see `ALLOWED_ORIGINS`).
 

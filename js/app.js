@@ -1047,6 +1047,53 @@
   });
 
   // language change re-render hook (called by i18n.js setLang)
+
+  /** Analyze share code for community submit (A hard checks using live CARDS). */
+  function analyzeShareCode(code) {
+    const r = decodeShare(code);
+    if (!r || !r.deck || !r.deck.size) {
+      return { ok: false, checklist: { code_importable: false, card_count_50: false, unique_name_leq_3: false, colors_ok: false, no_rush_points: false }, colors: [], total: 0, entries: [] };
+    }
+    let total = 0;
+    const byName = new Map();
+    const colors = new Set();
+    let rush = false;
+    const entries = [];
+    r.deck.forEach((qty, id) => {
+      const c = getCard(id);
+      if (!c) return;
+      total += qty;
+      entries.push({ id, qty, name: c.name, no: c.card_no || id });
+      byName.set(c.name, (byName.get(c.name) || 0) + qty);
+      if (c.attribute) colors.add(c.attribute);
+      // Rush Point cards are type Rush / rush in data; also id heuristics
+      const isRush = (c.type && /rush/i.test(c.type)) || (typeof c.card_no === "string" && false);
+      if (isRush) rush = true;
+    });
+    // Extra rush heuristic by known number ranges if type missing
+    r.deck.forEach((qty, id) => {
+      const m = String(id).match(/^(BP01|SP01|EB01|SD0[1-4]|PB01|TB01)-(\d{3})/);
+      if (!m) return;
+      const set = m[1], n = parseInt(m[2], 10);
+      if (set === "BP01" && n >= 121 && n <= 150) rush = true;
+      if (set === "SP01" && n >= 81 && n <= 100) rush = true;
+      if (/^SD0[1-4]$/.test(set) && n >= 121) rush = true;
+      if ((set === "EB01" || set === "PB01" || set === "TB01") && n >= 121) rush = true;
+    });
+    let nameOk = true;
+    byName.forEach((q) => { if (q > 3) nameOk = false; });
+    const colorArr = [...colors];
+    const checklist = {
+      code_importable: true,
+      card_count_50: total === 50,
+      unique_name_leq_3: nameOk,
+      colors_ok: colorArr.length >= 1 && colorArr.length <= 2,
+      no_rush_points: !rush,
+    };
+    const ok = checklist.code_importable && checklist.card_count_50 && checklist.unique_name_leq_3 && checklist.colors_ok && checklist.no_rush_points;
+    return { ok, checklist, colors: colorArr, total, entries, name: r.name || null };
+  }
+
   window.MHR_APP = {
     // import a share code as a NEW deck (used by the Deck reference tab)
     importCode(code) {
@@ -1056,6 +1103,8 @@
       renderCards();
       return true;
     },
+    analyzeShareCode,
+    getShareCode: () => encodeShare(),
     toast,
     onLangChange() {
       // refresh checkbox labels (level/range prefixes, attr colors)

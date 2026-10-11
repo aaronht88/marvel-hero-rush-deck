@@ -826,3 +826,47 @@ body.modal-open { overflow: hidden; }
 }
 
 .ref-deck-note{margin:.35rem 0 .5rem;color:var(--muted);font-size:.92rem;line-height:1.35}
+
+/* Community decks / submit / admin */
+.deck-subtabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.deck-subtab {
+  background: transparent; border: 1px solid var(--border-soft); color: var(--muted);
+  border-radius: 999px; padding: 6px 12px; font-size: 12px; cursor: pointer;
+}
+.deck-subtab.active { color: var(--text); border-color: var(--cyan); background: rgba(34, 211, 238, .08); }
+.deck-subtab .tab-count {
+  display: inline-block; min-width: 1.2em; padding: 0 5px; margin-left: 4px;
+  border-radius: 999px; background: var(--gold); color: #111; font-size: 11px;
+}
+.ref-decks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.deck-badge {
+  margin-left: auto; font-size: 10px; color: var(--cyan); border: 1px solid var(--cyan-dim);
+  border-radius: 4px; padding: 1px 6px; white-space: nowrap;
+}
+.deck-status { font-size: 11px; margin-left: 8px; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--border-soft); }
+.status-pending { color: var(--gold); }
+.status-published { color: var(--cyan); }
+.status-rejected { color: #f87171; }
+.status-revise { color: #fb923c; }
+.vote-btn.active { border-color: var(--cyan); color: var(--cyan); }
+.vote-score { font-size: 12px; color: var(--muted); align-self: center; }
+.submit-box {
+  max-width: 560px; background: var(--panel); border: 1px solid var(--border-soft);
+  border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+}
+.field-label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--text); }
+.field-hint { font-size: 11px; color: var(--muted); }
+.submit-box input, .submit-box textarea {
+  background: var(--bg); border: 1px solid var(--border-soft); color: var(--text);
+  border-radius: 6px; padding: 8px 10px; font: inherit;
+}
+.mono-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; word-break: break-all; }
+.checklist { display: flex; flex-direction: column; gap: 4px; margin: 8px 0; font-size: 12px; }
+.chk-row { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+.chk-preview { font-size: 12px; }
+.chk-preview.ok { color: #4ade80; }
+.chk-preview.bad { color: #f87171; }
+.ref-deck-note.warn { color: #fb923c; }
+.btn-danger { border-color: rgba(248, 113, 113, .5); color: #f87171; }
+.admin-reason { width: 100%; margin-top: 4px; }
+.decks-intro-line { margin: 0 0 12px; }
