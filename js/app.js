@@ -109,14 +109,16 @@
     try { localStorage.setItem(LS_VAULT_UI, JSON.stringify({ mode: vaultUi.mode, size: vaultUi.size })); } catch (e) {}
   }
   function applyVaultUiChrome() {
-    const show = view === "vault";
+    // Toolbar + face/size modes apply on all browser tabs (全部／最愛／卡庫／Rush).
+    // Owned qty +/- overlays remain Vault-only (see renderCards).
     const toolbar = $("#vault-toolbar");
-    if (toolbar) toolbar.hidden = !show;
+    if (toolbar) toolbar.hidden = false;
     if (cardGrid) {
-      cardGrid.classList.toggle("vault-ui", show);
-      cardGrid.classList.toggle("vault-face", show && vaultUi.mode === "face");
+      cardGrid.classList.add("vault-ui");
+      cardGrid.classList.toggle("vault-view", view === "vault");
+      cardGrid.classList.toggle("vault-face", vaultUi.mode === "face");
       cardGrid.classList.remove("vault-size-s", "vault-size-m", "vault-size-l");
-      if (show) cardGrid.classList.add("vault-size-" + vaultUi.size);
+      cardGrid.classList.add("vault-size-" + vaultUi.size);
     }
     document.querySelectorAll(".vault-mode-btn").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.vaultMode === vaultUi.mode);
@@ -128,12 +130,12 @@
   function updateVaultChrome() {
     const prog = $("#vault-progress");
     const hint = $("#vault-hint");
-    const show = view === "vault";
+    const showVaultExtras = view === "vault";
     if (prog) {
-      prog.hidden = !show;
-      if (show) prog.textContent = t("vaultProgress", { owned: vaultOwnedUniqueCount(), total: CARDS.length });
+      prog.hidden = !showVaultExtras;
+      if (showVaultExtras) prog.textContent = t("vaultProgress", { owned: vaultOwnedUniqueCount(), total: CARDS.length });
     }
-    if (hint) hint.hidden = !show;
+    if (hint) hint.hidden = !showVaultExtras;
     applyVaultUiChrome();
   }
   function loadPersist() {
