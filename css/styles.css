@@ -489,6 +489,20 @@ body.modal-open { overflow: hidden; }
   .vault-qty-btn { width: 32px; height: 32px; min-height: 32px; }
 }
 
+/* Vault as top-level page: full-width atlas (no deck sidebar) */
+.page-vault {
+  padding: 16px max(16px, calc((100% - 1200px) / 2));
+}
+.page-vault .vault-page-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: 0;
+}
+.page-vault .vault-toolbar { margin-bottom: 12px; }
+.page-vault .vault-controls { margin-bottom: 14px; }
+.page-vault #vault-grid { flex: 1 1 auto; }
+
 
 .chip { font-size: 9.5px; padding: 1px 5px; border-radius: 3px; letter-spacing: .4px; white-space: nowrap; }
 .chip-attr { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.5); }
@@ -937,7 +951,7 @@ body.modal-open { overflow: hidden; }
 @keyframes dd-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 
 /* news + deck reference pages */
-.page-news, .page-decks {
+.page-news, .page-decks, .page-vault {
   flex: 1 1 auto; min-height: 0; overflow-y: auto; position: relative; z-index: 1;
   padding: 16px max(16px, calc((100% - 980px) / 2));
 }
@@ -981,7 +995,7 @@ body.modal-open { overflow: hidden; }
   /* phone: open the panel inline as a full-width row under its button */
   .filter-dd { display: contents; }
   .filter-dd-panel { position: static; flex: 1 1 100%; max-width: none; min-width: 0; max-height: none; box-shadow: none; }
-  .page-news, .page-decks { padding: 12px; }
+  .page-news, .page-decks, .page-vault { padding: 12px; }
 }
 
 .ref-deck-note{margin:.35rem 0 .5rem;color:var(--muted);font-size:.92rem;line-height:1.35}
