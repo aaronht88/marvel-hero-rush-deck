@@ -4,6 +4,17 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [Unreleased] — 1.5.1-beta (draft)
+
+### Added
+- **Google 登入 + 雲端同步（骨架）**：GIS `id_token` 登入；可選 Cloudflare Workers + D1 按 Google `sub` 儲存牌組／最愛／語言（`feat/google-auth-sync`）
+  - 前端：`js/google-config.js`、`js/google-auth.js`；`SYNC_API_BASE` 未設定時仍可登入顯示身分，不同步
+  - 後端骨架：`workers/`（須自行 `wrangler` 建立 D1 並部署）
+  - 說明：`docs/GOOGLE_AUTH_SYNC.md`；私隱政策：`privacy.html`
+- 本機與雲端資料衝突時可選擇保留本機／使用雲端
+
+> 注意：此功能須部署 Worker 並填入 `SYNC_API_BASE` 後才會真正跨裝置同步；與舊實驗分支 `feat/google-drive-sync`（Drive API）無關。
+
 ## [1.5.0-beta] — 2026-10-08
 
 ### Added

@@ -1,0 +1,17 @@
+{
+  "name": "mhr-deck-sync",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Cloudflare Worker + D1 sync API for Marvel Hero Rush Deck Builder",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "d1:create": "wrangler d1 create mhr-deck-sync",
+    "d1:migrate:local": "wrangler d1 execute mhr-deck-sync --local --file=./migrations/0001_init.sql",
+    "d1:migrate:remote": "wrangler d1 execute mhr-deck-sync --remote --file=./migrations/0001_init.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^4.40.0"
+  }
+}
