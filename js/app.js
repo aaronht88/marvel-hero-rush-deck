@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.5.1-beta";
+  const APP_VERSION = "1.5.2-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -14,12 +14,13 @@
   let currentDeckId = null;
   let deck = new Map();      // working deck (current)
   let favs = new Set();      // card ids
+  let vault = {};            // { [cardId]: ownedQty } — per print/id; no 3-copy cap
   let modalCardId = null;
-  let view = "all";          // "all" | "fav"
+  let view = "all";          // "all" | "fav" | "vault" | "rush"
   let urlImportDone = false; // set when ?deck= import created/switched a deck
 
   // ---------- persistence ----------
-  const LS_DECKS = "mhr_decks_v3", LS_FAVS = "mhr_favs_v2", LS_LEGACY_DECK = "mhr_deck_v2";
+  const LS_DECKS = "mhr_decks_v3", LS_FAVS = "mhr_favs_v2", LS_LEGACY_DECK = "mhr_deck_v2", LS_VAULT = "mhr_vault_v1";
   function genId() { return "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
   function notifyGoogleSync() {
     try {
@@ -40,8 +41,68 @@
     try { localStorage.setItem(LS_FAVS, JSON.stringify([...favs])); } catch (e) {}
     notifyGoogleSync();
   }
+  function normalizeVaultQty(n) {
+    const v = Math.floor(Number(n));
+    if (!Number.isFinite(v) || v <= 0) return 0;
+    return v; // no upper cap (collection can exceed deck copy limit of 3)
+  }
+  function getVaultQty(id) {
+    return normalizeVaultQty(vault[id]);
+  }
+  function setVaultQty(id, qty) {
+    if (!getCard(id)) return;
+    const n = normalizeVaultQty(qty);
+    if (n <= 0) delete vault[id];
+    else vault[id] = n;
+    saveVault();
+    renderCards();
+    updateModalActions();
+  }
+  function saveVault() {
+    try {
+      const clean = {};
+      Object.keys(vault).forEach((id) => {
+        if (!getCard(id)) return;
+        const n = normalizeVaultQty(vault[id]);
+        if (n > 0) clean[id] = n;
+      });
+      vault = clean;
+      localStorage.setItem(LS_VAULT, JSON.stringify(vault));
+    } catch (e) {}
+    notifyGoogleSync();
+  }
+  function loadVault() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(LS_VAULT) || "{}");
+      const next = {};
+      if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+        Object.keys(raw).forEach((id) => {
+          if (!getCard(id)) return;
+          const n = normalizeVaultQty(raw[id]);
+          if (n > 0) next[id] = n;
+        });
+      }
+      vault = next;
+    } catch (e) { vault = {}; }
+  }
+  function vaultOwnedUniqueCount() {
+    let n = 0;
+    Object.keys(vault).forEach((id) => { if (getVaultQty(id) > 0 && getCard(id)) n++; });
+    return n;
+  }
+  function updateVaultChrome() {
+    const prog = $("#vault-progress");
+    const hint = $("#vault-hint");
+    const show = view === "vault";
+    if (prog) {
+      prog.hidden = !show;
+      if (show) prog.textContent = t("vaultProgress", { owned: vaultOwnedUniqueCount(), total: CARDS.length });
+    }
+    if (hint) hint.hidden = !show;
+  }
   function loadPersist() {
     try { favs = new Set(JSON.parse(localStorage.getItem(LS_FAVS) || "[]").filter((id) => getCard(id))); } catch (e) { favs = new Set(); }
+    loadVault();
     let stored = null;
     try { stored = JSON.parse(localStorage.getItem(LS_DECKS) || "null"); } catch (e) { stored = null; }
     if (stored && Array.isArray(stored.decks) && stored.decks.length) {
@@ -225,7 +286,8 @@
   buildFilterChecks();
 
   function cardMatches(card) {
-    if (card.type === "impact") return false; // Rush Point cards live in their own 圖鑑 view
+    // Rush Point: own tab, or included in Vault 圖鑑
+    if (card.type === "impact" && view !== "vault") return false;
     const q = searchEl.value.trim().toLowerCase();
     // Within category: OR; across categories: AND; empty category = no restriction
     const sets = checkedValues(filterSet);
@@ -265,9 +327,11 @@
     cardGrid.appendChild(hint);
     rush.forEach((card) => {
       const el = document.createElement("div");
-      el.className = "card rush-tile";
+      const ownedQty = getVaultQty(card.id);
+      el.className = "card rush-tile" + (ownedQty > 0 ? " is-owned" : " is-unowned");
       el.innerHTML = `
         <div class="art"><img loading="lazy" src="${card.art}" alt="${cnCard(card, "name")}" onerror="this.style.display='none'"></div>
+        <div class="badges">${ownedQty > 0 ? `<span class="badge badge-vault">×${ownedQty}</span>` : ""}</div>
         <div class="meta">
           <div class="cname" title="${cnCard(card, "name")}">${cnCard(card, "name")}</div>
           <div class="ctags">${card.card_no}</div>
@@ -276,46 +340,71 @@
             <span class="rar rar-C">${card.rarity}</span>
           </div>
         </div>`;
+      el.addEventListener("click", () => openModal(card.id));
       cardGrid.appendChild(el);
     });
   }
 
   function renderCards() {
     cardGrid.innerHTML = "";
+    updateVaultChrome();
     if (view === "rush") { renderRushGallery(); return; }
     const list = getFilteredCards();
     if (!list.length) {
-      cardGrid.innerHTML = '<p style="color:var(--muted)">' + t("noMatch") + "</p>";
+      const ownedAny = vaultOwnedUniqueCount() > 0;
+      const emptyText = (view === "vault" && !ownedAny && !searchEl.value.trim() && !checkedValues(filterSet).length && !checkedValues(filterRarity).length && !checkedValues(filterLevel).length && !checkedValues(filterRange).length && !checkedValues(filterAttr).length)
+        ? t("vaultEmpty")
+        : t("noMatch");
+      cardGrid.innerHTML = '<p style="color:var(--muted)">' + emptyText + "</p>";
       return;
     }
     list.forEach((card) => {
       const inDeck = deck.get(card.id) || 0;
       const inFav = favs.has(card.id);
+      const ownedQty = getVaultQty(card.id);
+      const isVault = view === "vault";
       const el = document.createElement("div");
-      el.className = "card attr-" + card.attribute + (inFav ? " is-fav" : "");
-      el.draggable = true;
+      const attrClass = card.attribute ? (" attr-" + card.attribute) : "";
+      let cls = "card" + attrClass + (inFav && !isVault ? " is-fav" : "");
+      if (isVault) cls += ownedQty > 0 ? " is-owned" : " is-unowned";
+      el.className = cls;
+      el.draggable = !isVault && card.type !== "impact";
+      const vaultBadge = isVault
+        ? (ownedQty > 0
+            ? `<span class="badge badge-vault" title="${t("vaultOwned")}">×${ownedQty}</span>`
+            : `<span class="badge badge-vault-miss" title="${t("vaultNotOwned")}">—</span>`)
+        : (ownedQty > 0 ? `<span class="badge badge-vault">×${ownedQty}</span>` : "");
+      const tags = card.type === "impact"
+        ? `${card.card_no}`
+        : `${card.id} · ${t("lvPrefix")} ${card.level} · PWR ${card.power} · ${t("rangePrefix")} ${card.attackRange}`;
+      const attrChip = card.attribute
+        ? `<span class="chip chip-attr chip-${card.attribute}">${attrLabel(card.attribute)}</span>`
+        : "";
       el.innerHTML = `
         <div class="art"><img loading="lazy" src="${card.art}" alt="${cnCard(card, "name")}" onerror="this.style.display='none'"></div>
         <div class="badges">
-          ${inFav ? '<span class="badge badge-fav">★</span>' : ""}
-          ${inDeck ? `<span class="badge badge-deck">×${inDeck}</span>` : ""}
+          ${!isVault && inFav ? '<span class="badge badge-fav">★</span>' : ""}
+          ${!isVault && inDeck ? `<span class="badge badge-deck">×${inDeck}</span>` : ""}
+          ${vaultBadge}
         </div>
         <div class="meta">
           <div class="cname" title="${cnCard(card, "name")}">${cnCard(card, "name")}</div>
-          <div class="ctags">${card.id} · ${t("lvPrefix")} ${card.level} · PWR ${card.power} · ${t("rangePrefix")} ${card.attackRange}</div>
+          <div class="ctags">${tags}</div>
           <div class="cmeta">
-            <span class="chip chip-attr chip-${card.attribute}">${attrLabel(card.attribute)}</span>
+            ${attrChip}
             <span class="rar rar-${card.rarity}">${card.rarity}</span>
             <span class="chip chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
           </div>
         </div>`;
       el.addEventListener("click", () => openModal(card.id));
-      el.addEventListener("dragstart", (e) => {
-        e.dataTransfer.setData("text/plain", card.id);
-        e.dataTransfer.effectAllowed = "copy";
-        el.classList.add("dragging");
-      });
-      el.addEventListener("dragend", () => el.classList.remove("dragging"));
+      if (el.draggable) {
+        el.addEventListener("dragstart", (e) => {
+          e.dataTransfer.setData("text/plain", card.id);
+          e.dataTransfer.effectAllowed = "copy";
+          el.classList.add("dragging");
+        });
+        el.addEventListener("dragend", () => el.classList.remove("dragging"));
+      }
       cardGrid.appendChild(el);
     });
   }
@@ -814,9 +903,15 @@
     const inDeck = deck.get(modalCardId) || 0;
     $("#deck-count-modal").textContent = inDeck;
     const atLimit = RULES.enforce && countByName(c.name) >= RULES.copyLimitPerName;
-    $("#modal-add-deck").disabled = atLimit;
-    $("#deck-inc").disabled = atLimit;
-    $("#deck-dec").disabled = inDeck === 0;
+    const isImpact = c.type === "impact";
+    $("#modal-add-deck").disabled = atLimit || isImpact;
+    $("#deck-inc").disabled = atLimit || isImpact;
+    $("#deck-dec").disabled = inDeck === 0 || isImpact;
+    const owned = getVaultQty(modalCardId);
+    const vaultCountEl = $("#vault-count-modal");
+    if (vaultCountEl) vaultCountEl.textContent = owned;
+    const vaultDec = $("#vault-dec");
+    if (vaultDec) vaultDec.disabled = owned === 0;
   }
 
   // ---------- drag & drop ----------
@@ -1005,6 +1100,20 @@
   $("#deck-inc").addEventListener("click", () => { if (modalCardId) addCard(modalCardId); });
   $("#deck-dec").addEventListener("click", () => { if (modalCardId) removeCard(modalCardId); });
   $("#modal-fav").addEventListener("click", () => { if (modalCardId) toggleFav(modalCardId); });
+  const vaultIncBtn = $("#vault-inc");
+  const vaultDecBtn = $("#vault-dec");
+  if (vaultIncBtn) {
+    vaultIncBtn.addEventListener("click", () => {
+      if (!modalCardId) return;
+      setVaultQty(modalCardId, getVaultQty(modalCardId) + 1);
+    });
+  }
+  if (vaultDecBtn) {
+    vaultDecBtn.addEventListener("click", () => {
+      if (!modalCardId) return;
+      setVaultQty(modalCardId, getVaultQty(modalCardId) - 1);
+    });
+  }
 
   $("#btn-share").addEventListener("click", () => {
     const code = encodeShare();
@@ -1175,6 +1284,7 @@
               decks: decks.map((d) => ({ id: d.id, name: d.name, cards: d.cards })),
             },
             favs: [...favs],
+            vault: Object.assign({}, vault),
             lang: getLang(),
             updatedAt,
           };
@@ -1204,6 +1314,16 @@
           if (Array.isArray(state.favs)) {
             favs = new Set(state.favs.filter((id) => getCard(id)));
             try { localStorage.setItem(LS_FAVS, JSON.stringify([...favs])); } catch (e) {}
+          }
+          if (state.vault && typeof state.vault === "object" && !Array.isArray(state.vault)) {
+            const next = {};
+            Object.keys(state.vault).forEach((id) => {
+              if (!getCard(id)) return;
+              const n = normalizeVaultQty(state.vault[id]);
+              if (n > 0) next[id] = n;
+            });
+            vault = next;
+            try { localStorage.setItem(LS_VAULT, JSON.stringify(vault)); } catch (e) {}
           }
           if (state.lang && window.MHR_I18N.I18N[state.lang]) {
             try { localStorage.setItem("mhr_lang", state.lang); } catch (e) {}
