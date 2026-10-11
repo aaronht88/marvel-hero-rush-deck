@@ -79,6 +79,7 @@
       return '<article class="ref-deck">' +
         '<div class="ref-deck-head">' + dots + '<h3>' + esc(d.name) + "</h3></div>" +
         '<div class="ref-deck-meta">' + [esc(d.set), src, esc(t("deckBy", { a: d.author || "", d: d.date || "" }))].filter(Boolean).join(" · ") + "</div>" +
+        (d.note ? '<p class="ref-deck-note">' + esc(d.note) + '</p>' : '') +
         '<div class="ref-deck-actions">' +
         '<button class="btn btn-primary btn-sm" data-ref-import="' + i + '">' + esc(t("deckImport")) + "</button>" +
         '<button class="btn btn-sm" data-ref-copy="' + i + '">' + esc(t("deckCopy")) + "</button></div>" +

@@ -794,3 +794,5 @@ body.modal-open { overflow: hidden; }
   .filter-dd-panel { position: static; flex: 1 1 100%; max-width: none; min-width: 0; max-height: none; box-shadow: none; }
   .page-news, .page-decks { padding: 12px; }
 }
+
+.ref-deck-note{margin:.35rem 0 .5rem;color:var(--muted);font-size:.92rem;line-height:1.35}
