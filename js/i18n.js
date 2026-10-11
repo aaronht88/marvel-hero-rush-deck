@@ -121,27 +121,28 @@ const I18N = {
     wn1: "新增 News 與 Deck 參考分頁：香港賽事、官方消息，一鍵匯入參考卡組",
     wn2: "篩選改為下拉選單：展開後方可多選，介面更簡潔",
     wn3: "卡庫 449 張：377 角色 + 72 Rush Point 圖鑑（SP01 蜘蛛紀元登場！）",
+    wn4: "可選 Google 登入：僅作身份識別，牌組可同步至本站伺服器（不存取 Drive）",
     privacyLink: "私隱政策 →",
     // Google login + Workers sync
     googleSyncBtn: "Google 同步",
-    googleSignIn: "Google 登入",
+    googleSignIn: "使用 Google 登入",
     googleSignOut: "登出",
     googleSyncNow: "立即同步",
     googleSyncing: "同步中…",
     googleSynced: "已同步",
-    googleSyncedFromCloud: "已從雲端還原",
-    googleSyncError: "同步失敗，本機資料未改動",
-    googleNotConfigured: "尚未設定 Google Client ID — 見 docs/GOOGLE_AUTH_SYNC.md",
+    googleSyncedFromCloud: "已從雲端還原牌組",
+    googleSyncError: "同步失敗，本機資料未變更",
+    googleNotConfigured: "尚未設定 Google 登入，詳見說明文件",
     googleSignedOut: "已登出 Google",
-    googleSignInHint: "請於下方 Google 按鈕完成登入",
-    googleSignedInNoSync: "已登入（雲端同步尚未設定）",
-    googleSyncApiMissing: "同步 API 尚未設定 — 見 docs/GOOGLE_AUTH_SYNC.md",
-    googleSyncApiMissingShort: "同步未設定",
+    googleSignInHint: "請使用下方的 Google 按鈕完成登入",
+    googleSignedInNoSync: "已登入（雲端同步尚未啟用）",
+    googleSyncApiMissing: "雲端同步服務尚未啟用，詳見說明文件",
+    googleSyncApiMissingShort: "同步尚未啟用",
     googleConflictTitle: "同步衝突",
-    googleConflictMsg: "雲端（{cloud}）與本機（{local}）資料不同，請選擇：",
-    googleConflictKeepLocal: "保留本機並上傳",
-    googleConflictUseCloud: "使用雲端",
-    googleConflictCancel: "稍後再說",
+    googleConflictMsg: "雲端（{cloud}）與本機（{local}）的資料不一致，請選擇：",
+    googleConflictKeepLocal: "保留本機並上傳至雲端",
+    googleConflictUseCloud: "改用雲端資料",
+    googleConflictCancel: "稍後處理",
     noMatch: "沒有符合的卡片。",
     // modal
     effectLabel: "效果",
@@ -289,26 +290,27 @@ const I18N = {
     wn1: "新增资讯与卡组参考页：香港赛事、官方资讯，一键导入参考卡组",
     wn2: "筛选改为下拉菜单：点开后多项勾选，界面更清爽",
     wn3: "卡库 449 张：377 角色 + 72 Rush Point 图鉴（SP01 蜘蛛纪元登场！）",
+    wn4: "可选 Google 登录：仅作身份识别，牌组可同步至本站服务器（不访问 Drive）",
     privacyLink: "隐私政策 →",
     googleSyncBtn: "Google 同步",
-    googleSignIn: "Google 登录",
+    googleSignIn: "使用 Google 登录",
     googleSignOut: "登出",
     googleSyncNow: "立即同步",
     googleSyncing: "同步中…",
     googleSynced: "已同步",
-    googleSyncedFromCloud: "已从云端还原",
-    googleSyncError: "同步失败，本地数据未改动",
-    googleNotConfigured: "尚未设置 Google Client ID — 见 docs/GOOGLE_AUTH_SYNC.md",
+    googleSyncedFromCloud: "已从云端还原牌组",
+    googleSyncError: "同步失败，本地数据未变更",
+    googleNotConfigured: "尚未设置 Google 登录，详见说明文件",
     googleSignedOut: "已登出 Google",
     googleSignInHint: "请使用下方 Google 按钮完成登录",
-    googleSignedInNoSync: "已登录（云端同步尚未设置）",
-    googleSyncApiMissing: "同步 API 尚未设置 — 见 docs/GOOGLE_AUTH_SYNC.md",
-    googleSyncApiMissingShort: "同步未设置",
+    googleSignedInNoSync: "已登录（云端同步尚未启用）",
+    googleSyncApiMissing: "云端同步服务尚未启用，详见说明文件",
+    googleSyncApiMissingShort: "同步尚未启用",
     googleConflictTitle: "同步冲突",
-    googleConflictMsg: "云端（{cloud}）与本地（{local}）数据不同，请选择：",
-    googleConflictKeepLocal: "保留本地并上传",
-    googleConflictUseCloud: "使用云端",
-    googleConflictCancel: "稍后再说",
+    googleConflictMsg: "云端（{cloud}）与本地（{local}）的数据不一致，请选择：",
+    googleConflictKeepLocal: "保留本地并上传至云端",
+    googleConflictUseCloud: "改用云端数据",
+    googleConflictCancel: "稍后处理",
     noMatch: "无吻合卡片。",
     effectLabel: "效果",
     attrLabel: "颜色",
@@ -505,39 +507,4 @@ const I18N = {
   },
 };
 
-const LANGS = ["zh-HK", "zh-CN", "en"];
-let _lang = "zh-HK";
-
-function t(key, vars) {
-  let s = (I18N[_lang] && I18N[_lang][key]) || I18N["zh-HK"][key] || key;
-  if (vars) Object.keys(vars).forEach((k) => { s = s.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]); });
-  return s;
-}
-
-function setLang(lang) {
-  if (!I18N[lang]) return;
-  _lang = lang;
-  document.documentElement.lang = lang === "zh-HK" ? "zh-HK" : lang === "zh-CN" ? "zh-CN" : "en";
-  // static elements
-  document.querySelectorAll("[data-i18n]").forEach((el) => {
-    el.textContent = t(el.dataset.i18n);
-  });
-  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
-    el.innerHTML = t(el.dataset.i18nHtml);
-  });
-  document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
-    el.placeholder = t(el.dataset.i18nPh);
-  });
-  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
-    el.title = t(el.dataset.i18nTitle);
-  });
-  // select placeholders (first option per select)
-  document.querySelectorAll("select[data-i18n-first]").forEach((sel) => {
-    if (sel.options.length) sel.options[0].textContent = t(sel.dataset.i18nFirst);
-  });
-  if (window.MHR_APP && typeof window.MHR_APP.onLangChange === "function") {
-    window.MHR_APP.onLangChange();
-  }
-}
-
-window.MHR_I18N = { I18N, LANGS, t, setLang, getLang: () => _lang };
+const LANGS = ["zh-HK", 
