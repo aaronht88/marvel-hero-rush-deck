@@ -4,7 +4,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
-## [Unreleased] — 1.5.2-beta (draft)
+## [Unreleased]
+
+### Fixed
+- Display mode / card size controls now apply on all browser tabs (not only Vault); fixed toolbar `hidden` overridden by CSS `display:flex`.
+
+ — 1.5.2-beta (draft)
 
 ### Added
 - **卡庫（Vault）圖鑑**：Deck Builder 新增「卡庫（Vault）」視圖；未擁有卡牌灰階、已擁有全彩並顯示數量；卡牌詳情可設定「已擁有數量」（按卡 id／印刷分別計算，收藏數量不設 3 張上限）

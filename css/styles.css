@@ -367,6 +367,7 @@ body.modal-open { overflow: hidden; }
 .vault-ctl .btn { width: 26px; height: 26px; padding: 0; font-size: 14px; }
 
 /* Vault toolbar: mode + size */
+.vault-toolbar[hidden] { display: none !important; }
 .vault-toolbar {
   display: flex;
   flex-direction: column;
@@ -421,7 +422,7 @@ body.modal-open { overflow: hidden; }
   gap: 4px;
   pointer-events: none;
 }
-.card-grid.vault-ui:not(.vault-face) .card .meta { padding-bottom: 36px; }
+.card-grid.vault-view:not(.vault-face) .card .meta { padding-bottom: 36px; }
 .vault-qty-btn {
   pointer-events: auto;
   width: 28px;
