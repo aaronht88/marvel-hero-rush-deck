@@ -62,8 +62,11 @@
       <div class="view-tabs">
         <button class="tab active" data-view="all" data-i18n="viewAll">全部</button>
         <button class="tab" data-view="fav" data-i18n="viewFav">最愛</button>
+        <button class="tab" data-view="vault" data-i18n="viewVault">卡庫（Vault）</button>
         <button class="tab" data-view="rush" data-i18n="viewRush">Rush Point</button>
       </div>
+      <p id="vault-progress" class="vault-progress" hidden></p>
+      <p id="vault-hint" class="vault-hint" hidden data-i18n="vaultHint">以圖鑑方式檢視你的收藏。未擁有的卡牌以灰階顯示；已擁有則顯示正常色與數量。</p>
       <div class="controls">
         <input type="text" id="search" data-i18n-ph="searchPh" placeholder="搜尋卡名 / 編號 / 特徵 / 效果…" />
         <div class="filter-panels">
@@ -307,6 +310,12 @@
               <button id="deck-dec" class="btn">−</button>
               <span id="deck-count-modal">0</span>
               <button id="deck-inc" class="btn">+</button>
+            </div>
+            <div class="vault-ctl">
+              <span data-i18n="vaultOwnedLabel">已擁有數量</span>
+              <button type="button" id="vault-dec" class="btn" aria-label="decrease owned">−</button>
+              <span id="vault-count-modal">0</span>
+              <button type="button" id="vault-inc" class="btn" aria-label="increase owned">+</button>
             </div>
           </div>
         </div>

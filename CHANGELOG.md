@@ -7,6 +7,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 ## [Unreleased] — 1.5.2-beta (draft)
 
 ### Added
+- **卡庫（Vault）圖鑑**：Deck Builder 新增「卡庫（Vault）」視圖；未擁有卡牌灰階、已擁有全彩並顯示數量；卡牌詳情可設定「已擁有數量」（按卡 id／印刷分別計算，收藏數量不設 3 張上限）
+  - 本機：`localStorage` `mhr_vault_v1`；Google 登入後與 decks／favs／lang 一併雲端同步
+  - 保留系列／顏色等篩選；進度「已收集 {owned}／{total}」
+  - 文案：`docs/vault-i18n.zh-HK.snippet.js`（PR #9）
+  - **未做（之後）**：Deck Builder「本副需要 N／卡庫有 M」對照提示
 - **社區牌組投稿／審核／投票**：Deck 參考分「MHR 編輯群」精選與社區投稿；登入後投稿 → `pending` → 管理員 checklist 通過後公開；公開後可「認同／不認同」（每用戶每牌組一票）
   - Worker：`/api/decks`、`/api/decks/:id`、`/api/decks/:id/vote`、`/api/me`；D1 `0002_community_decks.sql`
   - 硬性檢查（A）：50 張、同名 ≤3、≤2 色、分享碼可匯入、不含 Rush Point；必填（B）名稱／上載者／玩法描述／分享碼；玩法描述（C）須寫觸發→回報

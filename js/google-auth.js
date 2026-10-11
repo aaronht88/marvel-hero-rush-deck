@@ -280,6 +280,7 @@
       updatedAt,
       decks: state.decks,
       favs: state.favs,
+      vault: state.vault || {},
       lang: state.lang,
     };
   }
@@ -316,11 +317,21 @@
       return false;
     }
   }
+  function normalizeVaultSnap(v) {
+    if (!v || typeof v !== "object" || Array.isArray(v)) return {};
+    const out = {};
+    Object.keys(v).sort().forEach((id) => {
+      const n = Math.floor(Number(v[id]));
+      if (Number.isFinite(n) && n > 0) out[id] = n;
+    });
+    return out;
+  }
   function normalizeSnap(s) {
     if (!s) return null;
     return {
       decks: s.decks || null,
       favs: Array.isArray(s.favs) ? s.favs.slice().sort() : [],
+      vault: normalizeVaultSnap(s.vault),
       lang: s.lang || null,
     };
   }
@@ -397,6 +408,7 @@
       const localSnap = {
         decks: localState.decks,
         favs: localState.favs,
+        vault: localState.vault || {},
         lang: localState.lang,
         updatedAt: localAt,
       };
@@ -412,6 +424,7 @@
       const cloudSnap = {
         decks: cloud.decks,
         favs: cloud.favs || [],
+        vault: cloud.vault || {},
         lang: cloud.lang,
         updatedAt: cloud.updatedAt,
       };
@@ -438,6 +451,7 @@
         hooks.applyState({
           decks: cloud.decks,
           favs: cloud.favs || [],
+          vault: cloud.vault || {},
           lang: cloud.lang,
           updatedAt: cloud.updatedAt || new Date().toISOString(),
         });
