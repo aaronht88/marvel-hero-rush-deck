@@ -366,6 +366,128 @@ body.modal-open { overflow: hidden; }
 }
 .vault-ctl .btn { width: 26px; height: 26px; padding: 0; font-size: 14px; }
 
+/* Vault toolbar: mode + size */
+.vault-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(167, 139, 250, .08), rgba(0, 0, 0, .12));
+}
+.vault-toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.vault-toolbar-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  min-width: 4.5em;
+}
+.vault-toolbar-hint {
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.45;
+  opacity: .9;
+}
+.vault-mode-toggle, .vault-size-toggle {
+  display: inline-flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.vault-mode-btn.active, .vault-size-btn.active {
+  border-color: var(--cyan-dim);
+  color: var(--cyan);
+  box-shadow: 0 0 10px rgba(0, 229, 255, .18);
+  background: linear-gradient(180deg, rgba(0, 229, 255, .16), rgba(0, 229, 255, .05));
+}
+
+/* On-card qty +/- (Vault only) */
+.vault-qty {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  pointer-events: none;
+}
+.card-grid.vault-ui:not(.vault-face) .card .meta { padding-bottom: 36px; }
+.vault-qty-btn {
+  pointer-events: auto;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid rgba(167, 139, 250, .55);
+  background: rgba(18, 16, 32, .88);
+  color: #e9e0ff;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .45);
+}
+.vault-qty-btn:active { transform: scale(0.94); }
+.vault-qty-num {
+  pointer-events: none;
+  min-width: 2.4em;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .3px;
+  font-family: "Rajdhani", sans-serif;
+  color: #f3eaff;
+  background: rgba(88, 48, 160, .85);
+  border: 1px solid rgba(167, 139, 250, .7);
+  border-radius: 4px;
+  padding: 3px 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .5);
+}
+.card.is-unowned .vault-qty-num {
+  background: rgba(60, 70, 90, .75);
+  border-color: rgba(148, 163, 184, .4);
+  color: #cbd5e1;
+}
+
+/* Face-only mode: art dominates; hide title/meta chrome */
+.card-grid.vault-face .card .meta {
+  display: none;
+}
+.card-grid.vault-face .vault-qty {
+  bottom: 8px;
+}
+
+/* Vault card size / screen share */
+.card-grid.vault-ui.vault-size-s {
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 10px;
+}
+.card-grid.vault-ui.vault-size-m {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.card-grid.vault-ui.vault-size-l {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+@media (max-width: 480px) {
+  .card-grid.vault-ui.vault-size-s { grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 8px; }
+  .card-grid.vault-ui.vault-size-m { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 10px; }
+  .card-grid.vault-ui.vault-size-l { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .vault-qty-btn { width: 32px; height: 32px; min-height: 32px; }
+}
+
 
 .chip { font-size: 9.5px; padding: 1px 5px; border-radius: 3px; letter-spacing: .4px; white-space: nowrap; }
 .chip-attr { color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.5); }
