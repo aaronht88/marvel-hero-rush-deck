@@ -596,7 +596,7 @@
       "date": "2026-10-10",
       "total": 50,
       "code": "1|Attach%20Strip%20RG|A0083A0983A1063A1083I0673E0013A0953E0093A1192A0942A1152A0023A1122A1002A0172B0072A0112B0032A0162I0122A0011",
-      "note": "紅綠拆附著專用：以 Falcon、Airbag 棄牌起動，Clairvoyance 拆解附著並鎖定攻擊目標，Pulse Uninstall 清除全場附著，再配合 Anti-Venom、God of Trick 壓制共生體與 Knull。",
+      "note": "紅綠拆附著專用：以 Falcon、Airbag 棄牌起動，Clairvoyance 拆解附著並使被附著角色僅能攻擊 Lv6，Pulse Uninstall 清除全場附著，再配合 Anti-Venom、God of Trick 壓制共生體與 Knull。",
       "cards": [
         {
           "no": "BP01-008",
@@ -847,7 +847,7 @@
       "date": "2026-10-10",
       "total": 50,
       "code": "1|P500%20Time%20Control|I0453A0703A0632A0763A0793A0873A0902D0013F0082I0422I0461A1103A0983A0773A0812A0822D0022A0942A1152E0022A1062",
-      "note": "藍綠 Range 操控：盡量將原 Power 500 的角色配置於戰場，Time Control 將全場 Range 統一為該數量，Time Guide 於藍色卡牌入場時累積 BASE；End Of Time 再依靠撤退區的 Loki 放大效果。",
+      "note": "藍綠 Range 操控：盡量將原 Power 500 的角色配置於戰場，Time Control 將己方戰場上所有角色的 Range 統一為該數量，Time Guide 於藍色卡牌入場時累積 BASE；End Of Time 再依靠撤退區的 Loki 放大效果。",
       "cards": [
         {
           "no": "SP01-045",
