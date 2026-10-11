@@ -1,3 +1,8 @@
 .DS_Store
 *.log
 server.pid
+
+# Cloudflare Workers local
+workers/node_modules/
+workers/.wrangler/
+workers/.dev.vars

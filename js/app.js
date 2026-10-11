@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.5.0-beta";
+  const APP_VERSION = "1.5.1-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -21,14 +21,25 @@
   // ---------- persistence ----------
   const LS_DECKS = "mhr_decks_v3", LS_FAVS = "mhr_favs_v2", LS_LEGACY_DECK = "mhr_deck_v2";
   function genId() { return "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function notifyGoogleSync() {
+    try {
+      if (window.MHRGoogleSync && typeof window.MHRGoogleSync.onLocalChange === "function") {
+        window.MHRGoogleSync.onLocalChange();
+      }
+    } catch (e) {}
+  }
   function saveDecks() {
     try {
       const cur = decks.find((d) => d.id === currentDeckId);
       if (cur) cur.cards = [...deck.entries()];
       localStorage.setItem(LS_DECKS, JSON.stringify({ current: currentDeckId, decks: decks.map((d) => ({ id: d.id, name: d.name, cards: d.cards })) }));
     } catch (e) {}
+    notifyGoogleSync();
   }
-  function saveFavs() { try { localStorage.setItem(LS_FAVS, JSON.stringify([...favs])); } catch (e) {} }
+  function saveFavs() {
+    try { localStorage.setItem(LS_FAVS, JSON.stringify([...favs])); } catch (e) {}
+    notifyGoogleSync();
+  }
   function loadPersist() {
     try { favs = new Set(JSON.parse(localStorage.getItem(LS_FAVS) || "[]").filter((id) => getCard(id))); } catch (e) { favs = new Set(); }
     let stored = null;
@@ -919,6 +930,12 @@
   $("#lang-select").addEventListener("change", (e) => {
     setLang(e.target.value);
     localStorage.setItem("mhr_lang", e.target.value);
+    notifyGoogleSync();
+    try {
+      if (window.MHRGoogleSync && typeof window.MHRGoogleSync.refreshLabels === "function") {
+        window.MHRGoogleSync.refreshLabels();
+      }
+    } catch (err) {}
   });
 
   // deck selector + manager
@@ -1088,5 +1105,74 @@
   renderDeck();
   loadVisitorCount();
   if (urlImportDone) toast(t("toastUrlImported"));
+
+  // Google login + Workers sync — no-op sync when SYNC_API_BASE empty
+  try {
+    if (window.MHRGoogleSync && typeof window.MHRGoogleSync.init === "function") {
+      window.MHRGoogleSync.init({
+        toast,
+        t,
+        getState() {
+          const cur = decks.find((d) => d.id === currentDeckId);
+          if (cur) cur.cards = [...deck.entries()];
+          let updatedAt = null;
+          try {
+            const meta = JSON.parse(localStorage.getItem("mhr_sync_meta_v1") || "null");
+            if (meta && meta.updatedAt) updatedAt = meta.updatedAt;
+          } catch (e) {}
+          return {
+            decks: {
+              current: currentDeckId,
+              decks: decks.map((d) => ({ id: d.id, name: d.name, cards: d.cards })),
+            },
+            favs: [...favs],
+            lang: getLang(),
+            updatedAt,
+          };
+        },
+        applyState(state) {
+          if (!state) return;
+          if (state.decks && Array.isArray(state.decks.decks)) {
+            decks = state.decks.decks.map((d) => ({
+              id: d.id,
+              name: d.name || t("defaultDeckName"),
+              cards: Array.isArray(d.cards) ? d.cards.filter(([cid]) => getCard(cid)) : [],
+            }));
+            if (!decks.length) {
+              decks = [{ id: genId(), name: t("defaultDeckName"), cards: [] }];
+            }
+            currentDeckId = state.decks.current && decks.find((d) => d.id === state.decks.current)
+              ? state.decks.current
+              : decks[0].id;
+            deck = new Map(decks.find((d) => d.id === currentDeckId).cards);
+            try {
+              localStorage.setItem(LS_DECKS, JSON.stringify({
+                current: currentDeckId,
+                decks: decks.map((d) => ({ id: d.id, name: d.name, cards: d.cards })),
+              }));
+            } catch (e) {}
+          }
+          if (Array.isArray(state.favs)) {
+            favs = new Set(state.favs.filter((id) => getCard(id)));
+            try { localStorage.setItem(LS_FAVS, JSON.stringify([...favs])); } catch (e) {}
+          }
+          if (state.lang && window.MHR_I18N.I18N[state.lang]) {
+            try { localStorage.setItem("mhr_lang", state.lang); } catch (e) {}
+            $("#lang-select").value = state.lang;
+            setLang(state.lang);
+          }
+          if (state.updatedAt) {
+            try { localStorage.setItem("mhr_sync_meta_v1", JSON.stringify({ updatedAt: state.updatedAt })); } catch (e) {}
+          }
+          renderDeckSelect();
+          renderCards();
+          renderDeck();
+        },
+      });
+    }
+  } catch (e) {
+    console.warn("[MHR] Google sync init failed", e);
+  }
+
   showWelcome();
 })();

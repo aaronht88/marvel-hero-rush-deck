@@ -1,0 +1,21 @@
+# Cloudflare Workers — MHR Deck Builder sync API
+# Deploy from this directory after: wrangler login (do this in your own 1:1, not in group chat)
+# Docs: ../docs/GOOGLE_AUTH_SYNC.md
+
+name = "mhr-deck-sync"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+# Replace with your D1 database id after: wrangler d1 create mhr-deck-sync
+[[d1_databases]]
+binding = "DB"
+database_name = "mhr-deck-sync"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+# Set after deploy / in dashboard (never commit real secrets):
+#   wrangler secret put SESSION_SECRET
+#   wrangler secret put GOOGLE_CLIENT_ID   # optional override; defaults below
+[vars]
+GOOGLE_CLIENT_ID = "490835494327-1h5vv770dg2cdo23to3f965h7faobo2u.apps.googleusercontent.com"
+# Comma-separated allowed browser origins for CORS
+ALLOWED_ORIGINS = "https://mhrdeckbuild.duckdns.org,http://localhost:5500,http://127.0.0.1:5500"
