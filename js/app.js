@@ -15,12 +15,13 @@
   let deck = new Map();      // working deck (current)
   let favs = new Set();      // card ids
   let vault = {};            // { [cardId]: ownedQty } — per print/id; no 3-copy cap
+  let vaultUi = { mode: "normal", size: "m" }; // Vault display prefs (local only)
   let modalCardId = null;
   let view = "all";          // "all" | "fav" | "vault" | "rush"
   let urlImportDone = false; // set when ?deck= import created/switched a deck
 
   // ---------- persistence ----------
-  const LS_DECKS = "mhr_decks_v3", LS_FAVS = "mhr_favs_v2", LS_LEGACY_DECK = "mhr_deck_v2", LS_VAULT = "mhr_vault_v1";
+  const LS_DECKS = "mhr_decks_v3", LS_FAVS = "mhr_favs_v2", LS_LEGACY_DECK = "mhr_deck_v2", LS_VAULT = "mhr_vault_v1", LS_VAULT_UI = "mhr_vault_ui_v1";
   function genId() { return "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
   function notifyGoogleSync() {
     try {
@@ -90,6 +91,40 @@
     Object.keys(vault).forEach((id) => { if (getVaultQty(id) > 0 && getCard(id)) n++; });
     return n;
   }
+  function loadVaultUi() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(LS_VAULT_UI) || "null");
+      if (!raw || typeof raw !== "object") return;
+      const mode = raw.mode === "face" ? "face" : "normal";
+      const size = (raw.size === "s" || raw.size === "m" || raw.size === "l") ? raw.size
+        : (typeof raw.size === "number"
+          ? (raw.size <= 1 ? "s" : raw.size >= 3 ? "l" : "m")
+          : "m");
+      vaultUi = { mode, size };
+    } catch (e) {
+      vaultUi = { mode: "normal", size: "m" };
+    }
+  }
+  function saveVaultUi() {
+    try { localStorage.setItem(LS_VAULT_UI, JSON.stringify({ mode: vaultUi.mode, size: vaultUi.size })); } catch (e) {}
+  }
+  function applyVaultUiChrome() {
+    const show = view === "vault";
+    const toolbar = $("#vault-toolbar");
+    if (toolbar) toolbar.hidden = !show;
+    if (cardGrid) {
+      cardGrid.classList.toggle("vault-ui", show);
+      cardGrid.classList.toggle("vault-face", show && vaultUi.mode === "face");
+      cardGrid.classList.remove("vault-size-s", "vault-size-m", "vault-size-l");
+      if (show) cardGrid.classList.add("vault-size-" + vaultUi.size);
+    }
+    document.querySelectorAll(".vault-mode-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.vaultMode === vaultUi.mode);
+    });
+    document.querySelectorAll(".vault-size-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.vaultSize === vaultUi.size);
+    });
+  }
   function updateVaultChrome() {
     const prog = $("#vault-progress");
     const hint = $("#vault-hint");
@@ -99,10 +134,12 @@
       if (show) prog.textContent = t("vaultProgress", { owned: vaultOwnedUniqueCount(), total: CARDS.length });
     }
     if (hint) hint.hidden = !show;
+    applyVaultUiChrome();
   }
   function loadPersist() {
     try { favs = new Set(JSON.parse(localStorage.getItem(LS_FAVS) || "[]").filter((id) => getCard(id))); } catch (e) { favs = new Set(); }
     loadVault();
+    loadVaultUi();
     let stored = null;
     try { stored = JSON.parse(localStorage.getItem(LS_DECKS) || "null"); } catch (e) { stored = null; }
     if (stored && Array.isArray(stored.decks) && stored.decks.length) {
@@ -369,11 +406,16 @@
       if (isVault) cls += ownedQty > 0 ? " is-owned" : " is-unowned";
       el.className = cls;
       el.draggable = !isVault && card.type !== "impact";
-      const vaultBadge = isVault
-        ? (ownedQty > 0
-            ? `<span class="badge badge-vault" title="${t("vaultOwned")}">×${ownedQty}</span>`
-            : `<span class="badge badge-vault-miss" title="${t("vaultNotOwned")}">—</span>`)
-        : (ownedQty > 0 ? `<span class="badge badge-vault">×${ownedQty}</span>` : "");
+      const vaultBadge = !isVault && ownedQty > 0
+        ? `<span class="badge badge-vault">x${ownedQty}</span>`
+        : "";
+      const vaultQtyCtl = isVault
+        ? `<div class="vault-qty" data-vault-qty="${card.id}">
+            <button type="button" class="vault-qty-btn vault-qty-dec" data-dir="-1" title="${t("vaultDec")}" aria-label="${t("vaultDec")}">−</button>
+            <span class="vault-qty-num" title="${ownedQty > 0 ? t("vaultOwned") : t("vaultNotOwned")}">x${ownedQty}</span>
+            <button type="button" class="vault-qty-btn vault-qty-inc" data-dir="1" title="${t("vaultInc")}" aria-label="${t("vaultInc")}">+</button>
+          </div>`
+        : "";
       const tags = card.type === "impact"
         ? `${card.card_no}`
         : `${card.id} · ${t("lvPrefix")} ${card.level} · PWR ${card.power} · ${t("rangePrefix")} ${card.attackRange}`;
@@ -387,6 +429,7 @@
           ${!isVault && inDeck ? `<span class="badge badge-deck">×${inDeck}</span>` : ""}
           ${vaultBadge}
         </div>
+        ${vaultQtyCtl}
         <div class="meta">
           <div class="cname" title="${cnCard(card, "name")}">${cnCard(card, "name")}</div>
           <div class="ctags">${tags}</div>
@@ -396,6 +439,16 @@
             <span class="chip chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
           </div>
         </div>`;
+      if (isVault) {
+        el.querySelectorAll(".vault-qty-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const dir = Number(btn.dataset.dir) || 0;
+            setVaultQty(card.id, getVaultQty(card.id) + dir);
+          });
+        });
+      }
       el.addEventListener("click", () => openModal(card.id));
       if (el.draggable) {
         el.addEventListener("dragstart", (e) => {
@@ -1005,6 +1058,22 @@
   }
   document.querySelectorAll(".view-tabs .tab").forEach((tab) => {
     tab.addEventListener("click", () => setView(tab.dataset.view));
+  });
+  document.querySelectorAll(".vault-mode-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      vaultUi.mode = btn.dataset.vaultMode === "face" ? "face" : "normal";
+      saveVaultUi();
+      applyVaultUiChrome();
+    });
+  });
+  document.querySelectorAll(".vault-size-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const s = btn.dataset.vaultSize;
+      if (s !== "s" && s !== "m" && s !== "l") return;
+      vaultUi.size = s;
+      saveVaultUi();
+      applyVaultUiChrome();
+    });
   });
   // welcome overlay: donate button closes welcome + opens donation overlay
   const wlDonate = $("#wl-donate");

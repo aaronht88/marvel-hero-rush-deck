@@ -67,6 +67,25 @@
       </div>
       <p id="vault-progress" class="vault-progress" hidden></p>
       <p id="vault-hint" class="vault-hint" hidden data-i18n="vaultHint">以圖鑑方式檢視你的收藏。未擁有的卡牌以灰階顯示；已擁有則顯示正常色與數量。</p>
+      <div id="vault-toolbar" class="vault-toolbar" hidden>
+        <div class="vault-toolbar-row">
+          <span class="vault-toolbar-label" data-i18n="vaultModeLabel">顯示模式</span>
+          <div class="vault-mode-toggle" role="group" aria-label="vault display mode">
+            <button type="button" class="btn btn-sm vault-mode-btn active" data-vault-mode="normal" data-i18n="vaultModeNormal">標準</button>
+            <button type="button" class="btn btn-sm vault-mode-btn" data-vault-mode="face" data-i18n="vaultModeFace">最簡卡面</button>
+          </div>
+        </div>
+        <p class="vault-toolbar-hint" data-i18n="vaultModeFaceHint">只顯示卡面，方便快速點選加減數量</p>
+        <div class="vault-toolbar-row">
+          <span class="vault-toolbar-label" data-i18n="vaultSizeLabel">卡面大小</span>
+          <div class="vault-size-toggle" role="group" aria-label="vault card size">
+            <button type="button" class="btn btn-sm vault-size-btn" data-vault-size="s" data-i18n="vaultSizeS">小</button>
+            <button type="button" class="btn btn-sm vault-size-btn active" data-vault-size="m" data-i18n="vaultSizeM">中</button>
+            <button type="button" class="btn btn-sm vault-size-btn" data-vault-size="l" data-i18n="vaultSizeL">大</button>
+          </div>
+        </div>
+        <p class="vault-toolbar-hint" data-i18n="vaultSizeHint">調整圖鑑中每張卡所佔畫面比例</p>
+      </div>
       <div class="controls">
         <input type="text" id="search" data-i18n-ph="searchPh" placeholder="搜尋卡名 / 編號 / 特徵 / 效果…" />
         <div class="filter-panels">
