@@ -6,6 +6,10 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 ## [Unreleased]
 
+### Fixed
+- Bump script cache-bust to **1.5.4-beta** so Vault tab label (not 卡庫（Vault）) reaches clients.
+
+
 ### Changed
 - Top tab label is now **Vault** only (was 卡庫（Vault）).
 
