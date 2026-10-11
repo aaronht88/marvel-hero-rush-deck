@@ -466,7 +466,7 @@
     },
     {
       "id": "chain-fire",
-      "name": "Fire Support Loop",
+      "name": "Fire Support Loop 紅黃火力鏈",
       "colors": [
         "Red",
         "Yellow"
@@ -478,7 +478,7 @@
       "date": "2026-10-10",
       "total": 50,
       "code": "1|Fire%20Support%20Loop|B0033A0243A0292A0303A0233A0343C0063C0102A0513A0603B0073A0332A0163A0213B0012A0582A0011A0442C0092A0082",
-      "note": "Synchronize／Leverage／Aid Attack 加 R／Power → Fire Support −1000 → Ordnance／Anti-Tank 疊削",
+      "note": "紅黃火力加成鏈：用 Synchronize、Leverage、Aid Attack 抬 Range 或 Power，觸發 Fire Support 每回合 −1000，再靠 Ordnance Drop、Anti-Tank 疊削。場上有 Pulse Uninstall，喺共生體多嘅局拆附著用。",
       "cards": [
         {
           "no": "SD01-003",
@@ -584,7 +584,7 @@
     },
     {
       "id": "chain-attach",
-      "name": "Attach Strip RG",
+      "name": "Attach Strip RG 紅綠拆附著",
       "colors": [
         "Red",
         "Green"
@@ -596,7 +596,7 @@
       "date": "2026-10-10",
       "total": 50,
       "code": "1|Attach%20Strip%20RG|A0083A0983A1063A1083I0673E0013A0953E0093A1192A0942A1152A0023A1122A1002A0172B0072A0112B0032A0162I0122A0011",
-      "note": "Falcon／Airbag 棄牌 → Clairvoyance 拆附著 → Pulse Uninstall 清附著 → Anti-Venom／Trick",
+      "note": "紅綠拆附著專用：Falcon、Airbag 棄牌起動，Clairvoyance 拆走附著並鎖攻擊目標，Pulse Uninstall 清晒全場附著，再配 Anti-Venom、God of Trick 壓共生體同 Knull。",
       "cards": [
         {
           "no": "BP01-008",
@@ -707,7 +707,7 @@
     },
     {
       "id": "chain-discard",
-      "name": "Discard Story GY",
+      "name": "Discard Story GY 綠黃棄牌劇情",
       "colors": [
         "Green",
         "Yellow"
@@ -719,7 +719,7 @@
       "date": "2026-10-10",
       "total": 50,
       "code": "1|Discard%20Story%20GY|A1063A1083A0983A0953E0093A1192A0943A1152E0013C0033A0603A0332A0321A0512C0092I0232I0211I0342E0022A1072A1002A1121",
-      "note": "Falcon／Airbag 棄牌 → Sacrifice／Clairvoyance 等回報 → God Of Story 按冇攻擊隻數退對手",
+      "note": "綠黃棄牌控制：Falcon、Airbag 棄牌換 Sacrifice、Clairvoyance、True Justice 等回報，收尾靠 God Of Story 按你冇攻擊嘅隻數逼對手退場。對 Knull 可用 Venom 或 Ultimate Mode 軟解。",
       "cards": [
         {
           "no": "BP01-106",
@@ -835,7 +835,7 @@
     },
     {
       "id": "chain-p500",
-      "name": "P500 Time Control",
+      "name": "P500 Time Control 藍綠時間操控",
       "colors": [
         "Blue",
         "Green"
@@ -847,7 +847,7 @@
       "date": "2026-10-10",
       "total": 50,
       "code": "1|P500%20Time%20Control|I0453A0703A0632A0763A0793A0873A0902D0013F0082I0422I0461A1103A0983A0773A0812A0822D0022A0942A1152E0022A1062",
-      "note": "舖原 Power 500 → Time Control 統一 Range → Time Guide 堆 BASE",
+      "note": "藍綠 Range 操控：盡量舖原 Power 500 角色上戰場，Time Control 將全場 Range 統一成嗰個數量，Time Guide 喺藍卡入場時堆 BASE；End Of Time 再靠撤退區 Loki 放大。",
       "cards": [
         {
           "no": "SP01-045",
