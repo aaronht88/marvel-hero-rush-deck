@@ -8,8 +8,9 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "d1:create": "wrangler d1 create mhr-deck-sync",
-    "d1:migrate:local": "wrangler d1 execute mhr-deck-sync --local --file=./migrations/0001_init.sql",
-    "d1:migrate:remote": "wrangler d1 execute mhr-deck-sync --remote --file=./migrations/0001_init.sql"
+    "d1:migrate:local": "wrangler d1 execute mhr-deck-sync --local --file=./migrations/0001_init.sql && wrangler d1 execute mhr-deck-sync --local --file=./migrations/0002_community_decks.sql",
+    "d1:migrate:remote": "wrangler d1 execute mhr-deck-sync --remote --file=./migrations/0001_init.sql && wrangler d1 execute mhr-deck-sync --remote --file=./migrations/0002_community_decks.sql",
+    "d1:migrate:community:remote": "wrangler d1 execute mhr-deck-sync --remote --file=./migrations/0002_community_decks.sql"
   },
   "devDependencies": {
     "wrangler": "^4.40.0"

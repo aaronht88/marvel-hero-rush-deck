@@ -4,7 +4,19 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
-## [Unreleased] — 1.5.1-beta (draft)
+## [Unreleased] — 1.5.2-beta (draft)
+
+### Added
+- **社區牌組投稿／審核／投票**：Deck 參考分「MHR 編輯群」精選與社區投稿；登入後投稿 → `pending` → 管理員 checklist 通過後公開；公開後可「認同／不認同」（每用戶每牌組一票）
+  - Worker：`/api/decks`、`/api/decks/:id`、`/api/decks/:id/vote`、`/api/me`；D1 `0002_community_decks.sql`
+  - 硬性檢查（A）：50 張、同名 ≤3、≤2 色、分享碼可匯入、不含 Rush Point；必填（B）名稱／上載者／玩法描述／分享碼；玩法描述（C）須寫觸發→回報
+  - 審核結果（D）：通過／拒稿／須修改；拒稿與須修改須註明 A／C 條款
+  - 指引：`docs/community-submit-guide.zh-HK.md`
+
+### Changed
+- 靜態 `data/decks.json` 仍為精選來源（不強制改寫作者）；新 AI／編輯構築署名「MHR 編輯群」
+
+## [1.5.1-beta] — 2026-10-11 (Google auth)
 
 ### Added
 - **Google 登入 + 雲端同步（骨架）**：GIS `id_token` 登入；可選 Cloudflare Workers + D1 按 Google `sub` 儲存牌組／最愛／語言（`feat/google-auth-sync`）
