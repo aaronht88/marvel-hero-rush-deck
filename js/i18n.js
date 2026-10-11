@@ -456,6 +456,7 @@ const I18N = {
     wn1: "New News and Decks tabs: HK events, official news, one-click reference deck import",
     wn2: "Filters are now dropdowns: tap to open, then multi-select",
     wn3: "449-card database: 377 characters + 72 Rush Points (SP01 Era of Spiders is here!)",
+    wn4: "Optional Google sign-in: identity only; decks can sync to our server (no Drive access)",
     privacyLink: "Privacy policy →",
     googleSyncBtn: "Google Sync",
     googleSignIn: "Sign in with Google",
@@ -507,4 +508,39 @@ const I18N = {
   },
 };
 
-const LANGS = ["zh-HK", 
+const LANGS = ["zh-HK", "zh-CN", "en"];
+let _lang = "zh-HK";
+
+function t(key, vars) {
+  let s = (I18N[_lang] && I18N[_lang][key]) || I18N["zh-HK"][key] || key;
+  if (vars) Object.keys(vars).forEach((k) => { s = s.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]); });
+  return s;
+}
+
+function setLang(lang) {
+  if (!I18N[lang]) return;
+  _lang = lang;
+  document.documentElement.lang = lang === "zh-HK" ? "zh-HK" : lang === "zh-CN" ? "zh-CN" : "en";
+  // static elements
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    el.innerHTML = t(el.dataset.i18nHtml);
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
+    el.placeholder = t(el.dataset.i18nPh);
+  });
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    el.title = t(el.dataset.i18nTitle);
+  });
+  // select placeholders (first option per select)
+  document.querySelectorAll("select[data-i18n-first]").forEach((sel) => {
+    if (sel.options.length) sel.options[0].textContent = t(sel.dataset.i18nFirst);
+  });
+  if (window.MHR_APP && typeof window.MHR_APP.onLangChange === "function") {
+    window.MHR_APP.onLangChange();
+  }
+}
+
+window.MHR_I18N = { I18N, LANGS, t, setLang, getLang: () => _lang };
