@@ -10,7 +10,7 @@ compatibility_date = "2026-10-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "mhr-deck-sync"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "ca232da1-ac2f-4154-977f-692e90809ffb"
 
 # Set after deploy / in dashboard (never commit real secrets):
 #   wrangler secret put SESSION_SECRET
