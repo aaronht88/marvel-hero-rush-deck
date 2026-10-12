@@ -11,4 +11,8 @@
   newsRelatedDecks: "相關牌組",
   newsImportRelatedDeck: "匯入此構築",
   newsRelatedDeckHint: "有分享碼可直接匯入；亦可由編輯寫入 Deck 參考（見 docs/NEWS_ARTICLES.md）。",
+  newsShareCode: "分享碼",
+  newsCopyShareCode: "複製分享碼",
+  newsImportToBuilder: "匯入至構築",
+  newsFeaturedCards: "提及卡牌",
 });

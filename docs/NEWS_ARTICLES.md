@@ -31,11 +31,13 @@
     "related_deck_ids": ["sp01-01"],
     "related_decks": [
       {
+        "id": "optional-slug",
         "name": "賽事 Top8 範例構築",
         "code": "1|…",
         "note": "來源：該篇新聞牌表（經 TCG 核對）"
       }
-    ]
+    ],
+    "featured_cards": ["SP01-064", "SP01-028", "SP01-003"]
   }
 }
 ```
@@ -47,7 +49,9 @@
 - 若該則有任一語系 `body_*` → 列表顯示「站內閱讀」，點開 `#news/<id>` 文章頁（跟隨右上角語言切換顯示對應正文／標題）。
 - 若無正文 → 維持開外部 `url`。
 - 頁底：`來源：{source_name}` +「原文連結」→ `source_url`（缺省則用原 `url`）。
-- UI 文案 key：`newsReadOnSite`、`newsArticleBack`、`newsSourceCredit`、`newsSourceLink`、`newsRelatedDecks`、`newsImportRelatedDeck`、`newsRelatedDeckHint`、`newsArticlePending`（`js/i18n.js`；內容創作可改書面語）。
+- **提及卡牌** `featured_cards`：卡號陣列（對應 `CARDS`／`img/cards/<id>.webp`），文章內以模擬器風格卡面展示（名稱＋卡號；點擊可開詳情）。
+- **相關牌組** `related_decks`：顯示名稱、備註、**分享碼**（monospace）、「複製分享碼」／「匯入至構築」；`related_deck_ids` 則對應 `data/decks.json` 同樣顯示分享碼與按鈕。
+- UI 文案 key：`newsReadOnSite`、`newsArticleBack`、`newsSourceCredit`、`newsSourceLink`、`newsRelatedDecks`、`newsImportRelatedDeck`、`newsRelatedDeckHint`、`newsArticlePending`、`newsShareCode`、`newsCopyShareCode`、`newsImportToBuilder`、`newsFeaturedCards`（`js/i18n.js`；內容創作可改書面語）。
 
 ## 分工 pipeline
 
@@ -62,7 +66,7 @@
 
 ### A. 站內按鈕（即時）
 
-文章裡 `related_decks[].code` 或 `related_deck_ids`（對應已有 `data/decks.json`）會顯示「匯入此構築」，一鍵入 Builder。
+文章裡 `related_decks[].code` 或 `related_deck_ids`（對應已有 `data/decks.json`）會顯示分享碼、「複製分享碼」與「匯入至構築」，一鍵入 Builder。冇完整 50 張牌表時可留 `related_decks: []`。
 
 ### B. 寫入靜態編輯群（持久）
 

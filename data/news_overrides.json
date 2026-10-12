@@ -54,7 +54,9 @@
       "en": "The official notice adjusts several cards in Special Booster SP01 Era of Spiders. For retail and tournament play, the final printed card faces take precedence.\n\nSix cards are affected (numbers matched against the current card database; confirm against the official print):\n\n1. Scarlet Spider (SP01-064) — card name change\n2. Spider-Man — card name change (several subtitle variants share this name; confirm the exact number in the original notice, e.g. SP01-021, SP01-027, SP01-033, SP01-065)\n3. Ultimate Spider-Man (SP01-028) — card name change\n4. Anti-Venom (SP01-067) — card name and art change\n5. Jean Grey (SP01-003) — card name and effect text change\n6. Black Cat (SP01-063) — character level, effect text, and Power change\n\nIf your lists use any of these cards, update them against the original notice linked in the footer and play by the final printed effects."
     },
     "source_name": "官方微信",
-    "source_url": "https://mp.weixin.qq.com/s/LAceKZHjRy7pMKHmicMW5w"
+    "source_url": "https://mp.weixin.qq.com/s/LAceKZHjRy7pMKHmicMW5w",
+    "featured_cards": ["SP01-064", "SP01-028", "SP01-067", "SP01-003", "SP01-063", "SP01-021", "SP01-027", "SP01-033", "SP01-065"],
+    "related_decks": []
   },
   "mhr-6a7a9a5b9da74fc0904eb13a": {
     "title_zh": "SP01《蜘蛛紀元》8 月 12 日發售",

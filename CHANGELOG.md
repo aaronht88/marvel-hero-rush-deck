@@ -9,10 +9,11 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 ### Added
 - **編輯群牌組投票**：Deck 參考「MHR 編輯群」靜態牌組顯示認同／不認同（須 Google 登入；每用戶每牌組一票、再按可取消）。Worker 表 `editorial_votes` 與社區票分開；`GET /api/editorial/votes?ids=`、`POST /api/editorial/votes/:deckId`
 - **News 站內全文（多語 scaffold）**：`title_i18n`／`summary_i18n`／`body_i18n`（zh-HK／zh-CN／en）；有正文則 `#news/<id>` 站內閱讀並隨語言切換；頁底「來源／原文連結」；`related_deck_ids`／`related_decks` 可匯入構築。流程：`docs/NEWS_ARTICLES.md`
-- 範例草稿：SP01 六張卡牌調整公告三語正文（待內容創作潤飾）
+- **News 提及卡牌＋分享碼**：`featured_cards` 以模擬器風格顯示本地卡面；`related_decks[].code` 顯示分享碼＋複製／匯入至構築
+- 範例：SP01 六張卡牌調整公告三語正文＋`featured_cards`（含蜘蛛俠候選卡號）
 
 ### Changed
-- 版本／cache-bust **1.5.5-beta**
+- 版本／cache-bust **1.5.6-beta**
 
 
 ## [1.5.4-beta] — 2026-10-12

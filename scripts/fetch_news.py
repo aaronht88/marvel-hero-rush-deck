@@ -8,7 +8,8 @@ Sources
 Optional hand-written rewrites live in data/news_overrides.json, keyed by item id.
   Legacy: {"title_zh", "summary_zh"}
   Multi-locale articles: title_i18n / summary_i18n / body_i18n
-    ({"zh-HK","zh-CN","en"}), plus source_name, source_url, related_deck_ids, related_decks.
+    ({"zh-HK","zh-CN","en"}), plus source_name, source_url, related_deck_ids, related_decks,
+    featured_cards (card ids for simulator-style mockups).
   See docs/NEWS_ARTICLES.md. Existing entries are kept if a source fails.
 """
 import json, re, sys, urllib.request

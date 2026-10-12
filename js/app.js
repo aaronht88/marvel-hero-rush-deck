@@ -1374,6 +1374,8 @@
     },
     analyzeShareCode,
     getShareCode: () => encodeShare(),
+    getCard,
+    openCard: openModal,
     toast,
     onPageShow(page) {
       activePage = page || "builder";

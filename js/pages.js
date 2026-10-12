@@ -163,12 +163,77 @@
     }).join("");
   }
 
+  /** Localized card name for article mockups (mirrors app.js cnCard for zh-CN). */
+  function newsCardName(card) {
+    if (!card) return "";
+    try {
+      if (window.MHR_I18N && window.MHR_I18N.getLang() === "zh-CN" && window.MHR_CARD_CN && window.MHR_CARD_CN[card.card_no]) {
+        const v = window.MHR_CARD_CN[card.card_no].name;
+        if (v) return String(v).replace(/\n/g, "").trim();
+      }
+    } catch (e) {}
+    return card.name || card.card_no || card.id || "";
+  }
+
+  function lookupCard(id) {
+    if (!id || typeof CARDS === "undefined") return null;
+    return CARDS.find((c) => c.id === id || c.card_no === id) || null;
+  }
+
+  function renderFeaturedCards(ids) {
+    const list = (ids || []).filter(Boolean);
+    if (!list.length) return "";
+    const faces = list.map((id) => {
+      const card = lookupCard(id);
+      if (!card) {
+        return '<div class="news-feat-missing sim-card"><div class="sim-art"></div>' +
+          '<div class="sim-name">' + esc(id) + "</div>" +
+          '<div class="sim-chips"><span class="sim-chip sim-chip-no">' + esc(id) + "</span></div></div>";
+      }
+      const name = newsCardName(card);
+      const attr = card.attribute || "";
+      return '<div class="sim-card news-feat-card attr-' + esc(attr) + '" data-news-card="' + esc(card.id) + '" role="button" tabindex="0" title="' + esc(name) + '">' +
+        '<div class="sim-art"><img loading="lazy" src="' + esc(card.art) + '" alt="' + esc(name) + '" onerror="this.style.display=\'none\'"></div>' +
+        '<div class="sim-name">' + esc(name) + "</div>" +
+        '<div class="sim-chips"><span class="sim-chip sim-chip-no">' + esc(card.card_no || card.id) + "</span></div>" +
+        "</div>";
+    }).join("");
+    return '<section class="news-featured"><h3>' + esc(t("newsFeaturedCards")) + "</h3>" +
+      '<div class="news-feat-row sim-row">' + faces + "</div></section>";
+  }
+
+  function renderRelatedDeckBlock(opts) {
+    const name = opts.name || t("newsRelatedDecks");
+    const note = opts.note || "";
+    const code = opts.code || "";
+    const importAttr = opts.importAttr || "";
+    const copyAttr = opts.copyAttr || "";
+    const actions = [];
+    if (code) {
+      actions.push('<button type="button" class="btn btn-sm" ' + copyAttr + ">" + esc(t("newsCopyShareCode")) + "</button>");
+      actions.push('<button type="button" class="btn btn-sm btn-primary" ' + importAttr + ">" + esc(t("newsImportToBuilder")) + "</button>");
+    } else if (importAttr) {
+      actions.push('<button type="button" class="btn btn-sm btn-primary" ' + importAttr + ">" + esc(t("newsImportToBuilder")) + "</button>");
+    }
+    return '<li class="news-related-item">' +
+      '<div class="news-related-head"><strong>' + esc(name) + "</strong></div>" +
+      (note ? '<span class="news-related-note">' + esc(note) + "</span>" : "") +
+      (code
+        ? '<div class="news-share-block"><span class="news-share-label">' + esc(t("newsShareCode")) +
+          '</span><code class="mono-code news-share-code">' + esc(code) + "</code></div>"
+        : "") +
+      (actions.length ? '<div class="news-related-actions">' + actions.join("") + "</div>" : "") +
+      "</li>";
+  }
+
   function renderNewsArticle(it) {
     const title = pickI18n(it, "title") || it.title_zh || it.title;
     const body = pickI18n(it, "body");
     const sourceName = it.source_name || it.source || "";
     const sourceUrl = it.source_url || it.url || "";
     const meta = [it.date + (it.time ? " " + it.time : ""), it.venue].filter(Boolean).map(esc).join(" · ");
+
+    const featuredHtml = renderFeaturedCards(it.featured_cards);
 
     let relatedHtml = "";
     const relatedIds = it.related_deck_ids || [];
@@ -177,14 +242,22 @@
       const fromIds = relatedIds.map((rid) => {
         const d = (refDecks || []).find((x) => x.id === rid);
         if (!d) return '<li class="news-related-missing">' + esc(rid) + "</li>";
-        return '<li><button type="button" class="btn btn-sm btn-primary" data-news-import-id="' + esc(d.id) + '">' +
-          esc(t("newsImportRelatedDeck")) + " · " + esc(d.name) + "</button></li>";
+        return renderRelatedDeckBlock({
+          name: d.name,
+          note: d.note || "",
+          code: d.code || "",
+          importAttr: 'data-news-import-id="' + esc(d.id) + '"',
+          copyAttr: 'data-news-copy-id="' + esc(d.id) + '"',
+        });
       }).join("");
       const fromEmbed = relatedDecks.map((rd, i) =>
-        '<li><button type="button" class="btn btn-sm btn-primary" data-news-import-code="' + i + '">' +
-        esc(t("newsImportRelatedDeck")) + " · " + esc(rd.name || t("newsRelatedDecks")) + "</button>" +
-        (rd.note ? '<span class="news-related-note">' + esc(rd.note) + "</span>" : "") +
-        "</li>"
+        renderRelatedDeckBlock({
+          name: rd.name || t("newsRelatedDecks"),
+          note: rd.note || "",
+          code: rd.code || "",
+          importAttr: 'data-news-import-code="' + i + '"',
+          copyAttr: 'data-news-copy-code="' + i + '"',
+        })
       ).join("");
       relatedHtml = '<section class="news-related"><h3>' + esc(t("newsRelatedDecks")) + "</h3><ul>" +
         fromIds + fromEmbed + "</ul>" +
@@ -202,7 +275,7 @@
       '<h2 class="news-article-title">' + esc(title) + "</h2>" +
       (meta ? '<div class="news-meta">' + meta + "</div>" : "") +
       '<div class="news-article-body">' + formatArticleBody(body) + "</div>" +
-      relatedHtml + credit +
+      featuredHtml + relatedHtml + credit +
       "</article>";
   }
 
@@ -612,6 +685,36 @@
         window.MHR_APP.toast(t("toastRefImported", { n: rd.name || "" }));
       } else if (rd && !rd.code) {
         window.MHR_APP.toast(t("newsRelatedDeckHint"));
+      }
+      return;
+    }
+
+    const newsCopyId = e.target.closest("[data-news-copy-id]");
+    if (newsCopyId) {
+      const d = (refDecks || []).find((x) => x.id === newsCopyId.dataset.newsCopyId);
+      if (d && d.code) {
+        navigator.clipboard?.writeText(d.code);
+        window.MHR_APP.toast(t("toastDeckCopied") + "：" + d.name);
+      }
+      return;
+    }
+
+    const newsCopyCode = e.target.closest("[data-news-copy-code]");
+    if (newsCopyCode) {
+      const it = findNewsItem(newsArticleId);
+      const rd = it && it.related_decks && it.related_decks[+newsCopyCode.dataset.newsCopyCode];
+      if (rd && rd.code) {
+        navigator.clipboard?.writeText(rd.code);
+        window.MHR_APP.toast(t("toastDeckCopied") + (rd.name ? "：" + rd.name : ""));
+      }
+      return;
+    }
+
+    const newsCard = e.target.closest("[data-news-card]");
+    if (newsCard) {
+      const id = newsCard.dataset.newsCard;
+      if (id && window.MHR_APP && typeof window.MHR_APP.openCard === "function") {
+        window.MHR_APP.openCard(id);
       }
       return;
     }
