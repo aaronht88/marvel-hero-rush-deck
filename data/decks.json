@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-11",
+  "updated": "2026-10-12",
   "decks": [
     {
       "id": "sp01-01",
@@ -14,6 +14,11 @@
       "source_url": "",
       "date": "2026-10-08",
       "total": 50,
+      "keycards": [
+        "SP01-021",
+        "SP01-022",
+        "SP01-072"
+      ],
       "code": "1|SP01%20Web%20Legion%20%E9%BB%83%E7%B6%A0%E8%9C%98%E8%9B%9B%E7%B6%B2|I0213I0223I0242I0253I0262I0293I0302I0312I0332I0362I0372I0633I0662I0692I0701I0712I0723I0743I0782I0793I0803",
       "cards": [
         {
@@ -136,6 +141,11 @@
       "source_url": "",
       "date": "2026-10-08",
       "total": 50,
+      "keycards": [
+        "SP01-041",
+        "SP01-052",
+        "SP01-080"
+      ],
       "code": "1|SP01%20Sinister%20Tempo%20%E8%97%8D%E7%B6%A0%E5%AE%BF%E6%95%B5|I0413I0423I0432I0462I0503I0523I0533I0543I0563I0572I0582I0593I0602I0672I0682I0713I0723I0733I0803",
       "cards": [
         {
@@ -248,6 +258,11 @@
       "source_url": "",
       "date": "2026-10-08",
       "total": 50,
+      "keycards": [
+        "SP01-047",
+        "SP01-001",
+        "SP01-006"
+      ],
       "code": "1|SP01%20Symbiote%20Knull%20%E7%B4%85%E8%97%8D%E5%85%B1%E7%94%9F%E9%AB%94|I0012I0063I0082I0103I0122I0172I0201I0412I0423I0462I0472I0482I0503I0513I0523I0533I0543I0563I0573I0593",
       "cards": [
         {
@@ -365,6 +380,11 @@
       "source_url": "",
       "date": "2026-10-08",
       "total": 50,
+      "keycards": [
+        "SP01-006",
+        "SP01-018",
+        "SP01-012"
+      ],
       "code": "1|SP01%20Level%20Hunter%20%E7%B4%85%E7%B6%A0%E7%AD%89%E7%B4%9A%E7%8D%B5%E6%AE%BA|I0012I0031I0063I0082I0103I0113I0123I0163I0173I0183I0193I0203I0662I0672I0713I0722I0733I0763I0803",
       "cards": [
         {
@@ -477,6 +497,11 @@
       "source_url": "",
       "date": "2026-10-10",
       "total": 50,
+      "keycards": [
+        "SD01-003",
+        "BP01-024",
+        "BP01-030"
+      ],
       "code": "1|Fire%20Support%20Loop|B0033A0243A0292A0303A0233A0343C0063C0102A0513A0603B0073A0332A0163A0213B0012A0582A0011A0442C0092A0082",
       "note": "紅黃火力加成鏈：以 Synchronize、Leverage、Aid Attack 提升 Range 或 Power，觸發 Fire Support 每回合 −1000，再以 Ordnance Drop、Anti-Tank 疊加削弱。牌組內含 Pulse Uninstall，於共生體較多的對局可用以拆解附著。",
       "cards": [
@@ -595,6 +620,11 @@
       "source_url": "",
       "date": "2026-10-10",
       "total": 50,
+      "keycards": [
+        "BP01-008",
+        "SP01-067",
+        "BP01-098"
+      ],
       "code": "1|Attach%20Strip%20RG|A0083A0983A1063A1083I0673E0013A0953E0093A1192A0942A1152A0023A1122A1002A0172B0072A0112B0032A0162I0122A0011",
       "note": "紅綠拆附著專用：以 Falcon、Airbag 棄牌起動，Clairvoyance 拆解附著並使被附著角色僅能攻擊 Lv6，Pulse Uninstall 清除全場附著，再配合 Anti-Venom、God of Trick 壓制共生體與 Knull。",
       "cards": [
@@ -718,6 +748,11 @@
       "source_url": "",
       "date": "2026-10-10",
       "total": 50,
+      "keycards": [
+        "BP01-094",
+        "SD04-001",
+        "BP01-095"
+      ],
       "code": "1|Discard%20Story%20GY|A1063A1083A0983A0953E0093A1192A0943A1152E0013C0033A0603A0332A0321A0512C0092I0232I0211I0342E0022A1072A1002A1121",
       "note": "綠黃棄牌控制：以 Falcon、Airbag 棄牌換取 Sacrifice、Clairvoyance、True Justice 等回報，收尾依靠 God Of Story，按己方未攻擊的角色數量迫使對手退場。對陣 Knull 時可運用 Venom 或 Ultimate Mode 作軟性解場。",
       "cards": [
@@ -846,6 +881,11 @@
       "source_url": "",
       "date": "2026-10-10",
       "total": 50,
+      "keycards": [
+        "SP01-045",
+        "BP01-070",
+        "BP01-076"
+      ],
       "code": "1|P500%20Time%20Control|I0453A0703A0632A0763A0793A0873A0902D0013F0082I0422I0461A1103A0983A0773A0812A0822D0022A0942A1152E0022A1062",
       "note": "藍綠 Range 操控：盡量將原 Power 500 的角色配置於戰場，Time Control 將己方戰場上所有角色的 Range 統一為該數量，Time Guide 於藍色卡牌入場時累積 BASE；End Of Time 再依靠撤退區的 Loki 放大效果。",
       "cards": [

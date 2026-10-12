@@ -6,6 +6,14 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 ## [Unreleased]
 
+## [1.5.8-beta] — 2026-10-12
+
+### Added
+- **Deck 參考 keycard 預覽**：每副編輯群牌組顯示 3 張關鍵卡小圖（三欄並排）；資料來源 `data/decks.json` 的 `keycards`，卡面沿用 `img/cards/<id>.webp`（與 Vault／News featured 相同解析）
+
+### Changed
+- 版本／cache-bust **1.5.8-beta**
+
 ## [1.5.7-beta] — 2026-10-12
 
 ### Fixed

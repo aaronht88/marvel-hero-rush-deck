@@ -180,6 +180,23 @@
     return CARDS.find((c) => c.id === id || c.card_no === id) || null;
   }
 
+
+  function renderKeycards(ids) {
+    const list = (ids || []).filter(Boolean);
+    if (!list.length) return "";
+    const cells = list.slice(0, 3).map((id) => {
+      const card = lookupCard(id);
+      if (!card || !card.art) {
+        return '<div class="ref-keycard ref-keycard-empty" title="' + esc(id) + '"></div>';
+      }
+      const name = newsCardName(card);
+      return '<div class="ref-keycard" title="' + esc(name) + '">' +
+        '<img loading="lazy" src="' + esc(card.art) + '" alt="' + esc(name) + '" onerror="this.parentElement.classList.add(\'ref-keycard-empty\');this.remove()">' +
+        "</div>";
+    }).join("");
+    return '<div class="ref-keycards" aria-hidden="true">' + cells + "</div>";
+  }
+
   function renderFeaturedCards(ids) {
     const list = (ids || []).filter(Boolean);
     if (!list.length) return "";
@@ -438,6 +455,7 @@
       '<span class="deck-badge">' + esc(t("pageDecksEditorial")) + "</span></div>" +
       '<div class="ref-deck-meta">' + [esc(d.set), src, esc(t("deckBy", { a: author, d: d.date || "" }))].filter(Boolean).join(" · ") + "</div>" +
       (d.note ? '<p class="ref-deck-note">' + esc(d.note) + "</p>" : "") +
+      renderKeycards(d.keycards) +
       '<div class="ref-deck-actions">' +
       '<button class="btn btn-primary btn-sm" data-ref-import="' + i + '">' + esc(t("deckImport")) + "</button>" +
       '<button class="btn btn-sm" data-ref-copy="' + i + '">' + esc(t("deckCopy")) + "</button>" +
