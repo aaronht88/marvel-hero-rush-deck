@@ -49,9 +49,11 @@
 - 若該則有任一語系 `body_*` → 列表顯示「站內閱讀」，點開 `#news/<id>` 文章頁（跟隨右上角語言切換顯示對應正文／標題）。
 - 若無正文 → 維持開外部 `url`。
 - 頁底：`來源：{source_name}` +「原文連結」→ `source_url`（缺省則用原 `url`）。
-- **提及卡牌** `featured_cards`：卡號陣列（對應 `CARDS`／`img/cards/<id>.webp`），文章內以模擬器風格卡面展示（名稱＋卡號；點擊可開詳情）。
+- **提及卡牌** `featured_cards`：卡號陣列（對應 `CARDS`／`img/cards/<id>.webp`），文章內以模擬器風格卡面展示（名稱＋卡號；點擊可開詳情）。若正文含任何 `{{deck:…}}` inline embed，則略過頁底大批 featured 卡牆（避免重複）。
+- **文內牌組區塊** `{{deck:<decks.json id>}}`：寫在 `body_i18n` 任意段與段之間（獨立一行亦可）。前端會拆開正文，於該處插入 Deck Ref 名稱、3 keycards、`official_code`、分享碼與「複製分享碼／匯入至構築」按鈕（同 `related_deck_ids` 的 click handler）。當 `related_deck_ids` 全部已出現於 inline embed 且無 `related_decks` 時，隱藏頁底「相關牌組」區塊。
+- **複製文章連結**：文章頁標題下按鈕，複製 deep link `#news/<id>`（正式站 `https://mhrdeckbuild.duckdns.org`）。
 - **相關牌組** `related_decks`：顯示名稱、備註、**分享碼**（monospace）、「複製分享碼」／「匯入至構築」；`related_deck_ids` 則對應 `data/decks.json` 同樣顯示分享碼與按鈕。
-- UI 文案 key：`newsReadOnSite`、`newsArticleBack`、`newsSourceCredit`、`newsSourceLink`、`newsRelatedDecks`、`newsImportRelatedDeck`、`newsRelatedDeckHint`、`newsArticlePending`、`newsShareCode`、`newsCopyShareCode`、`newsImportToBuilder`、`newsFeaturedCards`（`js/i18n.js`；內容創作可改書面語）。
+- UI 文案 key：`newsReadOnSite`、`newsArticleBack`、`newsSourceCredit`、`newsSourceLink`、`newsRelatedDecks`、`newsImportRelatedDeck`、`newsRelatedDeckHint`、`newsArticlePending`、`newsShareCode`、`newsCopyShareCode`、`newsImportToBuilder`、`newsFeaturedCards`、`newsCopyArticleLink`、`newsArticleLinkCopied`、`newsOfficialCode`（`js/i18n.js`；內容創作可改書面語）。
 
 ## 分工 pipeline
 
