@@ -732,7 +732,15 @@
     if (newsCard) {
       const id = newsCard.dataset.newsCard;
       if (id && window.MHR_APP && typeof window.MHR_APP.openCard === "function") {
-        window.MHR_APP.openCard(id);
+        const it = findNewsItem(newsArticleId);
+        const feat = (it && it.featured_cards) ? it.featured_cards.filter(Boolean) : null;
+        const navIds = feat && feat.length
+          ? feat.map((fid) => {
+              const c = lookupCard(fid);
+              return c ? c.id : fid;
+            })
+          : null;
+        window.MHR_APP.openCard(id, navIds, "modalNavInList");
       }
       return;
     }

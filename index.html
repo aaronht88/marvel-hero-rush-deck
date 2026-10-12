@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Russo+One&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=1.5.8-beta" />
+  <link rel="stylesheet" href="css/styles.css?v=1.5.9-beta" />
   <!-- GoatCounter privacy-friendly analytics -->
   <script data-goatcounter="https://aaronht88.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
@@ -21,7 +21,7 @@
         <p class="subtitle" data-i18n="subtitle">233 張實卡資料（BP01 The Avengers + SD01-04 預組）· 官方 cardlist</p>
         <p class="author-credit" data-i18n="byAuthor">by aaronht88</p>
       </div>
-      <span class="version-badge" id="version-badge">v1.5.8-beta</span>
+      <span class="version-badge" id="version-badge">v1.5.9-beta</span>
       <span class="visitor-badge" data-i18n-title="visitorViews" title="訪客瀏覽次數">👁 <span data-i18n="visitorLabel">訪客</span> <span id="visitor-count">–</span></span>
       <button id="btn-donate-top" class="btn-donate-chip" data-i18n="donateBtn">☕ 支持我</button>
     </div>
@@ -235,7 +235,7 @@
           <img class="wl-logo" src="img/logo.png" alt="Marvel Hero Rush" />
           <div class="wl-title">MARVEL HERO RUSH</div>
           <div class="wl-sub">DECK BUILDER</div>
-          <div class="wl-version" id="wl-version">v1.5.8-beta</div>
+          <div class="wl-version" id="wl-version">v1.5.9-beta</div>
           <div class="wl-visitors">👁 <span data-i18n="cumulativeUsers">累積使用人數</span>：<span id="wl-visitor-count">–</span></div>
         </div>
         <div class="modal-info wl-info">
@@ -352,43 +352,48 @@
 
   <!-- CARD DETAIL OVERLAY -->
   <div id="card-modal" class="modal-overlay" hidden>
-    <div class="modal">
-      <button id="modal-close" class="modal-close" aria-label="close">×</button>
-      <div class="modal-body">
-        <div class="modal-art-wrap">
-          <img id="modal-art" src="" alt="" />
-        </div>
-        <div class="modal-info">
-          <div class="modal-no" id="modal-no"></div>
-          <h2 class="modal-name" id="modal-name"></h2>
-          <div class="modal-chips" id="modal-chips"></div>
-          <dl class="modal-details">
-            <div><dt data-i18n="lvLabel">等級</dt><dd id="modal-level"></dd></div>
-            <div><dt data-i18n="powerLabel">戰力</dt><dd id="modal-power"></dd></div>
-            <div><dt data-i18n="rangeLabel">攻擊範圍</dt><dd id="modal-range"></dd></div>
-            <div><dt data-i18n="attrLabel">顏色</dt><dd id="modal-attr"></dd></div>
-            <div><dt data-i18n="featureLabel">特徵</dt><dd id="modal-feature"></dd></div>
-            <div><dt data-i18n="rarityLabel">稀有度</dt><dd id="modal-rarity"></dd></div>
-            <div><dt data-i18n="setLabel">系列</dt><dd id="modal-set"></dd></div>
-          </dl>
-          <div class="modal-effect">
-            <div class="modal-effect-label" data-i18n="effectLabel">效果</div>
-            <div id="modal-effect-text"></div>
+    <div class="card-modal-frame">
+      <button type="button" id="modal-prev" class="nav-arrow prev" aria-label="上一張" title="上一張" hidden>‹</button>
+      <button type="button" id="modal-next" class="nav-arrow next" aria-label="下一張" title="下一張" hidden>›</button>
+      <div id="modal-nav-pos" class="nav-pos" hidden></div>
+      <div class="modal">
+        <button id="modal-close" class="modal-close" aria-label="close">×</button>
+        <div class="modal-body">
+          <div class="modal-art-wrap">
+            <img id="modal-art" src="" alt="" />
           </div>
-          <div class="modal-actions">
-            <button id="modal-add-deck" class="btn btn-primary" data-i18n="addDeckBtn">加入 Deck</button>
-            <button id="modal-fav" class="btn">☆ 加入最愛</button>
-            <div class="deck-ctl">
-              <span data-i18n="inDeckLabel">在 Deck 內</span>
-              <button id="deck-dec" class="btn">−</button>
-              <span id="deck-count-modal">0</span>
-              <button id="deck-inc" class="btn">+</button>
+          <div class="modal-info">
+            <div class="modal-no" id="modal-no"></div>
+            <h2 class="modal-name" id="modal-name"></h2>
+            <div class="modal-chips" id="modal-chips"></div>
+            <dl class="modal-details">
+              <div><dt data-i18n="lvLabel">等級</dt><dd id="modal-level"></dd></div>
+              <div><dt data-i18n="powerLabel">戰力</dt><dd id="modal-power"></dd></div>
+              <div><dt data-i18n="rangeLabel">攻擊範圍</dt><dd id="modal-range"></dd></div>
+              <div><dt data-i18n="attrLabel">顏色</dt><dd id="modal-attr"></dd></div>
+              <div><dt data-i18n="featureLabel">特徵</dt><dd id="modal-feature"></dd></div>
+              <div><dt data-i18n="rarityLabel">稀有度</dt><dd id="modal-rarity"></dd></div>
+              <div><dt data-i18n="setLabel">系列</dt><dd id="modal-set"></dd></div>
+            </dl>
+            <div class="modal-effect">
+              <div class="modal-effect-label" data-i18n="effectLabel">效果</div>
+              <div id="modal-effect-text"></div>
             </div>
-            <div class="vault-ctl">
-              <span data-i18n="vaultOwnedLabel">已擁有數量</span>
-              <button type="button" id="vault-dec" class="btn" aria-label="decrease owned">−</button>
-              <span id="vault-count-modal">0</span>
-              <button type="button" id="vault-inc" class="btn" aria-label="increase owned">+</button>
+            <div class="modal-actions">
+              <button id="modal-add-deck" class="btn btn-primary" data-i18n="addDeckBtn">加入 Deck</button>
+              <button id="modal-fav" class="btn">☆ 加入最愛</button>
+              <div class="deck-ctl">
+                <span data-i18n="inDeckLabel">在 Deck 內</span>
+                <button id="deck-dec" class="btn">−</button>
+                <span id="deck-count-modal">0</span>
+                <button id="deck-inc" class="btn">+</button>
+              </div>
+              <div class="vault-ctl">
+                <span data-i18n="vaultOwnedLabel">已擁有數量</span>
+                <button type="button" id="vault-dec" class="btn" aria-label="decrease owned">−</button>
+                <span id="vault-count-modal">0</span>
+                <button type="button" id="vault-inc" class="btn" aria-label="increase owned">+</button>
+              </div>
             </div>
           </div>
         </div>
@@ -415,14 +420,14 @@
   <div id="toast" class="toast" hidden></div>
 
   <!-- data + logic (versioned query = cache busting on release) -->
-  <script src="js/i18n.js?v=1.5.8-beta"></script>
-  <script src="js/cards.js?v=1.5.8-beta"></script>
-  <script src="js/cards_cn.js?v=1.5.8-beta"></script>
-  <script src="js/rules.js?v=1.5.8-beta"></script>
-  <script src="js/qrcode.min.js?v=1.5.8-beta"></script>
-  <script src="js/google-config.js?v=1.5.8-beta"></script>
-  <script src="js/google-auth.js?v=1.5.8-beta"></script>
-  <script src="js/app.js?v=1.5.8-beta"></script>
-  <script src="js/pages.js?v=1.5.8-beta"></script>
+  <script src="js/i18n.js?v=1.5.9-beta"></script>
+  <script src="js/cards.js?v=1.5.9-beta"></script>
+  <script src="js/cards_cn.js?v=1.5.9-beta"></script>
+  <script src="js/rules.js?v=1.5.9-beta"></script>
+  <script src="js/qrcode.min.js?v=1.5.9-beta"></script>
+  <script src="js/google-config.js?v=1.5.9-beta"></script>
+  <script src="js/google-auth.js?v=1.5.9-beta"></script>
+  <script src="js/app.js?v=1.5.9-beta"></script>
+  <script src="js/pages.js?v=1.5.9-beta"></script>
 </body>
 </html>

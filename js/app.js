@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.5.7-beta";
+  const APP_VERSION = "1.5.9-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -17,6 +17,8 @@
   let vault = {};            // { [cardId]: ownedQty } — per print/id; no 3-copy cap
   let vaultUi = { mode: "normal", size: "m" }; // Vault display prefs (local only)
   let modalCardId = null;
+  let modalNavIds = []; // ordered ids for prev/next while modal open
+  let modalNavSuffixKey = "modalNavInFilter";
   let view = "all";          // "all" | "fav" | "rush" (Vault is its own page)
   let activePage = "builder"; // synced via MHR_APP.onPageShow from pages.js
   let urlImportDone = false; // set when ?deck= import created/switched a deck
@@ -910,7 +912,7 @@
             <span class="sim-chip sim-chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
           </div>
           <div class="sim-qty">×${qty}</div>`;
-        t2.addEventListener("click", () => openModal(card.id));
+        t2.addEventListener("click", () => openModal(card.id, getSimulatorNavIds(), "modalNavInDeck"));
         row.appendChild(t2);
       });
       sec.appendChild(row);
@@ -1006,20 +1008,85 @@
     $("#modal-set").textContent = CARD_SETS[c.set] || c.set;
     $("#modal-effect-text").textContent = cnCard(c, "effect") || "—";
   }
-  function openModal(id) {
+  function getRushNavIds() {
+    return CARDS.filter((c) => c.type === "impact").sort((a, b) =>
+      (a.set === b.set ? a.card_no.localeCompare(b.card_no) : a.set.localeCompare(b.set))
+    ).map((c) => c.id);
+  }
+  function getGalleryNavIds() {
+    if (isVaultPage()) return getVaultFilteredCards().map((c) => c.id);
+    if (view === "rush") return getRushNavIds();
+    return getFilteredCards().map((c) => c.id);
+  }
+  function getSimulatorNavIds() {
+    const entries = [...deck.entries()].sort((a, b) => {
+      const ca = getCard(a[0]), cb = getCard(b[0]);
+      return ca.level - cb.level || ca.card_no.localeCompare(cb.card_no);
+    });
+    return entries.map(([id]) => id);
+  }
+  function resolveNavIds(id, navIds) {
+    const list = Array.isArray(navIds) ? navIds.filter((x) => getCard(x)) : [];
+    if (list.length && list.indexOf(id) >= 0) return list;
+    const gallery = getGalleryNavIds();
+    if (gallery.indexOf(id) >= 0) return gallery;
+    return [id];
+  }
+  function updateModalNav() {
+    const prevBtn = $("#modal-prev");
+    const nextBtn = $("#modal-next");
+    const posEl = $("#modal-nav-pos");
+    if (!prevBtn || !nextBtn || !posEl) return;
+    const n = modalNavIds.length;
+    const idx = modalCardId ? modalNavIds.indexOf(modalCardId) : -1;
+    const show = n > 1 && idx >= 0;
+    prevBtn.hidden = !show;
+    nextBtn.hidden = !show;
+    posEl.hidden = !show;
+    if (!show) return;
+    prevBtn.disabled = idx <= 0;
+    nextBtn.disabled = idx >= n - 1;
+    prevBtn.setAttribute("aria-label", t("modalPrev"));
+    nextBtn.setAttribute("aria-label", t("modalNext"));
+    prevBtn.title = t("modalPrev");
+    nextBtn.title = t("modalNext");
+    posEl.textContent = (idx + 1) + " / " + n + " · " + t(modalNavSuffixKey || "modalNavInFilter");
+  }
+  function showModalCard(id) {
     const c = getCard(id);
     if (!c) return;
     modalCardId = id;
     $("#modal-art").src = c.art;
+    $("#modal-art").alt = cnCard(c, "name");
     $("#modal-name").textContent = cnCard(c, "name");
     fillModalDetails(c);
     updateModalActions();
+    updateModalNav();
+  }
+  function navigateModal(delta) {
+    if (modal.hidden || !modalCardId || modalNavIds.length < 2) return;
+    const idx = modalNavIds.indexOf(modalCardId);
+    if (idx < 0) return;
+    const next = idx + delta;
+    if (next < 0 || next >= modalNavIds.length) return;
+    showModalCard(modalNavIds[next]);
+  }
+  /** @param {string} id
+   *  @param {string[]=} navIds optional ordered list for prev/next
+   *  @param {string=} suffixKey i18n key for position label */
+  function openModal(id, navIds, suffixKey) {
+    const c = getCard(id);
+    if (!c) return;
+    modalNavSuffixKey = suffixKey || "modalNavInFilter";
+    modalNavIds = resolveNavIds(id, navIds);
+    showModalCard(id);
     showOverlay(modal);
     document.body.classList.add("modal-open");
   }
   function closeModal() {
     hideOverlay(modal);
     modalCardId = null;
+    modalNavIds = [];
     document.body.classList.remove("modal-open");
   }
   function updateModalActions() {
@@ -1248,12 +1315,27 @@
   // modal events
   $("#modal-close").addEventListener("click", closeModal);
   modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+  const modalPrevBtn = $("#modal-prev");
+  const modalNextBtn = $("#modal-next");
+  if (modalPrevBtn) modalPrevBtn.addEventListener("click", (e) => { e.stopPropagation(); navigateModal(-1); });
+  if (modalNextBtn) modalNextBtn.addEventListener("click", (e) => { e.stopPropagation(); navigateModal(1); });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       if (!modal.hidden) closeModal();
       else if (!$("#sim-modal").hidden) closeSimulator();
       else if (!$("#donation-modal").hidden) closeDonation();
       else if (!$("#import-modal").hidden) closeImportModal();
+      return;
+    }
+    if (modal.hidden) return;
+    const tag = (e.target && e.target.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (e.target && e.target.isContentEditable)) return;
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      navigateModal(-1);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      navigateModal(1);
     }
   });
   $("#modal-add-deck").addEventListener("click", () => { if (modalCardId) addCard(modalCardId); });
@@ -1391,7 +1473,10 @@
       refreshFilterLabels();
       updateFilterSummaries();
       if (window.MHR_PAGES) window.MHR_PAGES.render();
-      if (modalCardId) fillModalDetails(getCard(modalCardId));
+      if (modalCardId) {
+        fillModalDetails(getCard(modalCardId));
+        updateModalNav();
+      }
       renderDeckManager();
       renderCards(); renderDeck(); updateModalActions();
     },
