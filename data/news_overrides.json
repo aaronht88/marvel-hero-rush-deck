@@ -1,39 +1,168 @@
 {
+  "mhr-6ac89d6c0f6443366077e44a": {
+    "title_zh": "蜘蛛俠主題禮盒「命運相會」定於 11 月發售",
+    "summary_zh": "官方公布蜘蛛俠主題禮盒「命運相會」，預計 2026 年 11 月發售。詳細內容與購買途徑請見原文。",
+    "title_i18n": {
+      "zh-HK": "蜘蛛俠主題禮盒「命運相會」定於 11 月發售",
+      "zh-CN": "蜘蛛侠主题礼盒「命运相会」定于 11 月发售",
+      "en": "Spider-Man gift box “Fateful Meeting” set for November"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方公布蜘蛛俠主題禮盒「命運相會」，預計 2026 年 11 月發售。詳細內容與購買途徑請見原文。",
+      "zh-CN": "官方公布蜘蛛侠主题礼盒「命运相会」，预计 2026 年 11 月发售。详细内容与购买途径请见原文。",
+      "en": "Official notice: Spider-Man-themed gift box “Fateful Meeting” is scheduled for November 2026. See the original post for details and purchase channels."
+    },
+    "body_i18n": {
+      "zh-HK": "官方公布蜘蛛俠主題新品禮盒「命運相會」，預計於 2026 年 11 月發售。\n\n本站目前僅整理公告層級資訊：產品定位為蜘蛛俠主題禮盒，具體內含卡牌、特典與售價，請以官方原文為準。\n\n守護者如需跟進發售日與門市資訊，請透過頁底原文連結查看最新公布。",
+      "zh-CN": "官方公布蜘蛛侠主题新品礼盒「命运相会」，预计于 2026 年 11 月发售。\n\n本站目前仅整理公告层级信息：产品定位为蜘蛛侠主题礼盒，具体内含卡牌、特典与售价，请以官方原文为准。\n\n如需跟进发售日与门市信息，请通过页底原文链接查看最新公布。",
+      "en": "The official channel announced a Spider-Man-themed gift box titled “Fateful Meeting,” planned for November 2026.\n\nThis on-site rewrite covers announcement-level facts only. Contents, extras, and pricing follow the original notice.\n\nFor release timing and retailers, use the source link in the footer."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/NPZlw6EG3vDiUGvjUBDk2Q"
+  },
+  "mhr-6ac89afe0f6443366077e3c7": {
+    "title_zh": "綜合規則書 1.04 公布",
+    "summary_zh": "官方公布《超英擊戰》綜合規則書 1.04。對局與賽事請以此版本為準，細節請見原文。",
+    "title_i18n": {
+      "zh-HK": "綜合規則書 1.04 公布",
+      "zh-CN": "综合规则书 1.04 公布",
+      "en": "Comprehensive Rulebook 1.04 released"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方公布《超英擊戰》綜合規則書 1.04。對局與賽事請以此版本為準，細節請見原文。",
+      "zh-CN": "官方公布《超英击战》综合规则书 1.04。对局与赛事请以此版本为准，细节请见原文。",
+      "en": "Comprehensive Rulebook 1.04 for Marvel Hero Rush is out. Use this version for play and events; see the original notice for details."
+    },
+    "body_i18n": {
+      "zh-HK": "官方公布漫威對戰卡牌《超英擊戰》綜合規則書 1.04。\n\n規則書用於釐清正式對局與賽事裁定。若你的牌組或店內賽事引用舊版規則，請改為以 1.04 為準。\n\n本站僅作公告摘要；具體條文、修訂對照與下載方式，請參閱頁底原文連結。",
+      "zh-CN": "官方公布漫威对战卡牌《超英击战》综合规则书 1.04。\n\n规则书用于厘清正式对局与赛事裁定。若牌组或店内赛事仍引用旧版规则，请改为以 1.04 为准。\n\n本站仅作公告摘要；具体条文、修订对照与下载方式，请参阅页底原文链接。",
+      "en": "Marvel Hero Rush Comprehensive Rulebook 1.04 has been published.\n\nUse 1.04 for tournament and casual rulings going forward. Update any lists or store events that still cite older text.\n\nThis page is an announcement summary only; read the full text and any change notes via the source link."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/H6qP1xEqEdrn3ITbZ3h3PA"
+  },
+  "mhr-6ac89efd0f6443366077e4af": {
+    "title_zh": "輕藏補充包 LP01《蜘蛛感應》發售資訊",
+    "summary_zh": "官方公布輕藏補充包 LP01《蜘蛛感應》發售資訊。本系列卡號尚未完整入庫，詳情請見官方網站。",
+    "title_i18n": {
+      "zh-HK": "輕藏補充包 LP01《蜘蛛感應》發售資訊",
+      "zh-CN": "轻藏补充包 LP01《蜘蛛感应》发售资讯",
+      "en": "Light Pack LP01 Spider-Sense release notice"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方公布輕藏補充包 LP01《蜘蛛感應》發售資訊。本系列卡號尚未完整入庫，詳情請見官方網站。",
+      "zh-CN": "官方公布轻藏补充包 LP01《蜘蛛感应》发售资讯。本系列卡号尚未完整入库，详情请见官方网站。",
+      "en": "Light Pack LP01 Spider-Sense has been announced. Card numbers are not fully in our database yet; see the official site for details."
+    },
+    "body_i18n": {
+      "zh-HK": "官方公布《超英擊戰》輕藏補充包 LP01《蜘蛛感應》相關發售資訊。\n\nLP01 為蜘蛛主題輕藏系列；站內卡庫暫未收錄完整 LP01 卡號，故本篇不掛模擬器卡面，亦不會臆造分享碼。\n\n產品規格、發售日與購買途徑，請以官方網站原文為準。有公開卡表後，將再補上卡號與相關構築資訊。",
+      "zh-CN": "官方公布《超英击战》轻藏补充包 LP01《蜘蛛感应》相关发售资讯。\n\nLP01 为蜘蛛主题轻藏系列；站内卡库暂未收录完整 LP01 卡号，故本篇不挂模拟器卡面，也不会臆造分享码。\n\n产品规格、发售日与购买途径，请以官方网站原文为准。有公开卡表后，将再补上卡号与相关构筑信息。",
+      "en": "Marvel Hero Rush Light Pack LP01 Spider-Sense has been announced.\n\nOur card database does not yet include a full LP01 number list, so this article does not attach simulator mockups or invent share codes.\n\nSpecs, release date, and purchase channels follow the official site. Once a public list exists, we will add card numbers and any related deck notes."
+    },
+    "source_name": "官方網站",
+    "source_url": "https://www.marvelherorush.com/zh-CN/news"
+  },
   "mhr-6ab4a6520f6443366073e510": {
     "title_zh": "亞洲巔峰邀請賽賽事詳情公布",
-    "summary_zh": "官方公布《超英擊戰》亞洲巔峰邀請賽的賽事資料，內容以圖片發佈，賽制與參加方法請見原文。"
-  },
-  "mhr-6ab4921c0f6443366073e0bc": {
-    "title_zh": "廣州站公開賽上位卡組（第二篇）",
-    "summary_zh": "官方介紹地區公開賽廣州站上位玩家所用卡組，卡表以圖片發佈，如需參考構築請見原文。"
+    "summary_zh": "官方公布《超英擊戰》亞洲巔峰邀請賽的賽事資料。賽制、資格與時程以原文圖片與說明為準。",
+    "title_i18n": {
+      "zh-HK": "亞洲巔峰邀請賽賽事詳情公布",
+      "zh-CN": "亚洲巅峰邀请赛赛事详情公布",
+      "en": "Asia Peak Invitational details announced"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方公布《超英擊戰》亞洲巔峰邀請賽的賽事資料。賽制、資格與時程以原文圖片與說明為準。",
+      "zh-CN": "官方公布《超英击战》亚洲巅峰邀请赛的赛事资料。赛制、资格与时程以原文图片与说明为准。",
+      "en": "Details for the Marvel Hero Rush Asia Peak Invitational are out. Format, qualification, and schedule follow the original notice."
+    },
+    "body_i18n": {
+      "zh-HK": "官方公布《超英擊戰》亞洲巔峰邀請賽賽事詳情。\n\n公告內容涵蓋賽事定位、賽制與參加方式等資訊，並以圖片形式發佈。站內僅作摘要，具體報名條件、賽程與獎勵請對照頁底原文。\n\n有意參賽的守護者，請及早確認資格途徑與截止時間，避免遺漏官方更新。",
+      "zh-CN": "官方公布《超英击战》亚洲巅峰邀请赛赛事详情。\n\n公告内容涵盖赛事定位、赛制与参加方式等信息，并以图片形式发布。站内仅作摘要，具体报名条件、赛程与奖励请对照页底原文。\n\n有意参赛的守护者，请及早确认资格途径与截止时间，避免遗漏官方更新。",
+      "en": "The official channel published details for the Marvel Hero Rush Asia Peak Invitational.\n\nThe notice covers event positioning, format, and how to take part, largely via images. This page is a summary only—confirm registration rules, schedule, and prizes in the original post.\n\nPlayers aiming to qualify should check pathways and deadlines early so they do not miss updates."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/vYBF4G08S_1U3NC1oyN8jQ"
   },
   "mhr-6ab4a5880f6443366073e4e2": {
     "title_zh": "廣州站公開賽上位卡組（第一篇）",
-    "summary_zh": "官方介紹地區公開賽廣州站上位玩家所用卡組，卡表以圖片發佈，如需參考構築請見原文。"
+    "summary_zh": "官方介紹地區公開賽廣州站上位玩家所用卡組。完整牌表見集卡社卡組廣場；本篇附關鍵共生體卡號參考。",
+    "title_i18n": {
+      "zh-HK": "廣州站公開賽上位卡組（第一篇）",
+      "zh-CN": "广州站公开赛上位卡组（第一篇）",
+      "en": "Guangzhou Open: top decks (part 1)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方介紹地區公開賽廣州站上位玩家所用卡組。完整牌表見集卡社卡組廣場；本篇附關鍵共生體卡號參考。",
+      "zh-CN": "官方介绍地区公开赛广州站上位玩家所用卡组。完整牌表见集卡社卡组广场；本篇附关键共生体卡号参考。",
+      "en": "Official coverage of top decks from the Guangzhou regional Open. Full lists are in the 集卡社 plaza; key Symbiote card numbers are featured below."
+    },
+    "body_i18n": {
+      "zh-HK": "官方介紹《超英擊戰》地區公開賽・廣州站上位玩家所用卡組（第一篇）。原文以圖片展示牌表與說明。\n\n完整 50 張牌表目前公開於「集卡社對戰卡牌助手」卡組廣場；本站暫無對應可匯入分享碼，故相關牌組欄留空。據公開資訊，亞軍「魔王」為紅藍宿敵共生體（Knull 軸）構築。\n\n為方便對照，本篇附上與公開報導相關的關鍵卡號（Knull／Carnage／Red Goblin／Agony／Phage／Riot）：SP01-047、SP01-001、SP01-006、SP01-051、SP01-050、SP01-053。若日後取得完整可核對牌表，將再補上分享碼。",
+      "zh-CN": "官方介绍《超英击战》地区公开赛・广州站上位玩家所用卡组（第一篇）。原文以图片展示牌表与说明。\n\n完整 50 张牌表目前公开于「集卡社对战卡牌助手」卡组广场；本站暂无对应可导入分享码，故相关牌组栏留空。据公开信息，亚军「魔王」为红蓝宿敌共生体（Knull 轴）构筑。\n\n为方便对照，本篇附上与公开报道相关的关键卡号（Knull／Carnage／Red Goblin／Agony／Phage／Riot）：SP01-047、SP01-001、SP01-006、SP01-051、SP01-050、SP01-053。若日后取得完整可核对牌表，将再补上分享码。",
+      "en": "Official write-up of top decks from the Marvel Hero Rush Guangzhou regional Open (part 1). The original post shows lists and notes as images.\n\nFull 50-card lists are currently published in the 集卡社對戰卡牌助手 deck plaza; we do not yet have importable share codes, so related decks are left empty. Publicly, runner-up “魔王” ran a red/blue Symbiote (Knull-axis) list.\n\nFor reference we feature key reported numbers (Knull / Carnage / Red Goblin / Agony / Phage / Riot): SP01-047, SP01-001, SP01-006, SP01-051, SP01-050, SP01-053. Share codes will be added once a full verified list is available."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/0UPWjN2Jie_t0W_rrW34nA",
+    "featured_cards": [
+      "SP01-047",
+      "SP01-001",
+      "SP01-006",
+      "SP01-051",
+      "SP01-050",
+      "SP01-053"
+    ],
+    "related_decks": []
+  },
+  "mhr-6ab4921c0f6443366073e0bc": {
+    "title_zh": "廣州站公開賽上位卡組（第二篇）",
+    "summary_zh": "官方續介紹廣州站上位卡組。完整牌表見集卡社卡組廣場；本篇同樣附關鍵共生體卡號參考。",
+    "title_i18n": {
+      "zh-HK": "廣州站公開賽上位卡組（第二篇）",
+      "zh-CN": "广州站公开赛上位卡组（第二篇）",
+      "en": "Guangzhou Open: top decks (part 2)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方續介紹廣州站上位卡組。完整牌表見集卡社卡組廣場；本篇同樣附關鍵共生體卡號參考。",
+      "zh-CN": "官方续介绍广州站上位卡组。完整牌表见集卡社卡组广场；本篇同样附关键共生体卡号参考。",
+      "en": "Continued official coverage of Guangzhou Open top decks. Full lists remain in the 集卡社 plaza; key Symbiote numbers are featured again for reference."
+    },
+    "body_i18n": {
+      "zh-HK": "官方繼續介紹地區公開賽・廣州站上位玩家所用卡組（第二篇）。牌表與解說仍以原文圖片為主。\n\n完整 50 張牌表目前公開於「集卡社對戰卡牌助手」卡組廣場；本站暫無對應可匯入分享碼，故相關牌組欄留空。據公開資訊，亞軍「魔王」為紅藍宿敵共生體（Knull 軸）構築。\n\n本篇同樣附上公開報導相關關鍵卡號：SP01-047、SP01-001、SP01-006、SP01-051、SP01-050、SP01-053，方便與第一篇及卡庫模擬器對照。取得完整可核對 50 張表後，再補分享碼與相關牌組。",
+      "zh-CN": "官方继续介绍地区公开赛・广州站上位玩家所用卡组（第二篇）。牌表与解说仍以原文图片为主。\n\n完整 50 张牌表目前公开于「集卡社对战卡牌助手」卡组广场；本站暂无对应可导入分享码，故相关牌组栏留空。据公开信息，亚军「魔王」为红蓝宿敌共生体（Knull 轴）构筑。\n\n本篇同样附上公开报道相关关键卡号：SP01-047、SP01-001、SP01-006、SP01-051、SP01-050、SP01-053，方便与第一篇及卡库模拟器对照。取得完整可核对 50 张表后，再补分享码与相关牌组。",
+      "en": "Continued official coverage of Guangzhou regional Open top decks (part 2). Lists and commentary remain image-led in the original post.\n\nFull 50-card lists are currently published in the 集卡社對戰卡牌助手 deck plaza; we do not yet have importable share codes, so related decks are left empty. Publicly, runner-up “魔王” ran a red/blue Symbiote (Knull-axis) list.\n\nWe again feature the key reported numbers SP01-047, SP01-001, SP01-006, SP01-051, SP01-050, and SP01-053 for easier cross-check with part 1 and the simulator. Importable share codes will follow once a full verified 50-card list is available."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/uZgTh9cUrJbTM0tj0Hzcug",
+    "featured_cards": [
+      "SP01-047",
+      "SP01-001",
+      "SP01-006",
+      "SP01-051",
+      "SP01-050",
+      "SP01-053"
+    ],
+    "related_decks": []
   },
   "mhr-6a7a84bc9da74fc0904eb0df": {
     "title_zh": "SP01《蜘蛛紀元》全卡表公布",
-    "summary_zh": "特別補充包 SP01《蜘蛛紀元》全部卡牌一次公開，以圖片發佈，構築前可對照原文。"
-  },
-  "mhr-6a7a8f079da74fc0904eb108": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月9日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7a91329da74fc0904eb10e": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月8日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7a91939da74fc0904eb116": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月7日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7a92749da74fc0904eb124": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月6日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7a92d59da74fc0904eb12b": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月5日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
+    "summary_zh": "特別補充包 SP01《蜘蛛紀元》全部卡牌一次公開，系列約有 100 張（SP01-001 至 SP01-100）。構築前請對照原文圖片。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》全卡表公布",
+      "zh-CN": "SP01《蜘蛛纪元》全卡表公布",
+      "en": "SP01 Era of Spiders: full card list"
+    },
+    "summary_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》全部卡牌一次公開，系列約有 100 張（SP01-001 至 SP01-100）。構築前請對照原文圖片。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》全部卡牌一次公开，系列约有 100 张（SP01-001 至 SP01-100）。构筑前请对照原文图片。",
+      "en": "The full SP01 Era of Spiders list is out—about 100 cards (SP01-001 through SP01-100). Confirm faces against the original images before building."
+    },
+    "body_i18n": {
+      "zh-HK": "官方公布特別補充包 SP01《蜘蛛紀元》全卡表，以圖片形式一次公開本系列卡牌。\n\n按站內卡庫對照，SP01 約收錄 100 張，卡號範圍為 SP01-001 至 SP01-100。本篇不將 100 張全部掛入文章卡面，避免頁面過長；請在卡庫以系列篩選瀏覽，或以原文核對稀有度與效果。\n\n構築時建議優先使用卡號定位同名卡（尤其蜘蛛俠多副標），並留意其後的卡牌調整公告。",
+      "zh-CN": "官方公布特别补充包 SP01《蜘蛛纪元》全卡表，以图片形式一次公开本系列卡牌。\n\n按站内卡库对照，SP01 约收录 100 张，卡号范围为 SP01-001 至 SP01-100。本篇不将 100 张全部挂入文章卡面，避免页面过长；请在卡库以系列筛选浏览，或以原文核对稀有度与效果。\n\n构筑时建议优先使用卡号定位同名卡（尤其蜘蛛侠多副标），并留意其后的卡牌调整公告。",
+      "en": "The official full card list for Special Booster SP01 Era of Spiders is published as images.\n\nAgainst our database, SP01 covers about 100 cards numbered SP01-001 through SP01-100. We are not embedding all 100 mockups here; browse by set in the vault or confirm rarities and text in the original post.\n\nWhen building, prefer card numbers for same-name lines (especially Spider-Man subtitles) and watch for later adjustment notices."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/IjDZosvh4KxJHOPHC7p_Dw"
   },
   "mhr-6a7a99ac9da74fc0904eb133": {
     "title_zh": "SP01《蜘蛛紀元》六張卡牌調整公告",
@@ -55,87 +184,563 @@
     },
     "source_name": "官方微信",
     "source_url": "https://mp.weixin.qq.com/s/LAceKZHjRy7pMKHmicMW5w",
-    "featured_cards": ["SP01-064", "SP01-028", "SP01-067", "SP01-003", "SP01-063", "SP01-021", "SP01-027", "SP01-033", "SP01-065"],
+    "featured_cards": [
+      "SP01-064",
+      "SP01-028",
+      "SP01-067",
+      "SP01-003",
+      "SP01-063",
+      "SP01-021",
+      "SP01-027",
+      "SP01-033",
+      "SP01-065"
+    ],
     "related_decks": []
   },
   "mhr-6a7a9a5b9da74fc0904eb13a": {
     "title_zh": "SP01《蜘蛛紀元》8 月 12 日發售",
-    "summary_zh": "SP01《蜘蛛紀元》定於 2026 年 8 月 12 日發售，每包 6 張、每盒 20 包、每箱 12 盒。內地將於森羅萬象門市及官方認證店發售。"
-  },
-  "mhr-6a7a9b9a9da74fc0904eb147": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月4日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7a9c159da74fc0904eb14d": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月2日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7a9c689da74fc0904eb154": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月1日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7a9cae9da74fc0904eb15a": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月30日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7a9e949da74fc0904eb172": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月29日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7a9db69da74fc0904eb166": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月28日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7a9df49da74fc0904eb16c": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月27日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
+    "summary_zh": "SP01《蜘蛛紀元》定於 2026 年 8 月 12 日發售，每包 6 張、每盒 20 包、每箱 12 盒。內地將於森羅萬象門市及官方認證店發售。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》8 月 12 日發售",
+      "zh-CN": "SP01《蜘蛛纪元》8 月 12 日发售",
+      "en": "SP01 Era of Spiders releases on 12 August"
+    },
+    "summary_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》定於 2026 年 8 月 12 日發售，每包 6 張、每盒 20 包、每箱 12 盒。內地將於森羅萬象門市及官方認證店發售。",
+      "zh-CN": "SP01《蜘蛛纪元》定于 2026 年 8 月 12 日发售，每包 6 张、每盒 20 包、每箱 12 盒。内地将于森罗万象门市及官方认证店发售。",
+      "en": "SP01 Era of Spiders launched on 12 August 2026: 6 cards per pack, 20 packs per box, 12 boxes per case. Mainland retail via Senluo Wanxiang and certified stores."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》定於 2026 年 8 月 12 日發售。\n\n產品規格：每包 6 張、每盒 20 包、每箱 12 盒。內地發售通路包括森羅萬象門市及官方認證店，其他地區請以當地代理公布為準。\n\n開售前後請同時留意單卡預覽、全卡表與卡牌調整公告，確保構築與賽事使用最新卡面。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》定于 2026 年 8 月 12 日发售。\n\n产品规格：每包 6 张、每盒 20 包、每箱 12 盒。内地发售通路包括森罗万象门市及官方认证店，其他地区请以当地代理公布为准。\n\n开售前后请同时留意单卡预览、全卡表与卡牌调整公告，确保构筑与赛事使用最新卡面。",
+      "en": "Special Booster SP01 Era of Spiders was scheduled to release on 12 August 2026.\n\nPackaging: 6 cards per pack, 20 packs per box, 12 boxes per case. Mainland China retail includes Senluo Wanxiang stores and certified shops; other regions follow local distributors.\n\nAround launch, also track daily previews, the full list, and any adjustment notices so lists use the final faces."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/VXB05p23IM1fQe5Dbr1-Bw"
   },
   "mhr-6a7aa0ed9da74fc0904eb185": {
     "title_zh": "寶藏包 TB02 登陸戲院觀影團",
-    "summary_zh": "配合《蜘蛛俠：嶄新之日》7 月 29 日內地上映，寶藏包 TB02 將於戲院觀影團活動派發，官方表示其後會再公布其他取得方式。"
-  },
-  "mhr-6a7a9d849da74fc0904eb160": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月26日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7ab4e09da74fc0904eb18d": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月25日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7ab5159da74fc0904eb193": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月24日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
-  },
-  "mhr-6a7ab5419da74fc0904eb199": {
-    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月23日）",
-    "summary_zh": "官方公開 SP01《蜘蛛紀元》新一批單卡，卡面與效果以圖片發佈，詳情請見原文。"
+    "summary_zh": "配合《蜘蛛俠：嶄新之日》7 月 29 日內地上映，寶藏包 TB02 將於戲院觀影團活動派發，官方表示其後會再公布其他取得方式。",
+    "title_i18n": {
+      "zh-HK": "寶藏包 TB02 登陸戲院觀影團",
+      "zh-CN": "宝藏包 TB02 登陆戏院观影团",
+      "en": "Treasure Pack TB02 via cinema viewing events"
+    },
+    "summary_i18n": {
+      "zh-HK": "配合《蜘蛛俠：嶄新之日》7 月 29 日內地上映，寶藏包 TB02 將於戲院觀影團活動派發，官方表示其後會再公布其他取得方式。",
+      "zh-CN": "配合《蜘蛛侠：崭新之日》7 月 29 日内地上映，宝藏包 TB02 将于戏院观影团活动派发，官方表示其后会再公布其他取得方式。",
+      "en": "Alongside Spider-Man: Brand New Day’s mainland release on 29 July, Treasure Pack TB02 was distributed at cinema viewing events; other obtain methods were to follow."
+    },
+    "body_i18n": {
+      "zh-HK": "官方公布寶藏包 TB02，配合電影《蜘蛛俠：嶄新之日》於 2026 年 7 月 29 日內地上映，於戲院觀影團等活動派發。\n\n官方同時表示，其後會再公布其他取得方式。具體場次、名額與派發規則，請以原文及活動主辦方為準。\n\n本篇僅作活動摘要，不臆造內含卡表或分享碼。",
+      "zh-CN": "官方公布宝藏包 TB02，配合电影《蜘蛛侠：崭新之日》于 2026 年 7 月 29 日内地上映，于戏院观影团等活动派发。\n\n官方同时表示，其后会再公布其他取得方式。具体场次、名额与派发规则，请以原文及活动主办方为准。\n\n本篇仅作活动摘要，不臆造内含卡表或分享码。",
+      "en": "Treasure Pack TB02 was announced in connection with Spider-Man: Brand New Day’s mainland China release on 29 July 2026, with distribution at cinema viewing events.\n\nOfficials also said other obtain methods would be announced later. Exact sessions, quotas, and rules follow the original post and organizers.\n\nThis summary does not invent pack contents or share codes."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/Lz8bWLb-_JrykyLoSO4VOQ"
   },
   "mhr-6a7ab6739da74fc0904eb1a1": {
     "title_zh": "SP01 卡牌預覽明日開始",
-    "summary_zh": "官方預告 SP01《蜘蛛紀元》卡牌預覽於 7 月 23 日正式開始，其後每日公開新卡。"
+    "summary_zh": "官方預告 SP01《蜘蛛紀元》卡牌預覽於 7 月 23 日正式開始，其後每日公開新卡。",
+    "title_i18n": {
+      "zh-HK": "SP01 卡牌預覽明日開始",
+      "zh-CN": "SP01 卡牌预览明日开始",
+      "en": "SP01 card previews start tomorrow"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方預告 SP01《蜘蛛紀元》卡牌預覽於 7 月 23 日正式開始，其後每日公開新卡。",
+      "zh-CN": "官方预告 SP01《蜘蛛纪元》卡牌预览于 7 月 23 日正式开始，其后每日公开新卡。",
+      "en": "Official preview of SP01 Era of Spiders began on 23 July, with new cards revealed daily afterward."
+    },
+    "body_i18n": {
+      "zh-HK": "官方預告特別補充包 SP01《蜘蛛紀元》卡牌預覽即將開啟，並自 2026 年 7 月 23 日起正式開始，其後按日公開新卡。\n\n守護者可透過後續單卡預覽與全卡表公告，逐步掌握系列內容。站內文章會摘要各日預覽，卡號則待核對後再補。\n\n詳情請見頁底原文連結。",
+      "zh-CN": "官方预告特别补充包 SP01《蜘蛛纪元》卡牌预览即将开启，并自 2026 年 7 月 23 日起正式开始，其后按日公开新卡。\n\n守护者可通过后续单卡预览与全卡表公告，逐步掌握系列内容。站内文章会摘要各日预览，卡号则待核对后再补。\n\n详情请见页底原文链接。",
+      "en": "The official channel announced that SP01 Era of Spiders card previews would begin on 23 July 2026, with daily reveals afterward.\n\nFollow later daily preview posts and the full list to track the set. On-site articles summarize each day; card numbers are added only after verification.\n\nSee the footer source link for the original notice."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/7dw971y0qEjFudeS7PHyiQ"
   },
   "mhr-6a7ac2bb9da74fc0904eb1a9": {
     "title_zh": "異畫衝擊卡展示",
-    "summary_zh": "官方展示部分異畫版衝擊卡，卡圖以圖片發佈，詳情請見原文。"
+    "summary_zh": "官方展示部分異畫版衝擊卡，卡圖以圖片發佈。收藏與構築差異請對照原文。",
+    "title_i18n": {
+      "zh-HK": "異畫衝擊卡展示",
+      "zh-CN": "异画冲击卡展示",
+      "en": "Alternate-art Strike cards showcase"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方展示部分異畫版衝擊卡，卡圖以圖片發佈。收藏與構築差異請對照原文。",
+      "zh-CN": "官方展示部分异画版冲击卡，卡图以图片发布。收藏与构筑差异请对照原文。",
+      "en": "Official showcase of selected alternate-art Strike cards. Confirm collectible vs playable differences in the original post."
+    },
+    "body_i18n": {
+      "zh-HK": "官方公開《超英擊戰》部分異畫版衝擊卡展示。\n\n異畫卡主要差異在於卡圖與收藏價值；是否影響賽事可用性，請以規則與原文說明為準。本篇不作逐張卡號推定。\n\n完整卡圖請見頁底原文連結。",
+      "zh-CN": "官方公开《超英击战》部分异画版冲击卡展示。\n\n异画卡主要差异在于卡图与收藏价值；是否影响赛事可用性，请以规则与原文说明为准。本篇不作逐张卡号推定。\n\n完整卡图请见页底原文链接。",
+      "en": "The official channel showcased selected alternate-art Strike cards for Marvel Hero Rush.\n\nAlternate arts primarily differ in illustration and collectibility; tournament legality follows the rules and the original notice. We are not assigning card numbers here.\n\nSee the source link for the full images."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/cLokouu--qMMYHto2SDh-g"
   },
   "mhr-6a7ac5e89da74fc0904eb1af": {
     "title_zh": "異畫角色卡展示",
-    "summary_zh": "官方展示部分異畫版角色卡，卡圖以圖片發佈，詳情請見原文。"
+    "summary_zh": "官方展示部分異畫版角色卡，卡圖以圖片發佈。收藏與構築差異請對照原文。",
+    "title_i18n": {
+      "zh-HK": "異畫角色卡展示",
+      "zh-CN": "异画角色卡展示",
+      "en": "Alternate-art Character cards showcase"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方展示部分異畫版角色卡，卡圖以圖片發佈。收藏與構築差異請對照原文。",
+      "zh-CN": "官方展示部分异画版角色卡，卡图以图片发布。收藏与构筑差异请对照原文。",
+      "en": "Official showcase of selected alternate-art Character cards. Confirm collectible vs playable differences in the original post."
+    },
+    "body_i18n": {
+      "zh-HK": "官方公開《超英擊戰》部分異畫版角色卡展示。\n\n異畫卡主要差異在於卡圖與收藏價值；對局效果仍以對應卡號之規則文本為準。本篇不作逐張卡號推定。\n\n完整卡圖請見頁底原文連結。",
+      "zh-CN": "官方公开《超英击战》部分异画版角色卡展示。\n\n异画卡主要差异在于卡图与收藏价值；对局效果仍以对应卡号之规则文本为准。本篇不作逐张卡号推定。\n\n完整卡图请见页底原文链接。",
+      "en": "The official channel showcased selected alternate-art Character cards for Marvel Hero Rush.\n\nAlternate arts primarily differ in illustration and collectibility; gameplay text follows the matching card number. We are not assigning numbers in this summary.\n\nSee the source link for the full images."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/hAqHas6pb5CRPTqct0VDIg"
   },
-  "mato-marvel-hero-rush-tournament-top3-08-oct-2026": {
+  "mhr-6a7a8f079da74fc0904eb108": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月9日）",
+    "summary_zh": "官方於 8月9日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（8月9日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（8月9日）",
+      "en": "SP01 Era of Spiders: card preview (9 August)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 8月9日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 8月9日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 9 August, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 8月9日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 8月9日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 9 August.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/GnckdUgb3vY3m2Fs_h5-wQ"
+  },
+  "mhr-6a7a91329da74fc0904eb10e": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月8日）",
+    "summary_zh": "官方於 8月8日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（8月8日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（8月8日）",
+      "en": "SP01 Era of Spiders: card preview (8 August)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 8月8日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 8月8日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 8 August, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 8月8日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 8月8日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 8 August.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/aGUciDQBLuAdnKBUwujtCw"
+  },
+  "mhr-6a7a91939da74fc0904eb116": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月7日）",
+    "summary_zh": "官方於 8月7日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（8月7日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（8月7日）",
+      "en": "SP01 Era of Spiders: card preview (7 August)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 8月7日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 8月7日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 7 August, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 8月7日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 8月7日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 7 August.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/q6sa8BAOs0TnVLrJD8YRSw"
+  },
+  "mhr-6a7a92749da74fc0904eb124": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月6日）",
+    "summary_zh": "官方於 8月6日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（8月6日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（8月6日）",
+      "en": "SP01 Era of Spiders: card preview (6 August)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 8月6日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 8月6日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 6 August, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 8月6日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 8月6日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 6 August.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/9Y5e5qeD0TQLVg31veQtFA"
+  },
+  "mhr-6a7a92d59da74fc0904eb12b": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月5日）",
+    "summary_zh": "官方於 8月5日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（8月5日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（8月5日）",
+      "en": "SP01 Era of Spiders: card preview (5 August)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 8月5日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 8月5日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 5 August, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 8月5日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 8月5日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 5 August.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/kbUKwQVebEPT5tbadrRm8w"
+  },
+  "mhr-6a7a9b9a9da74fc0904eb147": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月4日）",
+    "summary_zh": "官方於 8月4日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（8月4日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（8月4日）",
+      "en": "SP01 Era of Spiders: card preview (4 August)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 8月4日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 8月4日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 4 August, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 8月4日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 8月4日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 4 August.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/pwtJ74nJfMf1CFrVu8vmxA"
+  },
+  "mhr-6a7a9c159da74fc0904eb14d": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月2日）",
+    "summary_zh": "官方於 8月2日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（8月2日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（8月2日）",
+      "en": "SP01 Era of Spiders: card preview (2 August)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 8月2日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 8月2日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 2 August, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 8月2日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 8月2日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 2 August.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/GcmW3qNItHHTuqh0Af7DaA"
+  },
+  "mhr-6a7a9c689da74fc0904eb154": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（8月1日）",
+    "summary_zh": "官方於 8月1日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（8月1日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（8月1日）",
+      "en": "SP01 Era of Spiders: card preview (1 August)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 8月1日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 8月1日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 1 August, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 8月1日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 8月1日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 1 August.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/cJ_iqebTWmrgAyVLu_9JuA"
+  },
+  "mhr-6a7a9cae9da74fc0904eb15a": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月30日）",
+    "summary_zh": "官方於 7月30日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（7月30日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（7月30日）",
+      "en": "SP01 Era of Spiders: card preview (30 July)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 7月30日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 7月30日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 30 July, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 7月30日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 7月30日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 30 July.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/nuYRK8wWgoMo8knZ3qJ38Q"
+  },
+  "mhr-6a7a9e949da74fc0904eb172": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月29日）",
+    "summary_zh": "官方於 7月29日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（7月29日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（7月29日）",
+      "en": "SP01 Era of Spiders: card preview (29 July)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 7月29日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 7月29日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 29 July, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 7月29日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 7月29日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 29 July.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/HOfTvjgfo_tKHYTmZ-3aow"
+  },
+  "mhr-6a7a9db69da74fc0904eb166": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月28日）",
+    "summary_zh": "官方於 7月28日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（7月28日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（7月28日）",
+      "en": "SP01 Era of Spiders: card preview (28 July)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 7月28日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 7月28日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 28 July, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 7月28日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 7月28日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 28 July.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方網站",
+    "source_url": "https://www.marvelherorush.com/zh-CN/news"
+  },
+  "mhr-6a7a9df49da74fc0904eb16c": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月27日）",
+    "summary_zh": "官方於 7月27日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（7月27日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（7月27日）",
+      "en": "SP01 Era of Spiders: card preview (27 July)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 7月27日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 7月27日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 27 July, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 7月27日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 7月27日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 27 July.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/uOOs22iXi0hOldl0ARbdaw"
+  },
+  "mhr-6a7a9d849da74fc0904eb160": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月26日）",
+    "summary_zh": "官方於 7月26日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（7月26日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（7月26日）",
+      "en": "SP01 Era of Spiders: card preview (26 July)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 7月26日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 7月26日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 26 July, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 7月26日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 7月26日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 26 July.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/ofZntv__PV9JPkKBu3VoYQ"
+  },
+  "mhr-6a7ab4e09da74fc0904eb18d": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月25日）",
+    "summary_zh": "官方於 7月25日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（7月25日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（7月25日）",
+      "en": "SP01 Era of Spiders: card preview (25 July)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 7月25日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 7月25日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 25 July, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 7月25日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 7月25日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 25 July.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/bbwTcdKmwLqg5lzTKon1zg"
+  },
+  "mhr-6a7ab5159da74fc0904eb193": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月24日）",
+    "summary_zh": "官方於 7月24日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（7月24日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（7月24日）",
+      "en": "SP01 Era of Spiders: card preview (24 July)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 7月24日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 7月24日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 24 July, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 7月24日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 7月24日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 24 July.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/xCCyN5HdoqS1owiSTtib4g"
+  },
+  "mhr-6a7ab5419da74fc0904eb199": {
+    "title_zh": "SP01《蜘蛛紀元》單卡預覽（7月23日）",
+    "summary_zh": "官方於 7月23日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+    "title_i18n": {
+      "zh-HK": "SP01《蜘蛛紀元》單卡預覽（7月23日）",
+      "zh-CN": "SP01《蜘蛛纪元》单卡预览（7月23日）",
+      "en": "SP01 Era of Spiders: card preview (23 July)"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方於 7月23日 公開特別補充包 SP01《蜘蛛紀元》新一批單卡。卡面與效果以原文圖片為準，構築前請對照頁底連結。",
+      "zh-CN": "官方于 7月23日 公开特别补充包 SP01《蜘蛛纪元》新一批单卡。卡面与效果以原文图片为准，构筑前请对照页底链接。",
+      "en": "On 23 July, the official channel previewed another batch of SP01 Era of Spiders cards. Faces and effects follow the original images; confirm details via the source link."
+    },
+    "body_i18n": {
+      "zh-HK": "特別補充包 SP01《蜘蛛紀元》持續公開單卡預覽。本篇對應官方於 7月23日 發佈的一批卡牌。\n\n預覽內容以官方原文圖片為主，包括卡名、效果文本與稀有度等資訊。站內暫不逐張推定卡號，待卡表核對完成後再補上模擬器卡面。\n\n若你正規劃 SP01 構築，建議同時參考全卡表公告，並以最終發售卡面為準。",
+      "zh-CN": "特别补充包 SP01《蜘蛛纪元》持续公开单卡预览。本篇对应官方于 7月23日 发布的一批卡牌。\n\n预览内容以官方原文图片为主，包括卡名、效果文本与稀有度等信息。站内暂不逐张推定卡号，待卡表核对完成后再补上模拟器卡面。\n\n若你正在规划 SP01 构筑，建议同时参考全卡表公告，并以最终发售卡面为准。",
+      "en": "Special Booster SP01 Era of Spiders continues its daily card previews. This entry covers the official batch released on 23 July.\n\nPreview details (names, effects, rarities) follow the original images. We are not guessing individual card numbers here; simulator mockups will be added once the list is verified.\n\nIf you are building around SP01, also check the full card list notice and treat the final retail faces as authoritative."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/_azNEuRAJJpeHo8262b2ig"
+  },
+  "mato-marvel-hero-rush-monthly-12-oct-2026": {
+    "title_zh": "Marvel Hero Rush 月度活動｜ACard TCG",
+    "summary_zh": "10月12日 19:00 於 ACard TCG 舉行，報名及詳情請見 Mato 活動頁。",
+    "title_i18n": {
+      "zh-HK": "Marvel Hero Rush 月度活動｜ACard TCG",
+      "zh-CN": "Marvel Hero Rush 月度活动｜ACard TCG",
+      "en": "Marvel Hero Rush monthly event at ACard TCG"
+    },
+    "summary_i18n": {
+      "zh-HK": "10月12日 19:00 於 ACard TCG 舉行，報名及詳情請見 Mato 活動頁。",
+      "zh-CN": "10月12日 19:00 于 ACard TCG 举行，报名及详情请见 Mato 活动页。",
+      "en": "2026-10-12 19:00 at ACard TCG. Register and see details on the Mato event page."
+    },
+    "body_i18n": {
+      "zh-HK": "香港經銷商 Saka Saka 透過 Mato 公布一場 Marvel Hero Rush 月度活動。\n\n時間：10月12日 19:00（香港時間）\n地點：ACard TCG\n\n名額、費用與賽制以活動頁為準。請透過頁底連結報名或查閱最新安排。",
+      "zh-CN": "香港经销商 Saka Saka 通过 Mato 公布一场 Marvel Hero Rush 月度活动。\n\n时间：10月12日 19:00（香港时间）\n地点：ACard TCG\n\n名额、费用与赛制以活动页为准。请通过页底链接报名或查阅最新安排。",
+      "en": "HK distributor Saka Saka listed a Marvel Hero Rush monthly event on Mato.\n\nWhen: 2026-10-12 19:00 (Hong Kong time)\nWhere: ACard TCG\n\nCaps, fees, and format follow the event page. Use the footer link to register or check updates."
+    },
+    "source_name": "Saka Saka · Mato",
+    "source_url": "https://ma.to/event/marvel-hero-rush-monthly-12-oct-2026"
+  },
+  "mato-marvel-hero-rush-tournament-12-oct-2027": {
+    "title_zh": "Marvel Hero Rush 比賽｜CiaoCard",
+    "summary_zh": "10月12日 19:30 於 CiaoCard 舉行，報名及詳情請見 Mato 活動頁。",
+    "title_i18n": {
+      "zh-HK": "Marvel Hero Rush 比賽｜CiaoCard",
+      "zh-CN": "Marvel Hero Rush 比赛｜CiaoCard",
+      "en": "Marvel Hero Rush tournament at CiaoCard"
+    },
+    "summary_i18n": {
+      "zh-HK": "10月12日 19:30 於 CiaoCard 舉行，報名及詳情請見 Mato 活動頁。",
+      "zh-CN": "10月12日 19:30 于 CiaoCard 举行，报名及详情请见 Mato 活动页。",
+      "en": "2026-10-12 19:30 at CiaoCard. Register and see details on the Mato event page."
+    },
+    "body_i18n": {
+      "zh-HK": "香港經銷商 Saka Saka 透過 Mato 公布一場 Marvel Hero Rush 比賽。\n\n時間：10月12日 19:30（香港時間）\n地點：CiaoCard\n\n名額、費用與賽制以活動頁為準。請透過頁底連結報名或查閱最新安排。",
+      "zh-CN": "香港经销商 Saka Saka 通过 Mato 公布一场 Marvel Hero Rush 比赛。\n\n时间：10月12日 19:30（香港时间）\n地点：CiaoCard\n\n名额、费用与赛制以活动页为准。请通过页底链接报名或查阅最新安排。",
+      "en": "HK distributor Saka Saka listed a Marvel Hero Rush tournament on Mato.\n\nWhen: 2026-10-12 19:30 (Hong Kong time)\nWhere: CiaoCard\n\nCaps, fees, and format follow the event page. Use the footer link to register or check updates."
+    },
+    "source_name": "Saka Saka · Mato",
+    "source_url": "https://ma.to/event/marvel-hero-rush-tournament-12-oct-2027"
+  },
+  "mato-marvel-hero-rush-tournament-13-oct-2026": {
     "title_zh": "Marvel Hero Rush 比賽｜TOP3 Card Game",
-    "summary_zh": "10月8日 19:30 於 TOP3 Card Game 舉行，報名及詳情請見 Mato 活動頁。"
+    "summary_zh": "10月13日 19:30 於 TOP3 Card Game 舉行，報名及詳情請見 Mato 活動頁。",
+    "title_i18n": {
+      "zh-HK": "Marvel Hero Rush 比賽｜TOP3 Card Game",
+      "zh-CN": "Marvel Hero Rush 比赛｜TOP3 Card Game",
+      "en": "Marvel Hero Rush tournament at TOP3 Card Game"
+    },
+    "summary_i18n": {
+      "zh-HK": "10月13日 19:30 於 TOP3 Card Game 舉行，報名及詳情請見 Mato 活動頁。",
+      "zh-CN": "10月13日 19:30 于 TOP3 Card Game 举行，报名及详情请见 Mato 活动页。",
+      "en": "2026-10-13 19:30 at TOP3 Card Game. Register and see details on the Mato event page."
+    },
+    "body_i18n": {
+      "zh-HK": "香港經銷商 Saka Saka 透過 Mato 公布一場 Marvel Hero Rush 比賽。\n\n時間：10月13日 19:30（香港時間）\n地點：TOP3 Card Game\n\n名額、費用與賽制以活動頁為準。請透過頁底連結報名或查閱最新安排。",
+      "zh-CN": "香港经销商 Saka Saka 通过 Mato 公布一场 Marvel Hero Rush 比赛。\n\n时间：10月13日 19:30（香港时间）\n地点：TOP3 Card Game\n\n名额、费用与赛制以活动页为准。请通过页底链接报名或查阅最新安排。",
+      "en": "HK distributor Saka Saka listed a Marvel Hero Rush tournament on Mato.\n\nWhen: 2026-10-13 19:30 (Hong Kong time)\nWhere: TOP3 Card Game\n\nCaps, fees, and format follow the event page. Use the footer link to register or check updates."
+    },
+    "source_name": "Saka Saka · Mato",
+    "source_url": "https://ma.to/event/marvel-hero-rush-tournament-13-oct-2026"
   },
-  "mato-cyberpunk-tcg-beta-wishing-star-08-oct-2026": {
-    "title_zh": "Marvel Hero Rush 月度活動｜正氣卡店",
-    "summary_zh": "10月8日 20:00 於 正氣卡店 舉行，報名及詳情請見 Mato 活動頁。"
+  "mato-marvel-hero-rush-tournament-chalice-collectible-14-oct-2026": {
+    "title_zh": "Marvel Hero Rush 比賽｜Chalice Collectible",
+    "summary_zh": "10月14日 19:30 於 Chalice Collectible 舉行，報名及詳情請見 Mato 活動頁。",
+    "title_i18n": {
+      "zh-HK": "Marvel Hero Rush 比賽｜Chalice Collectible",
+      "zh-CN": "Marvel Hero Rush 比赛｜Chalice Collectible",
+      "en": "Marvel Hero Rush tournament at Chalice Collectible"
+    },
+    "summary_i18n": {
+      "zh-HK": "10月14日 19:30 於 Chalice Collectible 舉行，報名及詳情請見 Mato 活動頁。",
+      "zh-CN": "10月14日 19:30 于 Chalice Collectible 举行，报名及详情请见 Mato 活动页。",
+      "en": "2026-10-14 19:30 at Chalice Collectible. Register and see details on the Mato event page."
+    },
+    "body_i18n": {
+      "zh-HK": "香港經銷商 Saka Saka 透過 Mato 公布一場 Marvel Hero Rush 比賽。\n\n時間：10月14日 19:30（香港時間）\n地點：Chalice Collectible\n\n名額、費用與賽制以活動頁為準。請透過頁底連結報名或查閱最新安排。",
+      "zh-CN": "香港经销商 Saka Saka 通过 Mato 公布一场 Marvel Hero Rush 比赛。\n\n时间：10月14日 19:30（香港时间）\n地点：Chalice Collectible\n\n名额、费用与赛制以活动页为准。请通过页底链接报名或查阅最新安排。",
+      "en": "HK distributor Saka Saka listed a Marvel Hero Rush tournament on Mato.\n\nWhen: 2026-10-14 19:30 (Hong Kong time)\nWhere: Chalice Collectible\n\nCaps, fees, and format follow the event page. Use the footer link to register or check updates."
+    },
+    "source_name": "Saka Saka · Mato",
+    "source_url": "https://ma.to/event/marvel-hero-rush-tournament-chalice-collectible-14-oct-2026"
   },
-  "mato-cyberpunk-tcg-beta-event-09-oct-2026": {
-    "title_zh": "Marvel Hero Rush 比賽｜Chalice Collectibles",
-    "summary_zh": "10月9日 19:30 於 Chalice Collectibles 舉行，報名及詳情請見 Mato 活動頁。"
-  },
-  "mato-cyberpunk-tcg-beta-island-tcg-09-oct-2026": {
-    "title_zh": "Marvel Hero Rush 比賽｜Island TCG",
-    "summary_zh": "10月9日 20:00 於 Island TCG 舉行，報名及詳情請見 Mato 活動頁。"
+  "mato-marvel-hero-rush-tournament-card-lab-15-oct-2026": {
+    "title_zh": "Marvel Hero Rush 比賽｜KK Zone TCG",
+    "summary_zh": "10月15日 20:00 於 KK Zone TCG 舉行，報名及詳情請見 Mato 活動頁。",
+    "title_i18n": {
+      "zh-HK": "Marvel Hero Rush 比賽｜KK Zone TCG",
+      "zh-CN": "Marvel Hero Rush 比赛｜KK Zone TCG",
+      "en": "Marvel Hero Rush tournament at KK Zone TCG"
+    },
+    "summary_i18n": {
+      "zh-HK": "10月15日 20:00 於 KK Zone TCG 舉行，報名及詳情請見 Mato 活動頁。",
+      "zh-CN": "10月15日 20:00 于 KK Zone TCG 举行，报名及详情请见 Mato 活动页。",
+      "en": "2026-10-15 20:00 at KK Zone TCG. Register and see details on the Mato event page."
+    },
+    "body_i18n": {
+      "zh-HK": "香港經銷商 Saka Saka 透過 Mato 公布一場 Marvel Hero Rush 比賽。\n\n時間：10月15日 20:00（香港時間）\n地點：KK Zone TCG\n\n名額、費用與賽制以活動頁為準。請透過頁底連結報名或查閱最新安排。",
+      "zh-CN": "香港经销商 Saka Saka 通过 Mato 公布一场 Marvel Hero Rush 比赛。\n\n时间：10月15日 20:00（香港时间）\n地点：KK Zone TCG\n\n名额、费用与赛制以活动页为准。请通过页底链接报名或查阅最新安排。",
+      "en": "HK distributor Saka Saka listed a Marvel Hero Rush tournament on Mato.\n\nWhen: 2026-10-15 20:00 (Hong Kong time)\nWhere: KK Zone TCG\n\nCaps, fees, and format follow the event page. Use the footer link to register or check updates."
+    },
+    "source_name": "Saka Saka · Mato",
+    "source_url": "https://ma.to/event/marvel-hero-rush-tournament-card-lab-15-oct-2026"
   }
 }
