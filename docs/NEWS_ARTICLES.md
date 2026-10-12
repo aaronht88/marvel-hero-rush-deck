@@ -89,3 +89,7 @@
 
 - 正文只放可公開改寫／摘要內容；唔好整篇未經授權 verbatim 轉載受版權保護原文。
 - 三語盡量齊；缺某一語時 UI 會 fallback：`當前語` → `zh-HK` → `zh-CN` → `en`。
+
+## 編輯群原創文章（editorial-*）
+
+無官方 API id 嘅站內稿（例如賽事四強總覽）用 `editorial-<slug>-YYYY-MM-DD` 做 id：同時寫入 `news_overrides.json` 與 `news.json` intl stub。`scripts/fetch_news.py` 每次抓取會保留／注入呢啲 id，唔會被官方列表蓋掉。
