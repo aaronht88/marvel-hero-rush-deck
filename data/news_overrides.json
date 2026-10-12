@@ -37,7 +37,24 @@
   },
   "mhr-6a7a99ac9da74fc0904eb133": {
     "title_zh": "SP01 六張卡牌調整公告",
-    "summary_zh": "官方調整 SP01 六張卡牌，發售版以最終卡面為準。猩紅蜘蛛、蜘蛛俠、終極蜘蛛俠更改卡名；反毒液更改卡名與卡圖；琴·格蕾更改卡名與效果；黑貓則更改角色等級、效果與戰力。"
+    "summary_zh": "官方調整 SP01 六張卡牌，發售版以最終卡面為準。猩紅蜘蛛、蜘蛛俠、終極蜘蛛俠更改卡名；反毒液更改卡名與卡圖；琴·格蕾更改卡名與效果；黑貓則更改角色等級、效果與戰力。",
+    "title_i18n": {
+      "zh-HK": "SP01 六張卡牌調整公告",
+      "zh-CN": "SP01 六张卡牌调整公告",
+      "en": "SP01: six cards adjusted"
+    },
+    "summary_i18n": {
+      "zh-HK": "官方調整 SP01 六張卡牌，發售版以最終卡面為準。猩紅蜘蛛、蜘蛛俠、終極蜘蛛俠更改卡名；反毒液更改卡名與卡圖；琴·格蕾更改卡名與效果；黑貓則更改角色等級、效果與戰力。",
+      "zh-CN": "官方调整 SP01 六张卡牌，发售版以最终卡面为准。",
+      "en": "Six SP01 cards were adjusted; final printed cards take precedence."
+    },
+    "body_i18n": {
+      "zh-HK": "（草稿 — 請 內容創作助手 以書面語潤飾）\n\n官方公布特別補充包 SP01《蜘蛛紀元》六張卡牌調整，發售版以最終卡面為準。\n\n調整涉及：猩紅蜘蛛、蜘蛛俠、終極蜘蛛俠（更改卡名）；反毒液（卡名與卡圖）；琴·格蕾（卡名與效果）；黑貓（角色等級、效果與戰力）。\n\n構築或更新牌表前，請對照頁底原文連結。",
+      "zh-CN": "（草稿 — 请内容创作润饰）\n\n官方公布特别补充包 SP01《蜘蛛纪元》六张卡牌调整，发售版以最终卡面为准。\n\n调整涉及猩红蜘蛛、蜘蛛侠、终极蜘蛛侠、反毒液、琴·格蕾与黑猫等。详情见页底原文链接。",
+      "en": "(Draft — content team to polish.)\n\nThe official notice adjusts six SP01 Era of Spiders cards; retail prints follow the final card faces.\n\nChanges touch Scarlet Spider, Spider-Man, Superior Spider-Man, Anti-Venom, Jean Grey, and Black Cat. See the source link in the footer."
+    },
+    "source_name": "官方微信",
+    "source_url": "https://mp.weixin.qq.com/s/LAceKZHjRy7pMKHmicMW5w"
   },
   "mhr-6a7a9a5b9da74fc0904eb13a": {
     "title_zh": "SP01《蜘蛛紀元》8 月 12 日發售",

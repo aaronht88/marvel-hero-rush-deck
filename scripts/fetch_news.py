@@ -5,9 +5,11 @@ Sources
 - intl: official site news API (server.marvelherorush.com/marvel/information/list, zh-CN only)
 - hk:   Saka Saka Ltd. (HK distributor) venue page on Mato — schema.org Event JSON-LD
 
-Optional hand-written Cantonese rewrites live in data/news_overrides.json, keyed by item id:
-  {"<id>": {"title_zh": "...", "summary_zh": "..."}}
-Existing entries are kept if a source fails, so a bad fetch never wipes the tab.
+Optional hand-written rewrites live in data/news_overrides.json, keyed by item id.
+  Legacy: {"title_zh", "summary_zh"}
+  Multi-locale articles: title_i18n / summary_i18n / body_i18n
+    ({"zh-HK","zh-CN","en"}), plus source_name, source_url, related_deck_ids, related_decks.
+  See docs/NEWS_ARTICLES.md. Existing entries are kept if a source fails.
 """
 import json, re, sys, urllib.request
 from datetime import datetime, timezone, timedelta

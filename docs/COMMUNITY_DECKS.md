@@ -14,6 +14,7 @@ See also: [community-submit-guide.zh-HK.md](./community-submit-guide.zh-HK.md) (
 |--------|---------|--------|
 | Editorial / AI | `data/decks.json` (static) | Prefer **MHR 編輯群** for new AI decks; existing authors left as-is |
 | Community | D1 `community_decks` | Submitter display name |
+| Editorial votes | D1 `editorial_votes` (keyed by static `decks.json` id) | Same UI as community; not mixed with `community_votes` |
 
 ## Migrate + deploy
 
@@ -21,5 +22,6 @@ See also: [community-submit-guide.zh-HK.md](./community-submit-guide.zh-HK.md) (
 cd workers
 eval "$(fnm env)" && fnm use 22
 npx wrangler d1 execute mhr-deck-sync --remote --file=./migrations/0002_community_decks.sql
+npx wrangler d1 execute mhr-deck-sync --remote --file=./migrations/0003_editorial_votes.sql
 npx wrangler deploy
 ```
