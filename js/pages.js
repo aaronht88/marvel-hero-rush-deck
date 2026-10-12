@@ -441,10 +441,10 @@
       '<div class="ref-deck-actions">' +
       '<button class="btn btn-primary btn-sm" data-ref-import="' + i + '">' + esc(t("deckImport")) + "</button>" +
       '<button class="btn btn-sm" data-ref-copy="' + i + '">' + esc(t("deckCopy")) + "</button>" +
-      '<button class="btn btn-sm vote-btn' + (my === 1 ? " active" : "") + '" data-e-vote="' + esc(d.id) + '" data-v="1">' +
-      esc(t("voteUp")) + " · " + (v.votes_up | 0) + "</button>" +
-      '<button class="btn btn-sm vote-btn' + (my === -1 ? " active" : "") + '" data-e-vote="' + esc(d.id) + '" data-v="-1">' +
-      esc(t("voteDown")) + " · " + (v.votes_down | 0) + "</button>" +
+      '<button class="btn btn-sm vote-btn' + (my === 1 ? " active" : "") + '" data-e-vote="' + esc(d.id) + '" data-v="1" aria-label="' + esc(t("voteUp")) + '" title="' + esc(t("voteUp")) + '">' +
+      "👍 " + (v.votes_up | 0) + "</button>" +
+      '<button class="btn btn-sm vote-btn' + (my === -1 ? " active" : "") + '" data-e-vote="' + esc(d.id) + '" data-v="-1" aria-label="' + esc(t("voteDown")) + '" title="' + esc(t("voteDown")) + '">' +
+      "👎 " + (v.votes_down | 0) + "</button>" +
       '<span class="vote-score" title="score">' + (score > 0 ? "+" : "") + score + "</span>" +
       "</div>" +
       "<details><summary>" + esc(t("deckCardsList")) + " (" + (d.total || "") + ")</summary><ul class=\"ref-card-list\">" + cards + "</ul></details>" +
@@ -462,10 +462,10 @@
       '<div class="ref-deck-actions">' +
       '<button class="btn btn-primary btn-sm" data-c-import="' + esc(d.id) + '">' + esc(t("deckImport")) + "</button>" +
       '<button class="btn btn-sm" data-c-copy="' + esc(d.id) + '">' + esc(t("deckCopy")) + "</button>" +
-      '<button class="btn btn-sm vote-btn' + (my === 1 ? " active" : "") + '" data-c-vote="' + esc(d.id) + '" data-v="1">' +
-      esc(t("voteUp")) + " · " + (d.votes_up | 0) + "</button>" +
-      '<button class="btn btn-sm vote-btn' + (my === -1 ? " active" : "") + '" data-c-vote="' + esc(d.id) + '" data-v="-1">' +
-      esc(t("voteDown")) + " · " + (d.votes_down | 0) + "</button>" +
+      '<button class="btn btn-sm vote-btn' + (my === 1 ? " active" : "") + '" data-c-vote="' + esc(d.id) + '" data-v="1" aria-label="' + esc(t("voteUp")) + '" title="' + esc(t("voteUp")) + '">' +
+      "👍 " + (d.votes_up | 0) + "</button>" +
+      '<button class="btn btn-sm vote-btn' + (my === -1 ? " active" : "") + '" data-c-vote="' + esc(d.id) + '" data-v="-1" aria-label="' + esc(t("voteDown")) + '" title="' + esc(t("voteDown")) + '">' +
+      "👎 " + (d.votes_down | 0) + "</button>" +
       '<span class="vote-score" title="score">' + (score > 0 ? "+" : "") + score + "</span>" +
       "</div></article>";
   }

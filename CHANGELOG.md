@@ -6,6 +6,17 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 ## [Unreleased]
 
+## [1.5.7-beta] — 2026-10-12
+
+### Fixed
+- **Deck 參考桌面版 layout**：`#ref-decks.ref-decks` 改為 flex column，唔再當 card grid；只有 `.ref-decks-grid` 排牌組卡；subtabs／intro 全寬
+
+### Changed
+- 認同／不認同掣改為 **👍／👎** ＋數字（`aria-label`／`title` 仍用 i18n 文案）
+- 版本／cache-bust **1.5.7-beta**
+
+## [1.5.6-beta] — 2026-10-12
+
 ### Added
 - **編輯群牌組投票**：Deck 參考「MHR 編輯群」靜態牌組顯示認同／不認同（須 Google 登入；每用戶每牌組一票、再按可取消）。Worker 表 `editorial_votes` 與社區票分開；`GET /api/editorial/votes?ids=`、`POST /api/editorial/votes/:deckId`
 - **News 站內全文（多語 scaffold）**：`title_i18n`／`summary_i18n`／`body_i18n`（zh-HK／zh-CN／en）；有正文則 `#news/<id>` 站內閱讀並隨語言切換；頁底「來源／原文連結」；`related_deck_ids`／`related_decks` 可匯入構築。流程：`docs/NEWS_ARTICLES.md`
@@ -14,7 +25,6 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 ### Changed
 - 版本／cache-bust **1.5.6-beta**
-
 
 ## [1.5.4-beta] — 2026-10-12
 
