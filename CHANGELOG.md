@@ -4,10 +4,17 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.2-beta] — 2026-10-12
+
+### Changed
+- **唔再顯示官方卡組碼**：News 文內牌組區塊同 Deck 參考 meta 只保留本站分享碼／複製／匯入（官方碼需微信，唔對訪客顯示）；`data/decks.json` 仍可保留 `official_code` 作內部資料
+- ASCC 四強站內文三語正文移除文末「官方卡組碼／官方卡组码／Official deck code」句子
+- 版本／cache-bust **1.6.2-beta**
+
 ## [1.6.1-beta] — 2026-10-12
 
 ### Added
-- **News 文內牌組區塊**：正文支援 `{{deck:DECK_ID}}` placeholder，渲染後插入 Deck Ref 名稱、3 keycards、官方卡組碼、分享碼與「複製／匯入」按鈕（重用既有 `data-news-copy-id` / `data-news-import-id`）
+- **News 文內牌組區塊**：正文支援 `{{deck:DECK_ID}}` placeholder，渲染後插入 Deck Ref 名稱、3 keycards、本站分享碼與「複製／匯入」按鈕（重用既有 `data-news-copy-id` / `data-news-import-id`；唔顯示官方微信卡組碼）
 - **複製文章連結**：文章標題下「複製文章連結」按鈕，複製 `https://mhrdeckbuild.duckdns.org/#news/<id>`（同 host 則用 `location.origin`）
 - ASCC 四強站內文（三語）每副評論後插入對應 `{{deck:ascc-*}}`；有 inline embed 時略過底部大批 featured 卡牆，並隱藏已全部內嵌的 related 區塊
 
@@ -19,7 +26,7 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 ### Added
 - **ASCC 亞洲巔峰邀請賽四強** 編輯群 Deck 參考：冠軍 剩饭君（YG Web Spider）、亞軍 YOGIE（GR Attach Tempo）、四強 RADIAN（RB Symbiote Knull）、四強 落雨啦（BG Cap/Chaos Story）；含完整卡表、3 keycards、官方卡組碼 `official_code` 與本站 share `code`
 - **News 站內全文**：`editorial-ascc-asia-peak-top4-2026-10-12` 三語（zh-HK／zh-CN／en）四強卡組一覽；每副附引擎／勝勢／注意（構築評論＋玩法講解）；`featured_cards` 11 張；`related_deck_ids` 對應四副 ASCC Deck Ref；`fetch_news.py` 會保留／注入 `editorial-*` stub
-- Deck 參考 meta 顯示官方卡組碼（有則顯示）
+- Deck 參考資料可存 `official_code`（內部用；UI 唔再顯示，因官方碼需微信）
 - 冠軍鷹眼 SD04-002 數量推斷註記（截圖角標被遮）
 
 ### Changed

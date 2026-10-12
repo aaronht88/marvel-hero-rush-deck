@@ -175,14 +175,9 @@
       actions.push('<button type="button" class="btn btn-sm" data-news-copy-id="' + esc(d.id) + '">' + esc(t("newsCopyShareCode")) + "</button>");
       actions.push('<button type="button" class="btn btn-sm btn-primary" data-news-import-id="' + esc(d.id) + '">' + esc(t("newsImportToBuilder")) + "</button>");
     }
-    const official = d.official_code
-      ? '<div class="news-deck-official"><span class="news-share-label">' + esc(t("newsOfficialCode")) +
-        '</span><code class="mono-code">' + esc(d.official_code) + "</code></div>"
-      : "";
     return '<aside class="news-deck-embed" data-deck-id="' + esc(d.id) + '">' +
       '<div class="news-deck-embed-head"><strong>' + esc(d.name) + "</strong></div>" +
       renderKeycards(d.keycards) +
-      official +
       (d.code
         ? '<div class="news-share-block"><span class="news-share-label">' + esc(t("newsShareCode")) +
           '</span><code class="mono-code news-share-code">' + esc(d.code) + "</code></div>"
@@ -522,13 +517,10 @@
     const v = editorialVotes[d.id] || { votes_up: 0, votes_down: 0, my_vote: 0 };
     const score = (v.votes_up | 0) - (v.votes_down | 0);
     const my = v.my_vote || 0;
-    const official = d.official_code
-      ? '<span class="ref-official-code" title="official deck code">' + esc(d.official_code) + "</span>"
-      : "";
     return '<article class="ref-deck" data-eid="' + esc(d.id) + '">' +
       '<div class="ref-deck-head">' + dots + "<h3>" + esc(d.name) + "</h3>" +
       '<span class="deck-badge">' + esc(t("pageDecksEditorial")) + "</span></div>" +
-      '<div class="ref-deck-meta">' + [esc(d.set), src, official, esc(t("deckBy", { a: author, d: d.date || "" }))].filter(Boolean).join(" · ") + "</div>" +
+      '<div class="ref-deck-meta">' + [esc(d.set), src, esc(t("deckBy", { a: author, d: d.date || "" }))].filter(Boolean).join(" · ") + "</div>" +
       (d.note ? '<p class="ref-deck-note">' + esc(d.note) + "</p>" : "") +
       renderKeycards(d.keycards) +
       '<div class="ref-deck-actions">' +
