@@ -4,6 +4,16 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.0-beta] — 2026-10-12
+
+### Added
+- **ASCC 亞洲巔峰邀請賽四強** 編輯群 Deck 參考：冠軍 剩饭君（YG Web Spider）、亞軍 YOGIE（GR Attach Tempo）、四強 RADIAN（RB Symbiote Knull）、四強 落雨啦（BG Cap/Chaos Story）；含完整卡表、3 keycards、官方卡組碼 `official_code` 與本站 share `code`
+- Deck 參考 meta 顯示官方卡組碼（有則顯示）
+- 冠軍鷹眼 SD04-002 數量推斷註記（截圖角標被遮）
+
+### Changed
+- 版本／cache-bust **1.6.0-beta**
+
 ## [Unreleased]
 
 ## [1.5.9-beta] — 2026-10-12

@@ -450,10 +450,13 @@
     const v = editorialVotes[d.id] || { votes_up: 0, votes_down: 0, my_vote: 0 };
     const score = (v.votes_up | 0) - (v.votes_down | 0);
     const my = v.my_vote || 0;
+    const official = d.official_code
+      ? '<span class="ref-official-code" title="official deck code">' + esc(d.official_code) + "</span>"
+      : "";
     return '<article class="ref-deck" data-eid="' + esc(d.id) + '">' +
       '<div class="ref-deck-head">' + dots + "<h3>" + esc(d.name) + "</h3>" +
       '<span class="deck-badge">' + esc(t("pageDecksEditorial")) + "</span></div>" +
-      '<div class="ref-deck-meta">' + [esc(d.set), src, esc(t("deckBy", { a: author, d: d.date || "" }))].filter(Boolean).join(" · ") + "</div>" +
+      '<div class="ref-deck-meta">' + [esc(d.set), src, official, esc(t("deckBy", { a: author, d: d.date || "" }))].filter(Boolean).join(" · ") + "</div>" +
       (d.note ? '<p class="ref-deck-note">' + esc(d.note) + "</p>" : "") +
       renderKeycards(d.keycards) +
       '<div class="ref-deck-actions">' +
