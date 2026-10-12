@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.5.3-beta";
+  const APP_VERSION = "1.5.5-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -1374,6 +1374,8 @@
     },
     analyzeShareCode,
     getShareCode: () => encodeShare(),
+    getCard,
+    openCard: openModal,
     toast,
     onPageShow(page) {
       activePage = page || "builder";

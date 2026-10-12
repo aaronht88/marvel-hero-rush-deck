@@ -6,39 +6,23 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 ## [Unreleased]
 
-### Fixed
-- Bump script cache-bust to **1.5.4-beta** so Vault tab label (not 卡庫（Vault）) reaches clients.
-
-
-### Changed
-- Top tab label is now **Vault** only (was 卡庫（Vault）).
-
-
-### Changed
-- **卡庫（Vault）升為頂層主分頁**：與 Deck Builder／News／Deck 參考同級（`#vault`）；Builder 內「全部／最愛／Rush Point」不再含 Vault 子 tab
-  - 獨立全寬圖鑑頁（`#page-vault`／`#vault-grid`）：進度、顯示模式／卡面大小、搜尋與篩選、卡面 ＋／− `xN`
-  - 資料模型不變：`mhr_vault_v1`／`mhr_vault_ui_v1`、詳情頁已擁有數量、Google 同步
-
- — 1.5.3-beta (draft)
-
-### Fixed
-- Display mode / card size controls now apply on all browser tabs (not only Vault); fixed toolbar `hidden` overridden by CSS `display:flex`.
-
 ### Added
-- **卡庫（Vault）圖鑑**：未擁有卡牌灰階、已擁有全彩並顯示數量；卡牌詳情可設定「已擁有數量」（按卡 id／印刷分別計算，收藏數量不設 3 張上限）
-  - 本機：`localStorage` `mhr_vault_v1`；Google 登入後與 decks／favs／lang 一併雲端同步
-  - 保留系列／顏色等篩選；進度「已收集 {owned}／{total}」
-  - 文案：`docs/vault-i18n.zh-HK.snippet.js`（PR #9）
-  - **未做（之後）**：Deck Builder「本副需要 N／卡庫有 M」對照提示
-- **Vault 卡面快速加減／顯示模式／大小**：圖鑑卡面直接顯示 `xN` 並可按 ＋／−（不開啟詳情；收藏不設上限）；可切換「標準／最簡卡面」與卡面大小（小／中／大）；偏好存 `localStorage` `mhr_vault_ui_v1`
-- **社區牌組投稿／審核／投票**：Deck 參考分「MHR 編輯群」精選與社區投稿；登入後投稿 → `pending` → 管理員 checklist 通過後公開；公開後可「認同／不認同」（每用戶每牌組一票）
-  - Worker：`/api/decks`、`/api/decks/:id`、`/api/decks/:id/vote`、`/api/me`；D1 `0002_community_decks.sql`
-  - 硬性檢查（A）：50 張、同名 ≤3、≤2 色、分享碼可匯入、不含 Rush Point；必填（B）名稱／上載者／玩法描述／分享碼；玩法描述（C）須寫觸發→回報
-  - 審核結果（D）：通過／拒稿／須修改；拒稿與須修改須註明 A／C 條款
-  - 指引：`docs/community-submit-guide.zh-HK.md`
+- **編輯群牌組投票**：Deck 參考「MHR 編輯群」靜態牌組顯示認同／不認同（須 Google 登入；每用戶每牌組一票、再按可取消）。Worker 表 `editorial_votes` 與社區票分開；`GET /api/editorial/votes?ids=`、`POST /api/editorial/votes/:deckId`
+- **News 站內全文（多語 scaffold）**：`title_i18n`／`summary_i18n`／`body_i18n`（zh-HK／zh-CN／en）；有正文則 `#news/<id>` 站內閱讀並隨語言切換；頁底「來源／原文連結」；`related_deck_ids`／`related_decks` 可匯入構築。流程：`docs/NEWS_ARTICLES.md`
+- **News 提及卡牌＋分享碼**：`featured_cards` 以模擬器風格顯示本地卡面；`related_decks[].code` 顯示分享碼＋複製／匯入至構築
+- 範例：SP01 六張卡牌調整公告三語正文＋`featured_cards`（含蜘蛛俠候選卡號）
 
 ### Changed
-- 靜態 `data/decks.json` 仍為精選來源（不強制改寫作者）；新 AI／編輯構築署名「MHR 編輯群」
+- 版本／cache-bust **1.5.6-beta**
+
+
+## [1.5.4-beta] — 2026-10-12
+
+### Fixed
+- Bump cache-bust so Vault tab label updates.
+
+### Changed
+- Top tab label **Vault** only; Vault promoted to main tab（詳見 commit log）.
 
 ## [1.5.1-beta] — 2026-10-11 (Google auth)
 

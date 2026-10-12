@@ -3,7 +3,7 @@
 // Deck Builder / News (HK + intl) / Deck reference (+ community)
 // =============================================================
 (function () {
-  const { t } = window.MHR_I18N;
+  const { t, getLang } = window.MHR_I18N;
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const PAGES = ["builder", "vault", "news", "decks"];
@@ -27,6 +27,8 @@
   let myDecks = [];
   let isAdmin = false;
   let decksTab = "editorial"; // editorial | community | submit | admin | mine
+  let editorialVotes = {}; // deck_id -> { votes_up, votes_down, my_vote }
+  let newsArticleId = null; // when set, show in-site article panel
 
   function loadJSON(url) {
     return fetch(url + "?t=" + Date.now(), { cache: "no-store" }).then((r) => {
@@ -46,21 +48,46 @@
   }
 
   // ---------- page switching ----------
-  function showPage(p, push) {
+  function parseHash() {
+    const h = (location.hash || "").slice(1);
+    if (h.startsWith("news/")) {
+      return { page: "news", newsId: decodeURIComponent(h.slice(5)) || null };
+    }
+    if (PAGES.includes(h)) return { page: h, newsId: null };
+    return { page: "builder", newsId: null };
+  }
+
+  function showPage(p, push, opts) {
+    opts = opts || {};
     if (!PAGES.includes(p)) p = "builder";
+    if (opts.newsId !== undefined) newsArticleId = opts.newsId;
+    else if (p !== "news") newsArticleId = null;
+
     document.querySelectorAll(".page-tab").forEach((b) => {
       const on = b.dataset.page === p;
       b.classList.toggle("active", on);
       b.setAttribute("aria-selected", String(on));
     });
     PAGES.forEach((id) => { const el = $("#page-" + id); if (el) el.hidden = id !== p; });
-    if (push) history.replaceState(null, "", p === "builder" ? location.pathname + location.search : "#" + p);
+
+    if (push) {
+      let hash = "";
+      if (p === "news" && newsArticleId) hash = "#news/" + encodeURIComponent(newsArticleId);
+      else if (p !== "builder") hash = "#" + p;
+      history.replaceState(null, "", location.pathname + location.search + hash);
+    }
+
     if (p === "news" && !news && !newsFailed) {
       loadJSON("data/news.json").then((d) => { news = d; renderNews(); }).catch(() => { newsFailed = true; renderNews(); });
     }
     if (p === "decks") {
       if (!refDecks && !decksFailed) {
-        loadJSON("data/decks.json").then((d) => { refDecks = d.decks || []; renderDecks(); }).catch(() => { decksFailed = true; renderDecks(); });
+        loadJSON("data/decks.json").then((d) => {
+          refDecks = d.decks || [];
+          refreshEditorialVotes().then(() => renderDecks());
+        }).catch(() => { decksFailed = true; renderDecks(); });
+      } else if (refDecks) {
+        refreshEditorialVotes().then(() => renderDecks());
       }
       refreshCommunity();
     }
@@ -71,34 +98,238 @@
     } catch (e) {}
     render();
   }
-  document.querySelectorAll(".page-tab").forEach((b) => b.addEventListener("click", () => showPage(b.dataset.page, true)));
-  window.addEventListener("hashchange", () => showPage(location.hash.slice(1)));
+  document.querySelectorAll(".page-tab").forEach((b) => b.addEventListener("click", () => {
+    showPage(b.dataset.page, true, { newsId: null });
+  }));
+  window.addEventListener("hashchange", () => {
+    const { page, newsId } = parseHash();
+    showPage(page, false, { newsId });
+  });
 
-  // ---------- news ----------
+  // ---------- news (list + in-site rewritten articles) ----------
   function catLabel(c) {
     return { event: t("catEvent"), product: t("catProduct"), notice: t("catNotice") }[c] || c || "";
   }
+
+  /** Pick localized string from nested i18n map or flat legacy fields. */
+  function pickI18n(it, field) {
+    const lang = (getLang && getLang()) || "zh-HK";
+    const map = it[field + "_i18n"] || it[field];
+    if (map && typeof map === "object" && !Array.isArray(map)) {
+      return map[lang] || map["zh-HK"] || map["zh-CN"] || map.en || "";
+    }
+    if (field === "title") {
+      if (lang === "zh-HK") return it.title_zh || it.title || "";
+      if (lang === "zh-CN") return (it.title_i18n && it.title_i18n["zh-CN"]) || it.title || "";
+      return (it.title_i18n && it.title_i18n.en) || it.title || "";
+    }
+    if (field === "summary") {
+      if (lang === "zh-HK") return it.summary_zh || "";
+      return (it.summary_i18n && (it.summary_i18n[lang] || it.summary_i18n["zh-HK"])) || it.summary_zh || "";
+    }
+    if (field === "body") {
+      // flat fallbacks: body_zh_hk / body_zh_cn / body_en
+      const flat = { "zh-HK": it.body_zh_hk, "zh-CN": it.body_zh_cn, en: it.body_en };
+      return flat[lang] || it.body_zh || it.body || "";
+    }
+    return "";
+  }
+
+  function hasOnSiteBody(it) {
+    if (!it) return false;
+    const map = it.body_i18n;
+    if (map && typeof map === "object") {
+      return !!(map["zh-HK"] || map["zh-CN"] || map.en);
+    }
+    return !!(it.body_zh_hk || it.body_zh_cn || it.body_en || it.body_zh || it.body);
+  }
+
+  function findNewsItem(id) {
+    if (!news || !id) return null;
+    for (const key of ["hk", "intl"]) {
+      const hit = (news[key] || []).find((x) => x.id === id);
+      if (hit) return hit;
+    }
+    return null;
+  }
+
+  /** Plain-text / light markdown → safe HTML paragraphs. */
+  function formatArticleBody(raw) {
+    const src = String(raw || "").trim();
+    if (!src) return '<p class="empty">' + esc(t("newsArticlePending")) + "</p>";
+    return src.split(/\n\s*\n/).map((block) => {
+      const line = esc(block.trim()).replace(/\n/g, "<br>");
+      return line ? "<p>" + line + "</p>" : "";
+    }).join("");
+  }
+
+  /** Localized card name for article mockups (mirrors app.js cnCard for zh-CN). */
+  function newsCardName(card) {
+    if (!card) return "";
+    try {
+      if (window.MHR_I18N && window.MHR_I18N.getLang() === "zh-CN" && window.MHR_CARD_CN && window.MHR_CARD_CN[card.card_no]) {
+        const v = window.MHR_CARD_CN[card.card_no].name;
+        if (v) return String(v).replace(/\n/g, "").trim();
+      }
+    } catch (e) {}
+    return card.name || card.card_no || card.id || "";
+  }
+
+  function lookupCard(id) {
+    if (!id || typeof CARDS === "undefined") return null;
+    return CARDS.find((c) => c.id === id || c.card_no === id) || null;
+  }
+
+  function renderFeaturedCards(ids) {
+    const list = (ids || []).filter(Boolean);
+    if (!list.length) return "";
+    const faces = list.map((id) => {
+      const card = lookupCard(id);
+      if (!card) {
+        return '<div class="news-feat-missing sim-card"><div class="sim-art"></div>' +
+          '<div class="sim-name">' + esc(id) + "</div>" +
+          '<div class="sim-chips"><span class="sim-chip sim-chip-no">' + esc(id) + "</span></div></div>";
+      }
+      const name = newsCardName(card);
+      const attr = card.attribute || "";
+      return '<div class="sim-card news-feat-card attr-' + esc(attr) + '" data-news-card="' + esc(card.id) + '" role="button" tabindex="0" title="' + esc(name) + '">' +
+        '<div class="sim-art"><img loading="lazy" src="' + esc(card.art) + '" alt="' + esc(name) + '" onerror="this.style.display=\'none\'"></div>' +
+        '<div class="sim-name">' + esc(name) + "</div>" +
+        '<div class="sim-chips"><span class="sim-chip sim-chip-no">' + esc(card.card_no || card.id) + "</span></div>" +
+        "</div>";
+    }).join("");
+    return '<section class="news-featured"><h3>' + esc(t("newsFeaturedCards")) + "</h3>" +
+      '<div class="news-feat-row sim-row">' + faces + "</div></section>";
+  }
+
+  function renderRelatedDeckBlock(opts) {
+    const name = opts.name || t("newsRelatedDecks");
+    const note = opts.note || "";
+    const code = opts.code || "";
+    const importAttr = opts.importAttr || "";
+    const copyAttr = opts.copyAttr || "";
+    const actions = [];
+    if (code) {
+      actions.push('<button type="button" class="btn btn-sm" ' + copyAttr + ">" + esc(t("newsCopyShareCode")) + "</button>");
+      actions.push('<button type="button" class="btn btn-sm btn-primary" ' + importAttr + ">" + esc(t("newsImportToBuilder")) + "</button>");
+    } else if (importAttr) {
+      actions.push('<button type="button" class="btn btn-sm btn-primary" ' + importAttr + ">" + esc(t("newsImportToBuilder")) + "</button>");
+    }
+    return '<li class="news-related-item">' +
+      '<div class="news-related-head"><strong>' + esc(name) + "</strong></div>" +
+      (note ? '<span class="news-related-note">' + esc(note) + "</span>" : "") +
+      (code
+        ? '<div class="news-share-block"><span class="news-share-label">' + esc(t("newsShareCode")) +
+          '</span><code class="mono-code news-share-code">' + esc(code) + "</code></div>"
+        : "") +
+      (actions.length ? '<div class="news-related-actions">' + actions.join("") + "</div>" : "") +
+      "</li>";
+  }
+
+  function renderNewsArticle(it) {
+    const title = pickI18n(it, "title") || it.title_zh || it.title;
+    const body = pickI18n(it, "body");
+    const sourceName = it.source_name || it.source || "";
+    const sourceUrl = it.source_url || it.url || "";
+    const meta = [it.date + (it.time ? " " + it.time : ""), it.venue].filter(Boolean).map(esc).join(" · ");
+
+    const featuredHtml = renderFeaturedCards(it.featured_cards);
+
+    let relatedHtml = "";
+    const relatedIds = it.related_deck_ids || [];
+    const relatedDecks = it.related_decks || [];
+    if (relatedIds.length || relatedDecks.length) {
+      const fromIds = relatedIds.map((rid) => {
+        const d = (refDecks || []).find((x) => x.id === rid);
+        if (!d) return '<li class="news-related-missing">' + esc(rid) + "</li>";
+        return renderRelatedDeckBlock({
+          name: d.name,
+          note: d.note || "",
+          code: d.code || "",
+          importAttr: 'data-news-import-id="' + esc(d.id) + '"',
+          copyAttr: 'data-news-copy-id="' + esc(d.id) + '"',
+        });
+      }).join("");
+      const fromEmbed = relatedDecks.map((rd, i) =>
+        renderRelatedDeckBlock({
+          name: rd.name || t("newsRelatedDecks"),
+          note: rd.note || "",
+          code: rd.code || "",
+          importAttr: 'data-news-import-code="' + i + '"',
+          copyAttr: 'data-news-copy-code="' + i + '"',
+        })
+      ).join("");
+      relatedHtml = '<section class="news-related"><h3>' + esc(t("newsRelatedDecks")) + "</h3><ul>" +
+        fromIds + fromEmbed + "</ul>" +
+        '<p class="page-note">' + esc(t("newsRelatedDeckHint")) + "</p></section>";
+    }
+
+    const credit = sourceUrl
+      ? '<footer class="news-credit">' + esc(t("newsSourceCredit", { name: sourceName || sourceUrl })) +
+        ' · <a href="' + esc(sourceUrl) + '" target="_blank" rel="noopener">' + esc(t("newsSourceLink")) + "</a></footer>"
+      : (sourceName ? '<footer class="news-credit">' + esc(t("newsSourceCredit", { name: sourceName })) + "</footer>" : "");
+
+    return '<article class="news-article" data-news-article="' + esc(it.id) + '">' +
+      '<button type="button" class="btn btn-sm news-back" data-news-back>' + esc(t("newsArticleBack")) + "</button>" +
+      (it.category ? '<span class="news-cat cat-' + esc(it.category) + '">' + esc(catLabel(it.category)) + "</span>" : "") +
+      '<h2 class="news-article-title">' + esc(title) + "</h2>" +
+      (meta ? '<div class="news-meta">' + meta + "</div>" : "") +
+      '<div class="news-article-body">' + formatArticleBody(body) + "</div>" +
+      featuredHtml + relatedHtml + credit +
+      "</article>";
+  }
+
   function renderNews() {
     const list = $("#news-list");
     if (!list) return;
     document.querySelectorAll("[data-news]").forEach((b) => b.classList.toggle("active", b.dataset.news === newsRegion));
-    $("#news-note").textContent = t(newsRegion === "hk" ? "newsNoteHK" : "newsNoteIntl");
+    const noteEl = $("#news-note");
+    if (noteEl) noteEl.textContent = t(newsRegion === "hk" ? "newsNoteHK" : "newsNoteIntl");
     if (newsFailed) { list.innerHTML = '<p class="empty">' + esc(t("newsLoadFail")) + "</p>"; return; }
     if (!news) { list.innerHTML = ""; return; }
-    $("#news-updated").textContent = news.updated ? t("newsUpdated", { t: news.updated }) : "";
+    const upd = $("#news-updated");
+    if (upd) upd.textContent = news.updated ? t("newsUpdated", { t: news.updated }) : "";
+
+    if (newsArticleId) {
+      const it = findNewsItem(newsArticleId);
+      if (it && hasOnSiteBody(it)) {
+        // ensure decks.json available for related_deck_ids buttons
+        if (!refDecks && !decksFailed) {
+          loadJSON("data/decks.json").then((d) => { refDecks = d.decks || []; renderNews(); }).catch(() => { decksFailed = true; });
+        }
+        list.innerHTML = renderNewsArticle(it);
+        if (noteEl) noteEl.textContent = "";
+        return;
+      }
+      // missing body → fall back to list (and external link)
+      newsArticleId = null;
+    }
+
     const items = news[newsRegion] || [];
     if (!items.length) { list.innerHTML = '<p class="empty">' + esc(t("newsEmpty")) + "</p>"; return; }
     list.innerHTML = items.map((it) => {
-      const title = it.title_zh || it.title;
-      const meta = [it.date + (it.time ? " " + it.time : ""), it.venue, it.source].filter(Boolean).map(esc).join(" · ");
-      return '<a class="news-item" href="' + esc(it.url) + '" target="_blank" rel="noopener">' +
+      const title = pickI18n(it, "title") || it.title_zh || it.title;
+      const summary = pickI18n(it, "summary") || it.summary_zh || "";
+      const meta = [it.date + (it.time ? " " + it.time : ""), it.venue, it.source_name || it.source].filter(Boolean).map(esc).join(" · ");
+      const onSite = hasOnSiteBody(it);
+      const tag = onSite ? "button" : "a";
+      const openAttr = onSite
+        ? ' type="button" data-news-open="' + esc(it.id) + '"'
+        : ' href="' + esc(it.url) + '" target="_blank" rel="noopener"';
+      const badge = onSite ? '<span class="news-onsite">' + esc(t("newsReadOnSite")) + "</span>" : "";
+      return '<' + tag + ' class="news-item"' + openAttr + '>' +
         (it.category ? '<span class="news-cat cat-' + esc(it.category) + '">' + esc(catLabel(it.category)) + "</span>" : "") +
-        '<span class="news-body"><span class="news-title">' + esc(title) + "</span>" +
-        (it.summary_zh ? '<span class="news-summary">' + esc(it.summary_zh) + "</span>" : "") +
-        '<span class="news-meta">' + meta + "</span></span></a>";
+        '<span class="news-body"><span class="news-title">' + esc(title) + badge + "</span>" +
+        (summary ? '<span class="news-summary">' + esc(summary) + "</span>" : "") +
+        '<span class="news-meta">' + meta + "</span></span></" + tag + ">";
     }).join("");
   }
-  document.querySelectorAll("[data-news]").forEach((b) => b.addEventListener("click", () => { newsRegion = b.dataset.news; renderNews(); }));
+  document.querySelectorAll("[data-news]").forEach((b) => b.addEventListener("click", () => {
+    newsRegion = b.dataset.news;
+    newsArticleId = null;
+    history.replaceState(null, "", location.pathname + location.search + "#news");
+    renderNews();
+  }));
 
   // ---------- community data ----------
   async function refreshCommunity() {
@@ -156,6 +387,24 @@
     renderDecks();
   }
 
+
+  async function refreshEditorialVotes() {
+    editorialVotes = {};
+    if (!refDecks || !refDecks.length) return;
+    const g = gs();
+    if (!g || !g.hasSyncApi || !g.hasSyncApi()) return;
+    const ids = refDecks.map((d) => d.id).filter(Boolean);
+    if (!ids.length) return;
+    try {
+      const res = await api("/api/editorial/votes?ids=" + encodeURIComponent(ids.join(",")));
+      if (!res.ok) return;
+      const data = await res.json();
+      editorialVotes = data.votes || {};
+    } catch (e) {
+      /* keep empty tallies */
+    }
+  }
+
   function colorDots(colors) {
     return (colors || []).map((c) =>
       '<span class="color-dot" style="background:' + (COLOR_VAR[c] || "var(--muted)") + '" title="' + esc(c) + '"></span>'
@@ -181,14 +430,23 @@
       ? '<a href="' + esc(d.source_url) + '" target="_blank" rel="noopener">' + esc(d.source) + "</a>"
       : esc(d.source || "");
     const author = d.author || t("authorEditorial");
-    return '<article class="ref-deck">' +
+    const v = editorialVotes[d.id] || { votes_up: 0, votes_down: 0, my_vote: 0 };
+    const score = (v.votes_up | 0) - (v.votes_down | 0);
+    const my = v.my_vote || 0;
+    return '<article class="ref-deck" data-eid="' + esc(d.id) + '">' +
       '<div class="ref-deck-head">' + dots + "<h3>" + esc(d.name) + "</h3>" +
       '<span class="deck-badge">' + esc(t("pageDecksEditorial")) + "</span></div>" +
       '<div class="ref-deck-meta">' + [esc(d.set), src, esc(t("deckBy", { a: author, d: d.date || "" }))].filter(Boolean).join(" · ") + "</div>" +
       (d.note ? '<p class="ref-deck-note">' + esc(d.note) + "</p>" : "") +
       '<div class="ref-deck-actions">' +
       '<button class="btn btn-primary btn-sm" data-ref-import="' + i + '">' + esc(t("deckImport")) + "</button>" +
-      '<button class="btn btn-sm" data-ref-copy="' + i + '">' + esc(t("deckCopy")) + "</button></div>" +
+      '<button class="btn btn-sm" data-ref-copy="' + i + '">' + esc(t("deckCopy")) + "</button>" +
+      '<button class="btn btn-sm vote-btn' + (my === 1 ? " active" : "") + '" data-e-vote="' + esc(d.id) + '" data-v="1">' +
+      esc(t("voteUp")) + " · " + (v.votes_up | 0) + "</button>" +
+      '<button class="btn btn-sm vote-btn' + (my === -1 ? " active" : "") + '" data-e-vote="' + esc(d.id) + '" data-v="-1">' +
+      esc(t("voteDown")) + " · " + (v.votes_down | 0) + "</button>" +
+      '<span class="vote-score" title="score">' + (score > 0 ? "+" : "") + score + "</span>" +
+      "</div>" +
       "<details><summary>" + esc(t("deckCardsList")) + " (" + (d.total || "") + ")</summary><ul class=\"ref-card-list\">" + cards + "</ul></details>" +
       "</article>";
   }
@@ -392,6 +650,107 @@
       return;
     }
 
+    const newsOpen = e.target.closest("[data-news-open]");
+    if (newsOpen) {
+      newsArticleId = newsOpen.dataset.newsOpen;
+      history.replaceState(null, "", location.pathname + location.search + "#news/" + encodeURIComponent(newsArticleId));
+      renderNews();
+      return;
+    }
+
+    const newsBack = e.target.closest("[data-news-back]");
+    if (newsBack) {
+      newsArticleId = null;
+      history.replaceState(null, "", location.pathname + location.search + "#news");
+      renderNews();
+      return;
+    }
+
+    const newsImpId = e.target.closest("[data-news-import-id]");
+    if (newsImpId) {
+      const d = (refDecks || []).find((x) => x.id === newsImpId.dataset.newsImportId);
+      if (d && d.code && window.MHR_APP.importCode(d.code)) {
+        showPage("builder", true, { newsId: null });
+        window.MHR_APP.toast(t("toastRefImported", { n: d.name }));
+      }
+      return;
+    }
+
+    const newsImpCode = e.target.closest("[data-news-import-code]");
+    if (newsImpCode) {
+      const it = findNewsItem(newsArticleId);
+      const rd = it && it.related_decks && it.related_decks[+newsImpCode.dataset.newsImportCode];
+      if (rd && rd.code && window.MHR_APP.importCode(rd.code)) {
+        showPage("builder", true, { newsId: null });
+        window.MHR_APP.toast(t("toastRefImported", { n: rd.name || "" }));
+      } else if (rd && !rd.code) {
+        window.MHR_APP.toast(t("newsRelatedDeckHint"));
+      }
+      return;
+    }
+
+    const newsCopyId = e.target.closest("[data-news-copy-id]");
+    if (newsCopyId) {
+      const d = (refDecks || []).find((x) => x.id === newsCopyId.dataset.newsCopyId);
+      if (d && d.code) {
+        navigator.clipboard?.writeText(d.code);
+        window.MHR_APP.toast(t("toastDeckCopied") + "：" + d.name);
+      }
+      return;
+    }
+
+    const newsCopyCode = e.target.closest("[data-news-copy-code]");
+    if (newsCopyCode) {
+      const it = findNewsItem(newsArticleId);
+      const rd = it && it.related_decks && it.related_decks[+newsCopyCode.dataset.newsCopyCode];
+      if (rd && rd.code) {
+        navigator.clipboard?.writeText(rd.code);
+        window.MHR_APP.toast(t("toastDeckCopied") + (rd.name ? "：" + rd.name : ""));
+      }
+      return;
+    }
+
+    const newsCard = e.target.closest("[data-news-card]");
+    if (newsCard) {
+      const id = newsCard.dataset.newsCard;
+      if (id && window.MHR_APP && typeof window.MHR_APP.openCard === "function") {
+        window.MHR_APP.openCard(id);
+      }
+      return;
+    }
+
+    const eVoteBtn = e.target.closest("[data-e-vote]");
+    if (eVoteBtn) {
+      const g = gs();
+      if (!g || !g.isSignedIn || !g.isSignedIn()) {
+        window.MHR_APP.toast(t("voteNeedLogin"));
+        return;
+      }
+      const id = eVoteBtn.dataset.eVote;
+      const value = Number(eVoteBtn.dataset.v);
+      try {
+        const res = await api("/api/editorial/votes/" + encodeURIComponent(id), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ value }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          window.MHR_APP.toast(t("googleSyncError"));
+          return;
+        }
+        editorialVotes[id] = {
+          votes_up: data.votes_up | 0,
+          votes_down: data.votes_down | 0,
+          my_vote: data.my_vote | 0,
+        };
+        renderDecks();
+      } catch (err) {
+        window.MHR_APP.toast(t("googleSyncError"));
+      }
+      return;
+    }
+
     const voteBtn = e.target.closest("[data-c-vote]");
     if (voteBtn) {
       const g = gs();
@@ -586,9 +945,12 @@
   if (g0 && g0.onAuthChange) {
     g0.onAuthChange(() => {
       if (!$("#page-decks") || $("#page-decks").hidden) return;
-      refreshCommunity();
+      refreshEditorialVotes().then(() => refreshCommunity());
     });
   }
 
-  showPage(location.hash.slice(1));
+  {
+    const boot = parseHash();
+    showPage(boot.page, false, { newsId: boot.newsId });
+  }
 })();

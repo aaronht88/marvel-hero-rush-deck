@@ -98,8 +98,27 @@
       "category": "product",
       "url": "https://mp.weixin.qq.com/s/LAceKZHjRy7pMKHmicMW5w",
       "source": "官方",
-      "title_zh": "SP01 六張卡牌調整公告",
-      "summary_zh": "官方調整 SP01 六張卡牌，發售版以最終卡面為準。猩紅蜘蛛、蜘蛛俠、終極蜘蛛俠更改卡名；反毒液更改卡名與卡圖；琴·格蕾更改卡名與效果；黑貓則更改角色等級、效果與戰力。"
+      "title_zh": "SP01《蜘蛛紀元》六張卡牌調整公告",
+      "summary_zh": "官方調整 SP01 六張卡牌，發售版以最終卡面為準。涉及 SP01-064 猩紅蜘蛛、SP01-028 終極蜘蛛俠、SP01-067 反毒液、SP01-003 琴·格蕾、SP01-063 黑貓，以及一張蜘蛛俠（請對照原文確認卡號）。",
+      "title_i18n": {
+        "zh-HK": "SP01《蜘蛛紀元》六張卡牌調整公告",
+        "zh-CN": "SP01《蜘蛛纪元》六张卡牌调整公告",
+        "en": "SP01 Era of Spiders: six cards adjusted"
+      },
+      "summary_i18n": {
+        "zh-HK": "官方調整 SP01 六張卡牌，發售版以最終卡面為準。涉及 SP01-064 猩紅蜘蛛、SP01-028 終極蜘蛛俠、SP01-067 反毒液、SP01-003 琴·格蕾、SP01-063 黑貓，以及一張蜘蛛俠（請對照原文確認卡號）。",
+        "zh-CN": "官方调整 SP01 六张卡牌，发售版以最终卡面为准。涉及 SP01-064、SP01-028、SP01-067、SP01-003、SP01-063，以及一张蜘蛛侠（请对照原文确认卡号）。",
+        "en": "Six SP01 cards were adjusted; retail prints follow the final faces. Includes SP01-064, SP01-028, SP01-067, SP01-003, SP01-063, and one Spider-Man (confirm the number in the original notice)."
+      },
+      "body_i18n": {
+        "zh-HK": "官方公布特別補充包 SP01《蜘蛛紀元》部分卡牌調整。守護者請注意：發售與比賽用卡，一律以最終卡面為準。\n\n本次調整共六張（卡號按現有卡庫對照，仍以官方最終卡面為準）：\n\n1. 猩紅蜘蛛（SP01-064）：更改卡名\n2. 蜘蛛俠：更改卡名（同名卡有多張副標，請對照原文確認具體卡號，例如 SP01-021、SP01-027、SP01-033、SP01-065）\n3. 終極蜘蛛俠（SP01-028）：更改卡名\n4. 反毒液（SP01-067）：更改卡名與卡圖\n5. 琴·格蕾（SP01-003）：更改卡名與效果文本\n6. 黑貓（SP01-063）：更改角色等級、效果文本與戰力\n\n若你的牌組使用以上卡牌，請對照頁底原文連結更新構築，並以最新卡面效果進行對局。",
+        "zh-CN": "官方公布特别补充包 SP01《蜘蛛纪元》部分卡牌调整。发售与比赛用卡一律以最终卡面为准。\n\n本次共调整六张卡牌（卡号按现有卡库对照，仍以官方最终卡面为准）：\n\n1. 猩红蜘蛛（SP01-064）：更改卡名\n2. 蜘蛛侠：更改卡名（同名卡有多张副标，请对照原文确认具体卡号，例如 SP01-021、SP01-027、SP01-033、SP01-065）\n3. 终极蜘蛛侠（SP01-028）：更改卡名\n4. 反毒液（SP01-067）：更改卡名与卡图\n5. 琴·格蕾（SP01-003）：更改卡名与效果文本\n6. 黑猫（SP01-063）：更改角色等级、效果文本与战力\n\n若牌组使用以上卡牌，请对照页底原文链接更新构筑，并以最新卡面效果进行对局。",
+        "en": "The official notice adjusts several cards in Special Booster SP01 Era of Spiders. For retail and tournament play, the final printed card faces take precedence.\n\nSix cards are affected (numbers matched against the current card database; confirm against the official print):\n\n1. Scarlet Spider (SP01-064) — card name change\n2. Spider-Man — card name change (several subtitle variants share this name; confirm the exact number in the original notice, e.g. SP01-021, SP01-027, SP01-033, SP01-065)\n3. Ultimate Spider-Man (SP01-028) — card name change\n4. Anti-Venom (SP01-067) — card name and art change\n5. Jean Grey (SP01-003) — card name and effect text change\n6. Black Cat (SP01-063) — character level, effect text, and Power change\n\nIf your lists use any of these cards, update them against the original notice linked in the footer and play by the final printed effects."
+      },
+      "source_name": "官方微信",
+      "source_url": "https://mp.weixin.qq.com/s/LAceKZHjRy7pMKHmicMW5w",
+      "featured_cards": ["SP01-064", "SP01-028", "SP01-067", "SP01-003", "SP01-063", "SP01-021", "SP01-027", "SP01-033", "SP01-065"],
+      "related_decks": []
     },
     {
       "id": "mhr-6a7a9a5b9da74fc0904eb13a",

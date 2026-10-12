@@ -2,6 +2,7 @@
  * MHR Deck Builder — Cloudflare Worker sync + community decks API
  * GIS id_token → session; D1 payload keyed by Google `sub`.
  * Community: submit → pending → admin pass/reject/revise → published (+ votes).
+ * Editorial: votes on static data/decks.json ids (editorial_votes table).
  */
 
 const COOKIE_NAME = "mhr_session";
@@ -755,6 +756,120 @@ async function handleDeckVote(request, env, user, deckId) {
   return json({ ok: true, votes_up: up, votes_down: down, my_vote: value });
 }
 
+
+const EDITORIAL_ID_RE = /^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}$/;
+
+function isValidEditorialDeckId(id) {
+  return typeof id === "string" && EDITORIAL_ID_RE.test(id);
+}
+
+async function tallyEditorialVotes(env, deckIds) {
+  const out = {};
+  (deckIds || []).forEach((id) => {
+    out[id] = { votes_up: 0, votes_down: 0, my_vote: 0 };
+  });
+  if (!deckIds || !deckIds.length) return out;
+  const placeholders = deckIds.map(() => "?").join(",");
+  const { results } = await env.DB.prepare(
+    `SELECT deck_id,
+            SUM(CASE WHEN value = 1 THEN 1 ELSE 0 END) AS votes_up,
+            SUM(CASE WHEN value = -1 THEN 1 ELSE 0 END) AS votes_down
+     FROM editorial_votes
+     WHERE deck_id IN (${placeholders})
+     GROUP BY deck_id`
+  )
+    .bind(...deckIds)
+    .all();
+  (results || []).forEach((r) => {
+    out[r.deck_id] = {
+      votes_up: r.votes_up | 0,
+      votes_down: r.votes_down | 0,
+      my_vote: 0,
+    };
+  });
+  return out;
+}
+
+/** GET /api/editorial/votes?ids=a,b,c — public tallies; my_vote if signed in */
+async function handleEditorialVotesGet(request, env, user) {
+  if (!env.DB) return json({ error: "db_not_bound" }, 500);
+  const url = new URL(request.url);
+  const raw = url.searchParams.get("ids") || "";
+  const ids = [...new Set(raw.split(",").map((s) => s.trim()).filter(isValidEditorialDeckId))].slice(0, 100);
+  const votes = await tallyEditorialVotes(env, ids);
+  if (user && ids.length) {
+    const placeholders = ids.map(() => "?").join(",");
+    const mine = await env.DB.prepare(
+      `SELECT deck_id, value FROM editorial_votes WHERE google_sub = ? AND deck_id IN (${placeholders})`
+    )
+      .bind(user.sub, ...ids)
+      .all();
+    (mine.results || []).forEach((v) => {
+      if (votes[v.deck_id]) votes[v.deck_id].my_vote = v.value;
+    });
+  }
+  return json({ votes });
+}
+
+/** POST /api/editorial/votes/:deckId  body { value: 1|-1 } — Google sign-in required */
+async function handleEditorialVote(request, env, user, deckId) {
+  if (!env.DB) return json({ error: "db_not_bound" }, 500);
+  if (!isValidEditorialDeckId(deckId)) {
+    return json({ error: "invalid_deck_id" }, 400);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch (e) {
+    return json({ error: "invalid_json" }, 400);
+  }
+  let value = Number(body.value);
+  if (value !== 1 && value !== -1) {
+    return json({ error: "invalid_value", message: "value must be +1 or -1" }, 400);
+  }
+
+  const existing = await env.DB.prepare(
+    "SELECT value FROM editorial_votes WHERE deck_id = ? AND google_sub = ?"
+  )
+    .bind(deckId, user.sub)
+    .first();
+
+  const now = new Date().toISOString();
+
+  if (existing) {
+    if (existing.value === value) {
+      await env.DB.prepare(
+        "DELETE FROM editorial_votes WHERE deck_id = ? AND google_sub = ?"
+      )
+        .bind(deckId, user.sub)
+        .run();
+      value = 0;
+    } else {
+      await env.DB.prepare(
+        "UPDATE editorial_votes SET value = ?, updated_at = ? WHERE deck_id = ? AND google_sub = ?"
+      )
+        .bind(value, now, deckId, user.sub)
+        .run();
+    }
+  } else {
+    await env.DB.prepare(
+      "INSERT INTO editorial_votes (deck_id, google_sub, value, updated_at) VALUES (?, ?, ?, ?)"
+    )
+      .bind(deckId, user.sub, value, now)
+      .run();
+  }
+
+  const tallies = await tallyEditorialVotes(env, [deckId]);
+  const t = tallies[deckId] || { votes_up: 0, votes_down: 0 };
+  return json({
+    ok: true,
+    votes_up: t.votes_up,
+    votes_down: t.votes_down,
+    my_vote: value,
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -772,6 +887,7 @@ export default {
             hasDb: !!env.DB,
             clientIdSet: !!getClientId(env),
             community: true,
+            editorial_votes: true,
           }),
           request,
           env
@@ -831,6 +947,24 @@ export default {
           return withCors(await handleDeckPatch(request, env, user, deckId), request, env);
         }
         return withCors(json({ error: "method_not_allowed" }, 405), request, env);
+      }
+
+
+      // Editorial (static decks.json) votes — separate from community
+      if (url.pathname === "/api/editorial/votes" && request.method === "GET") {
+        const user = await resolveUser(request, env);
+        return withCors(await handleEditorialVotesGet(request, env, user), request, env);
+      }
+
+      const editorialVoteMatch = url.pathname.match(/^\/api\/editorial\/votes\/([^/]+)$/);
+      if (editorialVoteMatch) {
+        const deckId = decodeURIComponent(editorialVoteMatch[1]);
+        const user = await resolveUser(request, env);
+        if (!user) return withCors(json({ error: "unauthorized" }, 401), request, env);
+        if (request.method !== "POST") {
+          return withCors(json({ error: "method_not_allowed" }, 405), request, env);
+        }
+        return withCors(await handleEditorialVote(request, env, user, deckId), request, env);
       }
 
       return withCors(json({ error: "not_found" }, 404), request, env);
