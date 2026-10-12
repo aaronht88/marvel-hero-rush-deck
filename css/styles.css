@@ -756,6 +756,52 @@ body.modal-open { overflow: hidden; }
 }
 .modal-close:active { transform: scale(0.9); }
 .modal-close:hover { border-color: var(--bad); color: var(--bad); box-shadow: 0 0 12px rgba(255, 92, 92, .3); }
+
+/* ---------- Card modal prev/next nav (v1.5.9) ---------- */
+#card-modal.modal-overlay { padding: 20px 72px 40px; }
+.card-modal-frame {
+  position: relative;
+  max-width: 780px;
+  width: 100%;
+}
+.card-modal-frame > .modal {
+  max-width: none;
+  width: 100%;
+}
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(14, 26, 46, .92);
+  border: 1px solid #00a8bc;
+  color: var(--cyan);
+  font-size: 22px; line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 18px rgba(0, 229, 255, .2);
+  transition: background 160ms ease, transform 140ms var(--ease-out), box-shadow 160ms ease, opacity 160ms ease, border-color 160ms ease, color 160ms ease;
+  z-index: 6;
+  padding: 0;
+}
+.nav-arrow:hover:not([disabled]) {
+  background: rgba(0, 229, 255, .12);
+  box-shadow: 0 0 28px rgba(0, 229, 255, .35);
+}
+.nav-arrow:active:not([disabled]) { transform: translateY(-50%) scale(0.92); }
+.nav-arrow.prev { left: -60px; }
+.nav-arrow.next { right: -60px; }
+.nav-arrow[disabled] {
+  opacity: .28; cursor: default; box-shadow: none;
+  border-color: var(--border); color: var(--muted);
+}
+.nav-arrow[hidden], .nav-pos[hidden] { display: none !important; }
+.nav-pos {
+  position: absolute; left: 50%; bottom: -28px; transform: translateX(-50%);
+  font-size: 12px; color: var(--muted); font-family: "Rajdhani", sans-serif; letter-spacing: 1px;
+  white-space: nowrap; z-index: 6; pointer-events: none;
+}
+
 .modal-body { display: grid; grid-template-columns: 300px 1fr; gap: 0; }
 .modal-art-wrap {
   background:
@@ -873,6 +919,11 @@ body.modal-open { overflow: hidden; }
   .deck-list { max-height: 30vh; }
   .modal-body { grid-template-columns: 1fr; }
   .modal-art-wrap img { max-width: 200px; }
+  #card-modal.modal-overlay { padding: 20px 16px 36px; }
+  .nav-arrow.prev { left: 8px; }
+  .nav-arrow.next { right: 8px; }
+  .nav-arrow { width: 40px; height: 40px; font-size: 20px; }
+  .nav-pos { bottom: -24px; font-size: 11px; }
 
   /* --- mobile polish: tighter topbar, bigger tap targets --- */
   .topbar { padding: 10px 12px; gap: 8px; }

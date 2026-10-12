@@ -6,6 +6,14 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 ## [Unreleased]
 
+## [1.5.9-beta] — 2026-10-12
+
+### Added
+- **卡詳情左右切換**：`#card-modal` 兩側圓形箭嘴（‹ ›）＋底部位置指示（如 `12 / 248 · 篩選結果內`）；跟住目前篩選／圖鑑／Vault／模擬器／News featured 列表順序；鍵盤 ← → 支援（input／textarea 唔偷鍵）；兩端 disable、唔 wrap
+
+### Changed
+- 版本／cache-bust **1.5.9-beta**
+
 ## [1.5.8-beta] — 2026-10-12
 
 ### Added
