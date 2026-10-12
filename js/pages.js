@@ -163,6 +163,66 @@
     }).join("");
   }
 
+  /** Inline Deck Ref embed for body placeholder {{deck:DECK_ID}}. */
+  function renderInlineDeckEmbed(deckId) {
+    const d = (refDecks || []).find((x) => x.id === deckId);
+    if (!d) {
+      return '<aside class="news-deck-embed news-deck-embed-missing" data-deck-id="' + esc(deckId) + '">' +
+        '<p class="page-note">' + esc(deckId) + "</p></aside>";
+    }
+    const actions = [];
+    if (d.code) {
+      actions.push('<button type="button" class="btn btn-sm" data-news-copy-id="' + esc(d.id) + '">' + esc(t("newsCopyShareCode")) + "</button>");
+      actions.push('<button type="button" class="btn btn-sm btn-primary" data-news-import-id="' + esc(d.id) + '">' + esc(t("newsImportToBuilder")) + "</button>");
+    }
+    const official = d.official_code
+      ? '<div class="news-deck-official"><span class="news-share-label">' + esc(t("newsOfficialCode")) +
+        '</span><code class="mono-code">' + esc(d.official_code) + "</code></div>"
+      : "";
+    return '<aside class="news-deck-embed" data-deck-id="' + esc(d.id) + '">' +
+      '<div class="news-deck-embed-head"><strong>' + esc(d.name) + "</strong></div>" +
+      renderKeycards(d.keycards) +
+      official +
+      (d.code
+        ? '<div class="news-share-block"><span class="news-share-label">' + esc(t("newsShareCode")) +
+          '</span><code class="mono-code news-share-code">' + esc(d.code) + "</code></div>"
+        : "") +
+      (actions.length ? '<div class="news-related-actions">' + actions.join("") + "</div>" : "") +
+      "</aside>";
+  }
+
+  /**
+   * Split article body on {{deck:id}} placeholders.
+   * Text segments → formatArticleBody; matches → inline deck embeds.
+   */
+  function renderArticleBodyWithEmbeds(raw) {
+    const src = String(raw || "").trim();
+    if (!src) {
+      return { html: '<p class="empty">' + esc(t("newsArticlePending")) + "</p>", embeddedIds: [] };
+    }
+    const embeddedIds = [];
+    const parts = src.split(/\{\{deck:([a-zA-Z0-9_-]+)\}\}/);
+    let html = "";
+    for (let i = 0; i < parts.length; i++) {
+      if (i % 2 === 0) {
+        const chunk = parts[i].trim();
+        if (chunk) html += formatArticleBody(chunk);
+      } else {
+        embeddedIds.push(parts[i]);
+        html += renderInlineDeckEmbed(parts[i]);
+      }
+    }
+    return { html: html || '<p class="empty">' + esc(t("newsArticlePending")) + "</p>", embeddedIds };
+  }
+
+  function articleShareUrl(articleId) {
+    const prod = "https://mhrdeckbuild.duckdns.org";
+    const origin = (typeof location !== "undefined" && /mhrdeckbuild\.duckdns\.org$/i.test(location.hostname || ""))
+      ? location.origin
+      : prod;
+    return origin.replace(/\/$/, "") + "/#news/" + articleId;
+  }
+
   /** Localized card name for article mockups (mirrors app.js cnCard for zh-CN). */
   function newsCardName(card) {
     if (!card) return "";
@@ -250,18 +310,26 @@
     const sourceUrl = it.source_url || it.url || "";
     const meta = [it.date + (it.time ? " " + it.time : ""), it.venue].filter(Boolean).map(esc).join(" · ");
 
-    const featuredHtml = renderFeaturedCards(it.featured_cards);
+    const bodyParts = renderArticleBodyWithEmbeds(body);
+    const embeddedSet = new Set(bodyParts.embeddedIds);
+    const hasInlineDecks = embeddedSet.size > 0;
+
+    // Skip the big featured dump when body already interleaves deck keycards.
+    const featuredHtml = hasInlineDecks ? "" : renderFeaturedCards(it.featured_cards);
 
     let relatedHtml = "";
     const relatedIds = it.related_deck_ids || [];
     const relatedDecks = it.related_decks || [];
-    if (relatedIds.length || relatedDecks.length) {
-      const fromIds = relatedIds.map((rid) => {
+    const leftoverIds = relatedIds.filter((rid) => !embeddedSet.has(rid));
+    // Hide related section when every related_deck_id was inlined and no related_decks embeds.
+    const showRelated = leftoverIds.length > 0 || relatedDecks.length > 0;
+    if (showRelated) {
+      const fromIds = leftoverIds.map((rid) => {
         const d = (refDecks || []).find((x) => x.id === rid);
         if (!d) return '<li class="news-related-missing">' + esc(rid) + "</li>";
         return renderRelatedDeckBlock({
           name: d.name,
-          note: d.note || "",
+          note: "",
           code: d.code || "",
           importAttr: 'data-news-import-id="' + esc(d.id) + '"',
           copyAttr: 'data-news-copy-id="' + esc(d.id) + '"',
@@ -286,12 +354,16 @@
         ' · <a href="' + esc(sourceUrl) + '" target="_blank" rel="noopener">' + esc(t("newsSourceLink")) + "</a></footer>"
       : (sourceName ? '<footer class="news-credit">' + esc(t("newsSourceCredit", { name: sourceName })) + "</footer>" : "");
 
+    const shareBtn = '<button type="button" class="btn btn-sm news-copy-article" data-news-copy-article="' +
+      esc(it.id) + '">' + esc(t("newsCopyArticleLink")) + "</button>";
+
     return '<article class="news-article" data-news-article="' + esc(it.id) + '">' +
       '<button type="button" class="btn btn-sm news-back" data-news-back>' + esc(t("newsArticleBack")) + "</button>" +
       (it.category ? '<span class="news-cat cat-' + esc(it.category) + '">' + esc(catLabel(it.category)) + "</span>" : "") +
       '<h2 class="news-article-title">' + esc(title) + "</h2>" +
       (meta ? '<div class="news-meta">' + meta + "</div>" : "") +
-      '<div class="news-article-body">' + formatArticleBody(body) + "</div>" +
+      '<div class="news-article-actions">' + shareBtn + "</div>" +
+      '<div class="news-article-body">' + bodyParts.html + "</div>" +
       featuredHtml + relatedHtml + credit +
       "</article>";
   }
@@ -684,6 +756,24 @@
       newsArticleId = null;
       history.replaceState(null, "", location.pathname + location.search + "#news");
       renderNews();
+      return;
+    }
+
+    const newsCopyArticle = e.target.closest("[data-news-copy-article]");
+    if (newsCopyArticle) {
+      const id = newsCopyArticle.dataset.newsCopyArticle;
+      if (id) {
+        const url = articleShareUrl(id);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(() => {
+            window.MHR_APP.toast(t("newsArticleLinkCopied"));
+          }).catch(() => {
+            window.MHR_APP.toast(url);
+          });
+        } else {
+          window.MHR_APP.toast(url);
+        }
+      }
       return;
     }
 

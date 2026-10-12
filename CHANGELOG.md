@@ -4,6 +4,16 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.1-beta] — 2026-10-12
+
+### Added
+- **News 文內牌組區塊**：正文支援 `{{deck:DECK_ID}}` placeholder，渲染後插入 Deck Ref 名稱、3 keycards、官方卡組碼、分享碼與「複製／匯入」按鈕（重用既有 `data-news-copy-id` / `data-news-import-id`）
+- **複製文章連結**：文章標題下「複製文章連結」按鈕，複製 `https://mhrdeckbuild.duckdns.org/#news/<id>`（同 host 則用 `location.origin`）
+- ASCC 四強站內文（三語）每副評論後插入對應 `{{deck:ascc-*}}`；有 inline embed 時略過底部大批 featured 卡牆，並隱藏已全部內嵌的 related 區塊
+
+### Changed
+- 版本／cache-bust **1.6.1-beta**
+
 ## [1.6.0-beta] — 2026-10-12
 
 ### Added
