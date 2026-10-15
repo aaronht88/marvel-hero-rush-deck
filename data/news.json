@@ -2,6 +2,35 @@
  "updated": "2026-10-16 00:08",
  "intl": [
   {
+   "id": "editorial-infinity-clash-hk-2026-11-14",
+   "title": "Infinity Clash HK｜Marvel Hero Rush 香港赛事报名",
+   "date": "2026-11-14",
+   "time": "10:00",
+   "venue": "Saka Hall",
+   "category": "event",
+   "url": "https://docs.google.com/forms/d/e/1FAIpQLSdPnSlFrq0_eA8BkNbbrAzfybDP9WA49iA4mq2hxefSW7iORw/viewform",
+   "source": "編輯整理",
+   "title_zh": "Infinity Clash HK｜Marvel Hero Rush 香港賽事報名",
+   "summary_zh": "11月14日於 Saka Hall 舉行；報到 09:00、開賽 10:00；報名費 HK$60、名額 128；抽選截止 11月4日、結果 11月6日公布。",
+   "title_i18n": {
+    "zh-HK": "Infinity Clash HK｜Marvel Hero Rush 香港賽事報名",
+    "zh-CN": "Infinity Clash HK｜Marvel Hero Rush 香港赛事报名",
+    "en": "Infinity Clash HK｜Marvel Hero Rush Hong Kong event registration"
+   },
+   "summary_i18n": {
+    "zh-HK": "11月14日於 Saka Hall 舉行；報到 09:00、開賽 10:00；報名費 HK$60、名額 128；抽選截止 11月4日、結果 11月6日公布。",
+    "zh-CN": "11月14日于 Saka Hall 举行；报到 09:00、开赛 10:00；报名费 HK$60、名额 128；抽选截止 11月4日、结果 11月6日公布。",
+    "en": "14 Nov 2026 at Saka Hall; check-in 09:00, start 10:00; HK$60 entry, 128 seats; lottery closes 4 Nov, results on 6 Nov."
+   },
+   "body_i18n": {
+    "zh-HK": "香港即將舉行 Marvel Hero Rush 賽事 Infinity Clash HK。以下資料按公開報名表整理，賽制及獎品未於表內列明，故本文不予臆測。\n\n日期：2026年11月14日（星期六）\n報到：09:00｜開賽：10:00（香港時間）\n地點：Saka Hall（長沙灣青山道 688–690 號嘉名工廠大廈 11 樓）\n報名費：HK$60\n名額：128 人\n報名方式：Google 表單抽選\n報名截止：2026年11月4日（星期三）\n抽選結果公布：2026年11月6日（星期五）\n\n成功提交表格並不代表已取得參賽資格；若報名人數超出名額，將以抽選決定。場地／抽選安排以報名表及主辦最新公告為準。\n\n報名表：https://docs.google.com/forms/d/e/1FAIpQLSdPnSlFrq0_eA8BkNbbrAzfybDP9WA49iA4mq2hxefSW7iORw/viewform",
+    "zh-CN": "香港即将举行 Marvel Hero Rush 赛事 Infinity Clash HK。以下资料按公开报名表整理，赛制及奖品未于表内列明，故本文不予臆测。\n\n日期：2026年11月14日（星期六）\n报到：09:00｜开赛：10:00（香港时间）\n地点：Saka Hall（长沙湾青山道 688–690 号嘉名工厂大厦 11 楼）\n报名费：HK$60\n名额：128 人\n报名方式：Google 表单抽选\n报名截止：2026年11月4日（星期三）\n抽选结果公布：2026年11月6日（星期五）\n\n成功提交表格并不代表已取得参赛资格；若报名人数超出名额，将以抽选决定。场地／抽选安排以报名表及主办最新公告为准。\n\n报名表：https://docs.google.com/forms/d/e/1FAIpQLSdPnSlFrq0_eA8BkNbbrAzfybDP9WA49iA4mq2hxefSW7iORw/viewform",
+    "en": "Infinity Clash HK is an upcoming Marvel Hero Rush event in Hong Kong. Details below follow the public registration form; format and prizes are not listed there, so this note does not speculate.\n\nDate: Saturday 14 November 2026\nCheck-in: 09:00｜Start: 10:00 (Hong Kong time)\nVenue: Saka Hall, 11/F, Kar Ming Factory Building, 688–690 Castle Peak Road, Cheung Sha Wan\nEntry fee: HK$60\nCapacity: 128\nRegistration: Google Form lottery\nDeadline: Wednesday 4 November 2026\nLottery results: Friday 6 November 2026\n\nSubmitting the form does not guarantee a seat; if entries exceed capacity, places are decided by lottery. Venue and lottery arrangements follow the form and the organiser’s latest notices.\n\nRegistration form: https://docs.google.com/forms/d/e/1FAIpQLSdPnSlFrq0_eA8BkNbbrAzfybDP9WA49iA4mq2hxefSW7iORw/viewform"
+   },
+   "source_name": "Infinity Clash HK 報名表 · Saka Hall",
+   "source_url": "https://docs.google.com/forms/d/e/1FAIpQLSdPnSlFrq0_eA8BkNbbrAzfybDP9WA49iA4mq2hxefSW7iORw/viewform"
+  },
+  {
    "id": "editorial-infinity-clash-singapore-2026-10-17",
    "title": "Infinity Clash 2026｜新加坡 Marvel Hero Rush 赛事",
    "date": "2026-10-17",
