@@ -1,15 +1,15 @@
 {
- "updated": "2026-10-16 00:08",
+ "updated": "2026-10-17 09:09",
  "intl": [
   {
    "id": "editorial-infinity-clash-hk-2026-11-14",
    "title": "Infinity Clash HK｜Marvel Hero Rush 香港站正赛报名",
    "date": "2026-11-14",
-   "time": "10:00",
-   "venue": "Saka Hall",
    "category": "event",
    "url": "https://forms.gle/aHWUxKC2uTD8NuJh6",
    "source": "編輯整理",
+   "time": "10:00",
+   "venue": "Saka Hall",
    "title_zh": "Infinity Clash HK｜Marvel Hero Rush 香港站正賽報名",
    "summary_zh": "11月14日 Saka Hall 正賽；報到 09:00、開賽 10:00；HK$60／128 人抽選；截止 11月4日、結果 11月6日；含 ER 限定卡、Playmat 及冠亞季紀念卡。",
    "title_i18n": {
@@ -34,11 +34,11 @@
    "id": "editorial-infinity-clash-singapore-2026-10-17",
    "title": "Infinity Clash 2026｜新加坡 Marvel Hero Rush 赛事",
    "date": "2026-10-17",
-   "time": "09:00",
-   "venue": "Suntec Singapore",
    "category": "event",
    "url": "https://www.instagram.com/p/DegE0cUIJdD/",
    "source": "編輯整理",
+   "time": "09:00",
+   "venue": "Suntec Singapore",
    "title_zh": "Infinity Clash 2026｜新加坡 Marvel Hero Rush 賽事",
    "summary_zh": "10月17日 09:00–22:00 於新加坡 Suntec Level 3 Meeting Room 303 & 304 舉行；屬 Infinity Clash 2026 系列賽之一。",
    "title_i18n": {
@@ -933,35 +933,6 @@
  ],
  "hk": [
   {
-   "id": "mato-marvel-hero-rush-tournament-mr-board-16-oct-2026",
-   "title": "Marvel Hero Rush Tournament",
-   "date": "2026-10-16",
-   "time": "20:00",
-   "venue": "CARD SLASH",
-   "category": "event",
-   "url": "https://ma.to/event/marvel-hero-rush-tournament-mr-board-16-oct-2026",
-   "source": "Saka Saka · Mato",
-   "title_zh": "Marvel Hero Rush 比賽｜CARD SLASH",
-   "summary_zh": "10月16日 20:00 於 CARD SLASH 舉行，報名及詳情請見 Mato 活動頁。",
-   "title_i18n": {
-    "zh-HK": "Marvel Hero Rush 比賽｜CARD SLASH",
-    "zh-CN": "Marvel Hero Rush 比赛｜CARD SLASH",
-    "en": "Marvel Hero Rush tournament at CARD SLASH"
-   },
-   "summary_i18n": {
-    "zh-HK": "10月16日 20:00 於 CARD SLASH 舉行，報名及詳情請見 Mato 活動頁。",
-    "zh-CN": "10月16日 20:00 于 CARD SLASH 举行，报名及详情请见 Mato 活动页。",
-    "en": "2026-10-16 20:00 at CARD SLASH. Register and see details on the Mato event page."
-   },
-   "body_i18n": {
-    "zh-HK": "香港經銷商 Saka Saka 透過 Mato 公布一場 Marvel Hero Rush 比賽。\n\n時間：10月16日 20:00（香港時間）\n地點：CARD SLASH\n\n名額、費用與賽制以活動頁為準。請透過頁底連結報名或查閱最新安排。",
-    "zh-CN": "香港经销商 Saka Saka 通过 Mato 公布一场 Marvel Hero Rush 比赛。\n\n时间：10月16日 20:00（香港时间）\n地点：CARD SLASH\n\n名额、费用与赛制以活动页为准。请通过页底链接报名或查阅最新安排。",
-    "en": "HK distributor Saka Saka listed a Marvel Hero Rush tournament on Mato.\n\nWhen: 2026-10-16 20:00 (Hong Kong time)\nWhere: CARD SLASH\n\nCaps, fees, and format follow the event page. Use the footer link to register or check updates."
-   },
-   "source_name": "Saka Saka · Mato",
-   "source_url": "https://ma.to/event/marvel-hero-rush-tournament-mr-board-16-oct-2026"
-  },
-  {
    "id": "mato-marvel-hero-rush-monthly-event-17-oct-2026",
    "title": "Marvel Hero Rush Monthly Event",
    "date": "2026-10-17",
@@ -1047,6 +1018,35 @@
    },
    "source_name": "Saka Saka · Mato",
    "source_url": "https://ma.to/event/marvel-hero-rush-tournament-acard-tcg-19-oct-2026"
+  },
+  {
+   "id": "mato-marvel-hero-rush-tournament-chalice-collectible-21-oct-2026",
+   "title": "Marvel Hero Rush Tournament",
+   "date": "2026-10-21",
+   "time": "19:30",
+   "venue": "Chalice Collectible",
+   "category": "event",
+   "url": "https://ma.to/event/marvel-hero-rush-tournament-chalice-collectible-21-oct-2026",
+   "source": "Saka Saka · Mato",
+   "title_zh": "Marvel Hero Rush 比賽｜Chalice Collectible",
+   "summary_zh": "10月21日 19:30 於 Chalice Collectible 舉行，報名及詳情請見 Mato 活動頁。",
+   "title_i18n": {
+    "zh-HK": "Marvel Hero Rush 比賽｜Chalice Collectible",
+    "zh-CN": "Marvel Hero Rush 比赛｜Chalice Collectible",
+    "en": "Marvel Hero Rush tournament at Chalice Collectible"
+   },
+   "summary_i18n": {
+    "zh-HK": "10月21日 19:30 於 Chalice Collectible 舉行，報名及詳情請見 Mato 活動頁。",
+    "zh-CN": "10月21日 19:30 于 Chalice Collectible 举行，报名及详情请见 Mato 活动页。",
+    "en": "2026-10-21 19:30 at Chalice Collectible. Register and see details on the Mato event page."
+   },
+   "body_i18n": {
+    "zh-HK": "香港經銷商 Saka Saka 透過 Mato 公布一場 Marvel Hero Rush 比賽。\n\n時間：10月21日 19:30（香港時間）\n地點：Chalice Collectible\n\n名額、費用與賽制以活動頁為準。請透過頁底連結報名或查閱最新安排。",
+    "zh-CN": "香港经销商 Saka Saka 通过 Mato 公布一场 Marvel Hero Rush 比赛。\n\n时间：10月21日 19:30（香港时间）\n地点：Chalice Collectible\n\n名额、费用与赛制以活动页为准。请通过页底链接报名或查阅最新安排。",
+    "en": "HK distributor Saka Saka listed a Marvel Hero Rush tournament on Mato.\n\nWhen: 2026-10-21 19:30 (Hong Kong time)\nWhere: Chalice Collectible\n\nCaps, fees, and format follow the event page. Use the footer link to register or check updates."
+   },
+   "source_name": "Saka Saka · Mato",
+   "source_url": "https://ma.to/event/marvel-hero-rush-tournament-chalice-collectible-21-oct-2026"
   }
  ]
 }
