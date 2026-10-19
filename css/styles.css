@@ -1211,22 +1211,6 @@ button.news-item { border: 1px solid var(--border-soft); background: var(--panel
   max-height: 3.6em;
 }
 
-/* v1.4.6-beta: share-name-include toggle (inline checkbox next to 複製分享碼) */
-.share-name-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  color: var(--muted, #8fa3bf);
-  cursor: pointer;
-  user-select: none;
-  margin-left: 4px;
-}
-.share-name-toggle input[type="checkbox"] {
-  margin: 0;
-  cursor: pointer;
-  accent-color: var(--gold, #fbbf24);
-}
-.share-name-toggle:hover {
-  color: var(--text, #e9eff8);
-}
+/* v1.6.5-beta: the "包含 deck 名" toggle was removed (name collisions are handled
+   by uniqueDeckName(), so a cards-only share mode added only clutter). */
+

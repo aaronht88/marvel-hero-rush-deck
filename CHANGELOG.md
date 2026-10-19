@@ -4,6 +4,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.5-beta] — 2026-10-19
+
+### Removed
+- **「包含 deck 名」剔選掣拆走**（Aaron：太重複）：分享碼一律帶 deck 名；既然撞名已經會自動變 `Name（1）`，cards-only 模式只係多餘 UI。舊 cards-only 分享碼仍然解碼得（向後兼容）
+- 版本／cache-bust **1.6.5-beta**
+
 ## [1.6.4-beta] — 2026-10-19
 
 ### Added

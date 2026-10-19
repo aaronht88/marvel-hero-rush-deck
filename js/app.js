@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.6.4-beta";
+  const APP_VERSION = "1.6.5-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -1151,16 +1151,15 @@
   }
 
   // ---------- share code (only transfer method) ----------
-  // v1.4.6-beta: opt-out flag — when true, the share code excludes the
-  // deck name entirely (cards-only payload). When false, the deck name
-  // is URL-encoded and prefixed as `1|<name>|<cards>`. The decoder is
-  // unchanged (still tolerates both forms).
-  let _shareCodeIncludeName = true;
+  // The code ALWAYS carries the deck name (`1|<url-encoded name>|<cards>`).
+  // v1.6.5-beta: the "包含 deck 名" opt-out checkbox is gone — name collisions
+  // are now handled by uniqueDeckName() (Name（1）, Name（2）…), so a cards-only
+  // mode added nothing but UI clutter. The decoder still accepts cards-only
+  // codes (old links / QR images keep working).
   function encodeShare() {
     const cur = decks.find((d) => d.id === currentDeckId);
-    return encodeShareFor([...deck.entries()], _shareCodeIncludeName && cur ? cur.name : "");
+    return encodeShareFor([...deck.entries()], cur ? cur.name : "");
   }
-  function setShareCodeIncludeName(b) { _shareCodeIncludeName = !!b; }
 
   // ---------- deck naming / import / duplicate ----------
   // v1.6.4-beta: import no longer "silently merges" into an identical deck
@@ -1409,13 +1408,6 @@
     navigator.clipboard?.writeText(code);
     toast(t("toastShare"));
   });
-  // v1.4.6-beta: persist the share-name-include toggle
-  const shareNameToggle = $("#share-include-name");
-  if (shareNameToggle) {
-    shareNameToggle.addEventListener("change", () => {
-      setShareCodeIncludeName(shareNameToggle.checked);
-    });
-  }
   // ---------- import deck modal ----------
   function openImportModal() {
     if (importTextEl) importTextEl.value = "";
