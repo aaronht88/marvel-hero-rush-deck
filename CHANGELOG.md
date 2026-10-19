@@ -4,6 +4,16 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.3-beta] — 2026-10-19
+
+### Fixed
+- **匯入分享碼唔會再靜靜雞「合併」**：以前如果匯入嘅卡同現有 deck 一模一樣，app 會直接跳去嗰副 deck、唔新增任何嘢，用戶就會以為「分享碼無效」。現在每次匯入都一定新增一副新 deck
+- 匯入撞名自動加後綴（Windows 式）：`Deck A` → `Deck A 2（imported）` → `Deck A 3（imported）`，唔會再覆蓋或靜默跳 deck
+
+### Added
+- **「包含 deck 名」checkbox**（喺「複製分享碼」旁）：剔住（預設）= 分享碼含 deck 名；取消剔選 = 分享碼只含卡 data，照樣匯入得
+- 版本／cache-bust **1.6.3-beta**
+
 ## [1.6.2-beta] — 2026-10-12
 
 ### Changed
