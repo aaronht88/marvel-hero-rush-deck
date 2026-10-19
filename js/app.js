@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.6.3-beta";
+  const APP_VERSION = "1.6.4-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -639,6 +639,7 @@
         </div>
         <div class="dm-actions">
           <button class="btn btn-sm" data-dm="copy" data-id="${d.id}">${t("dmCopy")}</button>
+          <button class="btn btn-sm" data-dm="dup" data-id="${d.id}" title="${t("dmDupTip")}">${t("dmDup")}</button>
           <button class="btn btn-sm" data-dm="load" data-id="${d.id}">${t("dmLoad")}</button>
           <button class="btn btn-sm btn-danger" data-dm="delete" data-id="${d.id}">${t("dmDelete")}</button>
         </div>`;
@@ -1161,44 +1162,62 @@
   }
   function setShareCodeIncludeName(b) { _shareCodeIncludeName = !!b; }
 
-  // ---------- import a decoded deck as a NEW deck (never overwrite existing) ----------
-  // v1.4.6-beta: silent-merge fix. Previously, if the imported cards
-  // exactly matched an existing deck, the import would silently switch
-  // to that deck with NO rename and NO suffix — confusing the user
-  // ("分享碼無效" was their interpretation when the new deck
-  // they expected never appeared). Now we always create a new deck
-  // entry with the imported name + a numeric suffix, Windows-style
-  // ("RED Aggro 2", "RED Aggro 3") so the user always sees the
-  // freshly-imported deck as a separate entry.
+  // ---------- deck naming / import / duplicate ----------
+  // v1.6.4-beta: import no longer "silently merges" into an identical deck
+  // (that made users think the share code was invalid). Two explicit modes
+  // now: 新增一副 (always a new deck) or 合併入現有 (merge into current deck).
+  // Naming: "RED Aggro" taken → "RED Aggro（1）" → "RED Aggro（2）" … (Windows-style)
+  function uniqueDeckName(base) {
+    const name = (base || "").trim() || t("importedDeckName");
+    const taken = new Set(decks.map((d) => d.name));
+    if (!taken.has(name)) return name;
+    let n = 1;
+    while (taken.has(name + "（" + n + "）")) n++;
+    return name + "（" + n + "）";
+  }
+
+  // ---------- import a decoded deck as a NEW deck (never overwrite / never silent-switch) ----------
   function importDeckAsNew(m, srcName) {
-    const baseName = srcName || t("importedDeckName");
-    const suf = t("importedSuffix");
-    const names = new Set(decks.map((d) => d.name));
-    // Step 1: if baseName (or "baseName 2/3/...") is taken, pick the
-    // smallest n ≥ 2 such that *both* "baseName n" AND
-    // "baseName n（imported）" are free. The (imported) marker is
-    // then layered on top.
-    let dname = baseName + suf;
-    if (names.has(baseName) || names.has(baseName + suf)) {
-      let n = 2;
-      while (names.has(baseName + " " + n) || names.has(baseName + " " + n + suf)) n++;
-      dname = (baseName + " " + n) + suf;
-    }
-    // Final safety: if the marked+disambiguated name still collides
-    // (e.g. user typed a deck literally named "X 2（imported）"
-    // by hand), append a numeric tail again.
-    if (names.has(dname)) {
-      let n = 2;
-      while (names.has(dname + " " + n)) n++;
-      dname = dname + " " + n;
-    }
-    const nd = { id: genId(), name: dname, cards: [...m.entries()] };
+    const nd = { id: genId(), name: uniqueDeckName(srcName), cards: [...m.entries()] };
     decks.push(nd);
     currentDeckId = nd.id;
     deck = new Map(m);
     saveDecks();
-    renderDeckSelect();
-    renderDeck();
+    renderDeckSelect(); renderDeckManager(); renderCards(); renderDeck();
+    return nd;
+  }
+
+  // ---------- import: merge the decoded cards INTO the current deck ----------
+  // copy limit is per card NAME, so merging respects RULES.copyLimitPerName and
+  // reports how many were skipped (deck size itself is checked by validation).
+  function mergeIntoCurrent(m) {
+    let added = 0, skipped = 0;
+    m.forEach((qty, id) => {
+      const card = getCard(id);
+      if (!card) { skipped += qty; return; }
+      let want = qty;
+      if (RULES.enforce) want = Math.min(want, Math.max(0, RULES.copyLimitPerName - countByName(card.name)));
+      if (want > 0) { deck.set(id, (deck.get(id) || 0) + want); added += want; }
+      skipped += qty - want;
+    });
+    saveDecks();
+    renderDeckSelect(); renderDeckManager(); renderCards(); renderDeck();
+    return { added, skipped };
+  }
+
+  // ---------- duplicate a deck (same cards, Windows-style name) ----------
+  function duplicateDeck(id) {
+    const src = decks.find((d) => d.id === id);
+    if (!src) return null;
+    const cur = decks.find((d) => d.id === currentDeckId);
+    if (cur) cur.cards = [...deck.entries()]; // flush unsaved edits first
+    const nd = { id: genId(), name: uniqueDeckName(src.name), cards: [...src.cards] };
+    decks.push(nd);
+    currentDeckId = nd.id;
+    deck = new Map(nd.cards);
+    saveDecks();
+    renderDeckSelect(); renderDeckManager(); renderCards(); renderDeck();
+    return nd;
   }
 
   // ---------- events ----------
@@ -1321,6 +1340,9 @@
         const name = prompt(t("promptDeckName"), d.name);
         if (name !== null) renameDeck(id, name);
       }
+    } else if (act === "dup") {
+      const nd = duplicateDeck(id);
+      if (nd) toast(t("toastDupDone", { name: nd.name }));
     } else if (act === "load") {
       selectDeck(id);
       closeDeckManager();
@@ -1397,6 +1419,9 @@
   // ---------- import deck modal ----------
   function openImportModal() {
     if (importTextEl) importTextEl.value = "";
+    const cur = decks.find((d) => d.id === currentDeckId);
+    const hint = $("#import-merge-hint");
+    if (hint) hint.textContent = t("importMergeHint", { deck: cur ? cur.name : t("defaultDeckName") });
     showOverlay($("#import-modal"));
     setTimeout(() => { if (importTextEl) importTextEl.focus(); }, 60);
   }
@@ -1411,20 +1436,26 @@
     importModalEl.addEventListener("click", (e) => { if (e.target === importModalEl) closeImportModal(); });
   }
   const importOkBtn = $(" #import-ok");
-  if (importOkBtn) {
-    importOkBtn.addEventListener("click", () => {
-      const code = (importTextEl ? importTextEl.value : "").trim();
-      if (!code) { toast(t("toastBadCode")); return; }
-      const r = decodeShare(code);
-      if (r && r.deck.size) {
-        importDeckAsNew(r.deck, r.name);
-        renderCards();
-        closeImportModal();
-        toast(t("toastImportCode"));
-      }
-      else toast(t("toastBadCode"));
-    });
+  const importMergeBtn = $("#import-merge");
+  // mode: "new" = always create a new deck · "merge" = add the cards into the current deck
+  function runImport(mode) {
+    const code = (importTextEl ? importTextEl.value : "").trim();
+    if (!code) { toast(t("toastBadCode")); return; }
+    const r = decodeShare(code);
+    if (!(r && r.deck && r.deck.size)) { toast(t("toastBadCode")); return; }
+    if (mode === "merge") {
+      const res = mergeIntoCurrent(r.deck);
+      closeImportModal();
+      if (!res.added) { toast(t("toastMergeNone")); return; }
+      toast(res.skipped ? t("toastMergedSkipped", { added: res.added, skipped: res.skipped }) : t("toastMerged", { added: res.added }));
+      return;
+    }
+    const nd = importDeckAsNew(r.deck, r.name);
+    closeImportModal();
+    toast(t("toastImportCode") + "：" + nd.name);
   }
+  if (importOkBtn) importOkBtn.addEventListener("click", () => runImport("new"));
+  if (importMergeBtn) importMergeBtn.addEventListener("click", () => runImport("merge"));
   $("#btn-clear").addEventListener("click", () => {
     deck = new Map(); saveDecks(); renderCards(); renderDeck(); renderDeckSelect(); toast(t("toastCleared"));
   });

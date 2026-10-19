@@ -4,6 +4,16 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.4-beta] — 2026-10-19
+
+### Added
+- **匯入可以揀「新增一副」／「合併入現有」**：匯入視窗兩個掣，合併會將卡直接加落目前牌組（跟同名 3 張上限，超出會略過並提示合併了幾多張）
+- **Deck Manager 每副加「⧉ 複製」**：一按即複製整副（卡 table 一樣），名自動變 `X（1）`，即刻切換去新副改
+- 版本／cache-bust **1.6.4-beta**
+
+### Changed
+- 匯入命名簡化成純 Windows 式 `Name（1）`／`Name（2）`（唔再加 `（imported）`，同名先加號）
+
 ## [1.6.3-beta] — 2026-10-19
 
 ### Fixed
