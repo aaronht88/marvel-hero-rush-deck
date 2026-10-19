@@ -4,6 +4,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.6-beta] — 2026-10-19
+
+### Fixed
+- **Vault / News / Deck 參考分頁切唔走 Builder**：`css/styles.css` 殘低嘅 `<<<<<<< HEAD` 令 `.page[hidden] { display: none !important; }` 被瀏覽器丟棄，`.layout { display: grid }` 蓋過 `[hidden]`，Builder 一直留喺畫面
+- 版本／cache-bust **1.6.6-beta**
+
 ## [1.6.5-beta] — 2026-10-19
 
 ### Removed

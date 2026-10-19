@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.6.5-beta";
+  const APP_VERSION = "1.6.6-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -1427,7 +1427,7 @@
   if (importModalEl) {
     importModalEl.addEventListener("click", (e) => { if (e.target === importModalEl) closeImportModal(); });
   }
-  const importOkBtn = $(" #import-ok");
+  const importOkBtn = $("#import-ok");
   const importMergeBtn = $("#import-merge");
   // mode: "new" = always create a new deck · "merge" = add the cards into the current deck
   function runImport(mode) {
