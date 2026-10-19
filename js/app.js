@@ -1150,26 +1150,51 @@
   }
 
   // ---------- share code (only transfer method) ----------
+  // v1.4.6-beta: opt-out flag — when true, the share code excludes the
+  // deck name entirely (cards-only payload). When false, the deck name
+  // is URL-encoded and prefixed as `1|<name>|<cards>`. The decoder is
+  // unchanged (still tolerates both forms).
+  let _shareCodeIncludeName = true;
   function encodeShare() {
     const cur = decks.find((d) => d.id === currentDeckId);
-    return encodeShareFor([...deck.entries()], cur ? cur.name : "");
+    return encodeShareFor([...deck.entries()], _shareCodeIncludeName && cur ? cur.name : "");
   }
+  function setShareCodeIncludeName(b) { _shareCodeIncludeName = !!b; }
 
   // ---------- import a decoded deck as a NEW deck (never overwrite existing) ----------
+  // v1.4.6-beta: silent-merge fix. Previously, if the imported cards
+  // exactly matched an existing deck, the import would silently switch
+  // to that deck with NO rename and NO suffix — confusing the user
+  // ("分享碼無效" was their interpretation when the new deck
+  // they expected never appeared). Now we always create a new deck
+  // entry with the imported name + a numeric suffix, Windows-style
+  // ("RED Aggro 2", "RED Aggro 3") so the user always sees the
+  // freshly-imported deck as a separate entry.
   function importDeckAsNew(m, srcName) {
-    const same = decks.find((d) => d.cards.length === m.size && d.cards.every(([cid, q]) => m.get(cid) === q));
-    if (same) {
-      currentDeckId = same.id;
-    } else {
-      let dname = srcName ? srcName + t("importedSuffix") : t("importedDeckName");
-      const names = new Set(decks.map((d) => d.name));
+    const baseName = srcName || t("importedDeckName");
+    const suf = t("importedSuffix");
+    const names = new Set(decks.map((d) => d.name));
+    // Step 1: if baseName (or "baseName 2/3/...") is taken, pick the
+    // smallest n ≥ 2 such that *both* "baseName n" AND
+    // "baseName n（imported）" are free. The (imported) marker is
+    // then layered on top.
+    let dname = baseName + suf;
+    if (names.has(baseName) || names.has(baseName + suf)) {
+      let n = 2;
+      while (names.has(baseName + " " + n) || names.has(baseName + " " + n + suf)) n++;
+      dname = (baseName + " " + n) + suf;
+    }
+    // Final safety: if the marked+disambiguated name still collides
+    // (e.g. user typed a deck literally named "X 2（imported）"
+    // by hand), append a numeric tail again.
+    if (names.has(dname)) {
       let n = 2;
       while (names.has(dname + " " + n)) n++;
-      if (n > 2) dname = dname + " " + n;
-      const nd = { id: genId(), name: dname, cards: [...m.entries()] };
-      decks.push(nd);
-      currentDeckId = nd.id;
+      dname = dname + " " + n;
     }
+    const nd = { id: genId(), name: dname, cards: [...m.entries()] };
+    decks.push(nd);
+    currentDeckId = nd.id;
     deck = new Map(m);
     saveDecks();
     renderDeckSelect();
@@ -1362,6 +1387,13 @@
     navigator.clipboard?.writeText(code);
     toast(t("toastShare"));
   });
+  // v1.4.6-beta: persist the share-name-include toggle
+  const shareNameToggle = $("#share-include-name");
+  if (shareNameToggle) {
+    shareNameToggle.addEventListener("change", () => {
+      setShareCodeIncludeName(shareNameToggle.checked);
+    });
+  }
   // ---------- import deck modal ----------
   function openImportModal() {
     if (importTextEl) importTextEl.value = "";
