@@ -4,6 +4,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.7-beta] — 2026-10-19
+
+### Removed
+- **Deck 參考**：刪除冠軍牌組（剩饭君 · YG Web Spider）整段 `note`（截圖導航列／其餘卡合計 47／官方卡組碼與本站 share code 格式不同）。牌表本身不變
+- 版本／cache-bust **1.6.7-beta**
+
 ## [1.6.6-beta] — 2026-10-19
 
 ### Fixed
