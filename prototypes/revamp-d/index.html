@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>方向 D · 賽事轉播 — Marvel Hero Rush</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&family=Teko:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #09090b;
+      --panel: #120f12;
+      --ink: #f6f1e7;
+      --muted: #a39990;
+      --red: #e62429;
+      --gold: #f5c518;
+      --line: rgba(245, 197, 24, .35);
+      --display: "Teko", "Noto Sans TC", "Arial Narrow", sans-serif;
+      --sans: "Barlow", "Noto Sans TC", "PingFang HK", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% -10%, rgba(230, 36, 41, .42), transparent 36%),
+        radial-gradient(circle at 100% 110%, rgba(245, 197, 24, .08), transparent 32%),
+        var(--bg);
+      font-family: var(--sans);
+      display: flex;
+      flex-direction: column;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(255,255,255,.05) .7px, transparent .8px);
+      background-size: 4px 4px;
+      mix-blend-mode: overlay;
+    }
+    button, input { font-family: inherit; color: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    header { position: relative; z-index: 1; padding: 10px 18px 0; }
+    .topline {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+    }
+    .word {
+      font-family: var(--display);
+      font-size: 54px;
+      line-height: .75;
+      letter-spacing: .02em;
+      margin: 0;
+    }
+    .word span { color: var(--red); }
+    .sub {
+      font-size: 12px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding-bottom: 6px;
+    }
+    .search {
+      margin-left: auto;
+      border-bottom: 2px solid var(--red);
+      min-width: 220px;
+    }
+    .search input {
+      width: 100%;
+      background: transparent;
+      border: 0;
+      padding: 6px 0;
+      font-size: 15px;
+    }
+    .search input:focus { outline: none; }
+    .live {
+      background: var(--red);
+      color: white;
+      transform: skewX(-12deg);
+      padding: 4px 14px 2px;
+      margin-bottom: 6px;
+    }
+    .live b { display: inline-block; transform: skewX(12deg); font-weight: 600; letter-spacing: .14em; font-size: 12px; }
+    .proto-nav { display: flex; gap: 8px; padding-bottom: 6px; }
+    .proto-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-family: var(--display);
+      font-size: 20px;
+      letter-spacing: .08em;
+      padding: 0 4px;
+    }
+    .proto-nav a[aria-current="page"] { color: var(--gold); }
+    .ticker {
+      overflow: hidden;
+      border-top: 1px solid rgba(230,36,41,.7);
+      border-bottom: 1px solid rgba(245,197,24,.25);
+      background: #070708;
+      margin-top: 6px;
+    }
+    .ticker-track {
+      display: flex;
+      gap: 42px;
+      width: max-content;
+      padding: 6px 0;
+      animation: tick 32s linear infinite;
+      font-size: 13px;
+      letter-spacing: .04em;
+    }
+    .ticker:hover .ticker-track { animation-play-state: paused; }
+    .ticker b { color: var(--gold); font-weight: 600; margin-right: 8px; }
+    @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .workspace {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+    }
+    .workspace > section {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 16px;
+    }
+    .chip, .lv button, .viewbtn {
+      background: transparent;
+      border: 1px solid rgba(246,241,231,.25);
+      color: var(--ink);
+      padding: 4px 10px 3px;
+      font-family: var(--display);
+      font-size: 20px;
+      letter-spacing: .06em;
+      line-height: 1;
+    }
+    .chip.is-on, .lv button.is-on, .viewbtn.is-on {
+      background: var(--gold);
+      color: #1a1202;
+      border-color: var(--gold);
+    }
+    .lv { display: flex; }
+    .lv button { border-right-width: 0; }
+    .lv button:last-child { border-right-width: 1px; }
+    .board { min-height: 0; overflow: auto; padding: 0 16px 24px; }
+    .band {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin: 8px 0 8px;
+      font-family: var(--display);
+      letter-spacing: .14em;
+      font-size: 22px;
+    }
+    .band i { flex: 1; height: 2px; background: var(--c); display: block; }
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+      gap: 12px;
+    }
+    .tile {
+      background: #161318;
+      border: 0;
+      padding: 0;
+      text-align: left;
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+      position: relative;
+      box-shadow: inset 3px 0 0 var(--c);
+    }
+    .tile img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      object-position: center 16%;
+      display: block;
+      background: #222;
+    }
+    .plate {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 6px;
+      padding: 6px 8px 10px;
+    }
+    .plate strong {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: 20px;
+      letter-spacing: .03em;
+      line-height: .9;
+      text-transform: uppercase;
+    }
+    .plate em {
+      font-style: normal;
+      font-family: var(--display);
+      font-size: 26px;
+      color: var(--gold);
+      line-height: .8;
+    }
+    .rar {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: #09090b;
+      color: var(--gold);
+      font-family: var(--display);
+      font-size: 16px;
+      letter-spacing: .08em;
+      padding: 0 5px 1px;
+    }
+    .in {
+      position: absolute;
+      left: 8px;
+      top: 6px;
+      background: var(--red);
+      color: white;
+      font-family: var(--display);
+      font-size: 18px;
+      line-height: 1;
+      padding: 1px 5px 0;
+    }
+    .loadout {
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      background: linear-gradient(180deg, #181318 0%, #0c0a0d 100%);
+      border-left: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .loadout::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 46%; height: 4px;
+      background: var(--red);
+    }
+    .load-top { padding: 16px 16px 8px; display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+    .load-top p { margin: 0; letter-spacing: .2em; font-size: 11px; color: var(--gold); }
+    .count {
+      font-family: var(--display);
+      font-size: 92px;
+      line-height: .78;
+      margin: 0;
+      color: var(--gold);
+    }
+    .count small { font-size: 28px; color: var(--ink); margin-left: 4px; }
+    .peek {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 10px;
+      padding: 0 16px 10px;
+      align-items: center;
+    }
+    .peek img { width: 72px; display: block; background: #222; }
+    .peek h2 {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: 28px;
+      line-height: .9;
+      margin: 0 0 4px;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+    .peek p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.35; }
+    .peek button {
+      margin-top: 6px;
+      background: transparent;
+      border: 0;
+      color: var(--gold);
+      padding: 0;
+      letter-spacing: .12em;
+      font-size: 12px;
+    }
+    .bars { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 4px 16px 8px; }
+    .bars .track { height: 8px; background: #2a2428; }
+    .bars i { display: block; height: 8px; width: var(--w); background: var(--red); }
+    .bars b { display: block; text-align: center; font-family: var(--display); font-weight: 500; font-size: 15px; color: var(--muted); }
+    .flags { display: flex; gap: 6px; padding: 0 16px 8px; flex-wrap: wrap; }
+    .flag {
+      border: 1px solid rgba(246,241,231,.3);
+      padding: 2px 7px 1px;
+      font-family: var(--display);
+      letter-spacing: .08em;
+      font-size: 16px;
+    }
+    .flag.bad { border-color: var(--red); color: var(--red); }
+    .flag.good { border-color: var(--gold); color: var(--gold); }
+    .list { flex: 1; min-height: 0; overflow: auto; padding: 0 8px 12px; }
+    .list button.row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      gap: 8px;
+      align-items: center;
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid rgba(246,241,231,.08);
+      padding: 6px 8px;
+      text-align: left;
+    }
+    .list button.row:hover { background: rgba(230,36,41,.12); }
+    .list .lvn { font-family: var(--display); color: var(--gold); font-size: 18px; }
+    .list .nm { font-size: 13px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .list .qx { font-family: var(--display); font-size: 22px; }
+    .footacts { display: flex; gap: 8px; padding: 8px 16px 14px; }
+    .footacts button {
+      flex: 1;
+      background: var(--red);
+      color: white;
+      border: 0;
+      font-family: var(--display);
+      font-size: 22px;
+      letter-spacing: .08em;
+      padding: 4px 8px 2px;
+      transform: skewX(-8deg);
+    }
+    .footacts button.alt { background: transparent; color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); }
+    .events { display: grid; gap: 12px; }
+    .event {
+      display: block;
+      padding: 16px;
+      background:
+        linear-gradient(135deg, rgba(230,36,41,.2), transparent 40%),
+        #141114;
+      color: inherit;
+      text-decoration: none;
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+    }
+    .event span { color: var(--gold); font-family: var(--display); letter-spacing: .14em; font-size: 18px; }
+    .event h3 { margin: 4px 0; font-family: var(--display); font-size: 36px; font-weight: 500; letter-spacing: .03em; line-height: .9; }
+    .event p { margin: 0; color: var(--muted); }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: rgba(5, 4, 6, .78);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .overlay[hidden] { display: none; }
+    .sheet {
+      width: min(960px, 100%);
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      background: #100d11;
+      border-top: 5px solid var(--red);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 26px), calc(100% - 26px) 100%, 0 100%);
+      position: relative;
+    }
+    .sheet .art { padding: 22px; background: radial-gradient(circle at 50% 40%, rgba(230,36,41,.35), transparent 60%); }
+    .sheet .art img { width: 100%; display: block; box-shadow: 0 20px 40px rgba(0,0,0,.5); }
+    .sheet .info { padding: 22px 22px 28px 0; }
+    .sheet .kicker { margin: 0; color: var(--gold); letter-spacing: .18em; font-size: 12px; }
+    .sheet h2 {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: 54px;
+      line-height: .86;
+      margin: 6px 0 10px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .stats div { background: #1b171c; padding: 6px 8px 4px; }
+    .stats b { display: block; font-family: var(--display); font-size: 28px; line-height: 1; color: var(--gold); font-weight: 500; }
+    .stats span { font-size: 11px; letter-spacing: .12em; color: var(--muted); }
+    .sheet .effect { font-size: 14px; line-height: 1.45; margin: 0 0 16px; max-height: 140px; overflow: auto; }
+    .deploy {
+      background: var(--red);
+      color: white;
+      border: 0;
+      font-family: var(--display);
+      font-size: 32px;
+      letter-spacing: .08em;
+      padding: 4px 22px 2px;
+      transform: skewX(-10deg);
+    }
+    .closex {
+      position: absolute;
+      top: 8px; right: 12px;
+      background: none;
+      border: 0;
+      color: var(--ink);
+      font-family: var(--display);
+      font-size: 32px;
+      line-height: 1;
+    }
+    #toast {
+      position: fixed; bottom: 18px; left: 18px; z-index: 30;
+      background: var(--gold); color: #1a1202;
+      padding: 8px 12px; font-family: var(--display); font-size: 22px; letter-spacing: .04em;
+    }
+    @media (max-width: 980px) {
+      .workspace { grid-template-columns: 1fr; }
+      .board { max-height: 70vh; }
+      .sheet { grid-template-columns: 1fr; }
+      .sheet .info { padding: 0 18px 24px; }
+      .word { font-size: 40px; }
+      .topline { flex-wrap: wrap; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-track { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topline">
+      <h1 class="word">MHR<span>//</span>DECK</h1>
+      <div class="sub">方向 D · 賽事轉播</div>
+      <div class="live"><b>LIVE · INFINITY CLASH HK</b></div>
+      <label class="search"><input id="q" type="search" placeholder="搜尋卡名 / 編號" autocomplete="off" /></label>
+      <nav class="proto-nav" aria-label="原型">
+        <a href="../index.html">ALL</a>
+        <a href="../revamp-a/index.html">A</a>
+        <a href="../revamp-b/index.html">B</a>
+        <a href="./index.html" aria-current="page">D</a>
+      </nav>
+    </div>
+    <div class="ticker" aria-label="卡賽">
+      <div class="ticker-track" id="ticker"></div>
+    </div>
+  </header>
+  <div class="workspace">
+    <section>
+      <div class="filters">
+        <button type="button" class="chip" data-act="color" data-color="Red">紅</button>
+        <button type="button" class="chip" data-act="color" data-color="Yellow">黃</button>
+        <button type="button" class="chip" data-act="color" data-color="Blue">藍</button>
+        <button type="button" class="chip" data-act="color" data-color="Green">綠</button>
+        <div class="lv" aria-label="等級">
+          <button type="button" data-act="level" data-level="1">1</button>
+          <button type="button" data-act="level" data-level="2">2</button>
+          <button type="button" data-act="level" data-level="3">3</button>
+          <button type="button" data-act="level" data-level="4">4</button>
+          <button type="button" data-act="level" data-level="5">5</button>
+          <button type="button" data-act="level" data-level="6">6</button>
+        </div>
+        <button type="button" class="viewbtn" data-act="view" data-view="cards">卡庫</button>
+        <button type="button" class="viewbtn" data-act="view" data-view="news">卡賽</button>
+        <button type="button" class="viewbtn" data-act="clear">清除</button>
+      </div>
+      <div class="board" id="board"></div>
+    </section>
+    <aside class="loadout">
+      <div class="load-top">
+        <div>
+          <p>LOADOUT</p>
+          <h2 class="count" id="count">0<small>/50</small></h2>
+        </div>
+      </div>
+      <div class="peek" id="peek"></div>
+      <div class="bars" id="bars"></div>
+      <div class="flags" id="flags"></div>
+      <div class="list" id="list"></div>
+      <div class="footacts">
+        <button type="button" data-act="share">複製分享碼</button>
+        <button type="button" class="alt" data-act="reset">還原</button>
+      </div>
+    </aside>
+  </div>
+  <div class="overlay" id="overlay" data-act="close" hidden>
+    <div class="sheet" id="sheet"></div>
+  </div>
+  <div id="toast" hidden></div>
+  <script src="../sample-data.js"></script>
+  <script>
+    const SAMPLE = window.MHR_SAMPLE;
+    const ASSET = "../../";
+    const KEY = "mhr-proto-d";
+    const COLOR = {
+      Red: { zh: "紅", hex: "#e62429" },
+      Yellow: { zh: "黃", hex: "#f5c518" },
+      Blue: { zh: "藍", hex: "#4c8dff" },
+      Green: { zh: "綠", hex: "#2fbf6a" }
+    };
+    const byId = Object.fromEntries(SAMPLE.cards.map((c) => [c.id, c]));
+    function loadDeck() {
+      try {
+        const raw = sessionStorage.getItem(KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return { name: SAMPLE.seed.name, counts: { ...SAMPLE.seed.counts } };
+    }
+    const state = {
+      q: "",
+      colors: new Set(),
+      levels: new Set(),
+      view: "cards",
+      selected: "SD03-001-V3",
+      open: false,
+      deck: loadDeck()
+    };
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+    }
+    function heroName(name) {
+      const m = String(name).match(/^「[^」]*」\s*(.*)$/);
+      return (m && m[1]) || name;
+    }
+    function save() { sessionStorage.setItem(KEY, JSON.stringify(state.deck)); }
+    function copiesOfName(name) {
+      let n = 0;
+      for (const [id, q] of Object.entries(state.deck.counts)) if (byId[id] && byId[id].name === name) n += q;
+      return n;
+    }
+    function deckRows() {
+      const rows = [];
+      for (const [id, qty] of Object.entries(state.deck.counts)) if (byId[id] && qty > 0) rows.push({ ...byId[id], qty });
+      rows.sort((a, b) => b.level - a.level || b.power - a.power);
+      return rows;
+    }
+    function stats(rows) {
+      const total = rows.reduce((s, r) => s + r.qty, 0);
+      const colors = [...new Set(rows.map((r) => r.attribute))];
+      const curve = [0, 0, 0, 0, 0, 0];
+      for (const r of rows) if (r.level >= 1 && r.level <= 6) curve[r.level - 1] += r.qty;
+      return { total, colors, curve };
+    }
+    function filtered() {
+      const q = state.q.trim().toLowerCase();
+      return SAMPLE.cards.filter((c) => {
+        if (state.colors.size && !state.colors.has(c.attribute)) return false;
+        if (state.levels.size && !state.levels.has(c.level)) return false;
+        if (!q) return true;
+        return `${c.name} ${c.card_no} ${c.feature} ${c.effect}`.toLowerCase().includes(q);
+      });
+    }
+    let toastTimer;
+    function toast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.hidden = true; }, 2200);
+    }
+    function add(id, delta) {
+      const card = byId[id];
+      if (!card) return;
+      const cur = state.deck.counts[id] || 0;
+      if (delta > 0 && copiesOfName(card.name) >= 3) { toast("同名最多 3 張"); return; }
+      const next = cur + delta;
+      if (next <= 0) delete state.deck.counts[id];
+      else state.deck.counts[id] = next;
+      state.selected = id;
+      save();
+      render();
+    }
+    function renderTicker() {
+      const bits = SAMPLE.news.map((n) => `<span><b>${esc(n.date.slice(5))}</b>${esc(n.kicker)} · ${esc(n.title)} · ${esc(n.place)}</span>`).join("");
+      document.getElementById("ticker").innerHTML = bits + bits;
+    }
+    function tile(c) {
+      const qty = state.deck.counts[c.id] || 0;
+      const col = COLOR[c.attribute];
+      return `<button type="button" class="tile" style="--c:${col.hex}" data-act="open" data-id="${esc(c.id)}">
+        <img src="${ASSET}${esc(c.art)}" alt="" />
+        <span class="rar">${esc(c.rarity)}</span>
+        ${qty ? `<span class="in">×${qty}</span>` : ""}
+        <span class="plate"><strong>${esc(heroName(c.name))}</strong><em>${c.power}</em></span>
+      </button>`;
+    }
+    function render() {
+      const list = filtered();
+      const deck = deckRows();
+      const st = stats(deck);
+      const sel = byId[state.selected] || deck[0] || SAMPLE.cards[0];
+      state.selected = sel.id;
+      document.getElementById("count").innerHTML = `${st.total}<small>/50</small>`;
+      const short = heroName(sel.name);
+      document.getElementById("peek").innerHTML = `
+        <img src="${ASSET}${esc(sel.art)}" alt="" />
+        <div>
+          <h2>${esc(short)}</h2>
+          <p>Lv ${sel.level} · ${COLOR[sel.attribute].zh} · ${esc(sel.rarity)} · ${esc(sel.card_no)}<br />${esc(sel.effect).replaceAll("\n", " ").slice(0, 90)}…</p>
+          <button type="button" data-act="open" data-id="${esc(sel.id)}">展開卡面</button>
+        </div>`;
+      const max = Math.max(1, ...st.curve);
+      document.getElementById("bars").innerHTML = st.curve.map((n, i) =>
+        `<div><div class="track"><i style="--w:${Math.round((n / max) * 100)}%"></i></div><b>${n}</b></div>`).join("");
+      const colorText = st.colors.map((c) => COLOR[c].zh).join(" ");
+      document.getElementById("flags").innerHTML = `
+        <span class="flag ${st.total === 50 ? "good" : "bad"}">${st.total === 50 ? "50 READY" : st.total < 50 ? `NEED ${50 - st.total}` : `OVER ${st.total - 50}`}</span>
+        <span class="flag ${st.colors.length > 2 ? "bad" : "good"}">${st.colors.length > 2 ? "COLORS > 2" : (colorText || "NO COLOR")}</span>
+        <span class="flag good">COPIES ≤ 3</span>`;
+      document.getElementById("list").innerHTML = deck.map((r) => `
+        <button type="button" class="row" data-act="open" data-id="${esc(r.id)}">
+          <span class="lvn">L${r.level}</span>
+          <span class="nm">${esc(heroName(r.name))}</span>
+          <span class="qx">×${r.qty}</span>
+        </button>`).join("") || `<p style="padding:12px;color:#a39990">牌組是空的。</p>`;
+
+      document.querySelectorAll("[data-color]").forEach((b) => b.classList.toggle("is-on", state.colors.has(b.dataset.color)));
+      document.querySelectorAll("[data-level]").forEach((b) => b.classList.toggle("is-on", state.levels.has(Number(b.dataset.level))));
+      document.querySelectorAll("[data-view]").forEach((b) => b.classList.toggle("is-on", b.dataset.view === state.view));
+
+      if (state.view === "news") {
+        document.getElementById("board").innerHTML = `<div class="events">${SAMPLE.news.map((n) => `
+          <a class="event" href="${esc(n.href)}" target="_blank" rel="noopener">
+            <span>${esc(n.date)} · ${esc(n.kicker)}</span>
+            <h3>${esc(n.title)}</h3>
+            <p>${esc(n.place)} — ${esc(n.summary)}</p>
+          </a>`).join("")}</div>`;
+      } else {
+        const order = ["Red", "Yellow", "Blue", "Green"];
+        document.getElementById("board").innerHTML = order.map((color) => {
+          const group = list.filter((c) => c.attribute === color);
+          if (!group.length) return "";
+          const col = COLOR[color];
+          return `<div class="band">${col.zh}<i style="--c:${col.hex}"></i></div><div class="tiles">${group.map(tile).join("")}</div>`;
+        }).join("") || `<p style="color:#a39990">沒有符合的卡。</p>`;
+      }
+
+      const overlay = document.getElementById("overlay");
+      overlay.hidden = !state.open;
+      if (state.open) {
+        const c = byId[state.selected];
+        const qty = state.deck.counts[c.id] || 0;
+        document.getElementById("sheet").innerHTML = `
+          <button type="button" class="closex" data-act="close" data-close="1" aria-label="關閉">×</button>
+          <div class="art"><img src="${ASSET}${esc(c.art)}" alt="${esc(c.name)}" /></div>
+          <div class="info">
+            <p class="kicker">${esc(c.card_no)} · ${esc(c.set)} · ${esc(c.rarity)} · ${COLOR[c.attribute].zh}</p>
+            <h2>${esc(heroName(c.name))}</h2>
+            <div class="stats">
+              <div><b>${c.level}</b><span>LEVEL</span></div>
+              <div><b>${c.power}</b><span>POWER</span></div>
+              <div><b>${c.attackRange}</b><span>RANGE</span></div>
+              <div><b>${qty}</b><span>IN DECK</span></div>
+            </div>
+            <p class="effect">${esc(c.feature)}<br /><br />${esc(c.effect).replaceAll("\n", "<br />")}</p>
+            <button type="button" class="deploy" data-act="add" data-id="${esc(c.id)}" data-delta="1">DEPLOY +1</button>
+            <button type="button" class="deploy" data-act="add" data-id="${esc(c.id)}" data-delta="-1" style="background:#2a2428;margin-left:8px">−1</button>
+          </div>`;
+      }
+    }
+    document.body.addEventListener("click", (e) => {
+      const t = e.target.closest("[data-act]");
+      if (!t) return;
+      const act = t.dataset.act;
+      if (act === "open") {
+        state.selected = t.dataset.id;
+        state.open = true;
+        render();
+      } else if (act === "add") add(t.dataset.id, Number(t.dataset.delta));
+      else if (act === "close") {
+        const inside = e.target.closest(".sheet");
+        if (inside && !t.hasAttribute("data-close") && !e.target.closest("[data-close]")) return;
+        state.open = false;
+        render();
+      } else if (act === "color") {
+        const c = t.dataset.color;
+        if (state.colors.has(c)) state.colors.delete(c); else state.colors.add(c);
+        state.view = "cards";
+        render();
+      } else if (act === "level") {
+        const n = Number(t.dataset.level);
+        if (state.levels.has(n)) state.levels.delete(n); else state.levels.add(n);
+        state.view = "cards";
+        render();
+      } else if (act === "view") {
+        state.view = t.dataset.view;
+        render();
+      } else if (act === "clear") {
+        state.q = "";
+        document.getElementById("q").value = "";
+        state.colors.clear();
+        state.levels.clear();
+        state.view = "cards";
+        render();
+      } else if (act === "reset") {
+        state.deck = { name: SAMPLE.seed.name, counts: { ...SAMPLE.seed.counts } };
+        save();
+        render();
+        toast("已還原範例牌組");
+      } else if (act === "share") {
+        toast("原型只示範按鈕位置，分享碼仍用現有工具");
+      }
+    });
+    document.getElementById("q").addEventListener("input", (e) => {
+      state.q = e.target.value;
+      state.view = "cards";
+      render();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && state.open) { state.open = false; render(); }
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault();
+        document.getElementById("q").focus();
+      }
+    });
+    renderTicker();
+    render();
+  </script>
+</body>
+</html>
