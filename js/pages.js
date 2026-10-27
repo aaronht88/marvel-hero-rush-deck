@@ -34,6 +34,15 @@
   let editorialVotes = {}; // deck_id -> { votes_up, votes_down, my_vote }
   let newsArticleId = null; // when set, show in-site article panel
 
+  let newsPromise = null;
+  function ensureNews() {
+    if (news || newsFailed) return Promise.resolve();
+    if (!newsPromise) {
+      newsPromise = loadJSON("data/news.json").then((d) => { news = d; }).catch(() => { newsFailed = true; });
+    }
+    return newsPromise;
+  }
+
   function loadJSON(url) {
     return fetch(url + "?t=" + Date.now(), { cache: "no-store" }).then((r) => {
       if (!r.ok) throw new Error(r.status);
@@ -81,9 +90,7 @@
       history.replaceState(null, "", location.pathname + location.search + hash);
     }
 
-    if (p === "news" && !news && !newsFailed) {
-      loadJSON("data/news.json").then((d) => { news = d; renderNews(); }).catch(() => { newsFailed = true; renderNews(); });
-    }
+    if (p === "news") ensureNews().then(() => renderNews());
     if (p === "decks") {
       if (!refDecks && !decksFailed) {
         loadJSON("data/decks.json").then((d) => {
@@ -669,7 +676,27 @@
       "</div>";
   }
 
+  function renderTicker() {
+    const track = $("#race-ticker");
+    if (!track) return;
+    if (!news) { track.innerHTML = ""; return; }
+    const now = hktNowParts();
+    let items = (news.hk || []).filter((it) => it && it.date && !isPastEvent(it, now));
+    items.sort((a, b) => String(a.date).localeCompare(String(b.date)) || String(a.time || "").localeCompare(String(b.time || "")));
+    if (!items.length) items = (news.intl || []).filter((it) => it && (it.title || it.title_zh)).slice(0, 6);
+    items = items.slice(0, 10);
+    if (!items.length) { track.innerHTML = ""; return; }
+    const bits = items.map((it) => {
+      const title = pickI18n(it, "title") || it.title_zh || it.title || "";
+      const when = String(it.date || "").slice(5);
+      const place = it.venue || "";
+      return "<span><b>" + esc(when) + "</b>" + esc(title) + (place ? " · " + esc(place) : "") + "</span>";
+    }).join("");
+    track.innerHTML = bits + bits;
+  }
+
   function renderNews() {
+    renderTicker();
     const list = $("#news-list");
     if (!list) return;
     const calEl = $("#news-calendar");
@@ -1029,6 +1056,10 @@
   }
 
   document.addEventListener("click", async (e) => {
+    if (e.target.closest("#race-ticker-jump")) {
+      showPage("news", true);
+      return;
+    }
     const viewBtn = e.target.closest("[data-news-view]");
     if (viewBtn) {
       newsView = viewBtn.dataset.newsView === "list" ? "list" : "calendar";
@@ -1451,5 +1482,6 @@
   {
     const boot = parseHash();
     showPage(boot.page, false, { newsId: boot.newsId });
+    ensureNews().then(() => renderTicker());
   }
 })();
