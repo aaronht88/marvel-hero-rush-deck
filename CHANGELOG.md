@@ -4,6 +4,13 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.8-beta] — 2026-10-27
+
+### Changed
+- **介面改為 Broadcast（方向 D）**：近黑底、Marvel 紅、金色字，卡庫改成轉播選人卡面，牌組欄係 Loadout。頂部加香港卡賽跑馬燈，資料仍來自 `data/news.json`。
+- 卡庫、組牌、分享碼、Google 同步、Vault、News 月曆、Deck 參考同社區投稿邏輯不變。
+- 版本／cache-bust **1.6.8-beta**
+
 ## [1.6.7-beta] — 2026-10-27
 
 ### Added

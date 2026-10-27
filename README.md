@@ -4,7 +4,7 @@ A lightweight deck-building web app for the **Marvel Hero Rush TCG** (Card Fun /
 
 > **Build v1.3.11-beta** · 2026-08-11
 > ✅ **Real card data.** Cardlist published on the official site — this repo contains all **233 card entries** (192 unique card numbers, including alternate-art / rarity prints) scraped from the official API, with local card art thumbnails.
-> 🎨 UI themed on the official rulebook's dark sci-fi / tactical HUD design language.
+> 🎨 UI is the Broadcast look (direction D): near-black, Marvel red, gold type, with a Hong Kong 卡賽 ticker.
 
 ## Features (v1.3.11-beta)
 
@@ -28,7 +28,7 @@ A lightweight deck-building web app for the **Marvel Hero Rush TCG** (Card Fun /
 
 **UI / UX**
 - Multi-language interface (繁體中文 / 简体中文 / English)
-- Dark sci-fi HUD theme (official rulebook design language)
+- Broadcast theme (direction D): dark red-and-gold esports layout, 卡賽 ticker
 - Everything persists in localStorage (decks, favorites, owned counts, language)
 
 ## Data
@@ -56,7 +56,7 @@ python3 -m http.server 8765
 | File | Purpose |
 |------|---------|
 | `index.html` | Page structure |
-| `css/styles.css` | UI styling (dark sci-fi HUD theme) |
+| `css/styles.css` | UI styling (Broadcast theme) |
 | `js/i18n.js` | Multi-language strings (繁中/简中/EN) |
 | `js/cards.js` | Card database (233 real entries) |
 | `js/rules.js` | Deck-building rules (official: 50 cards / 2 colors / 3 same-name) |
