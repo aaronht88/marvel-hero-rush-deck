@@ -20,6 +20,10 @@
   };
 
   let news = null, newsFailed = false, newsRegion = "hk";
+  let newsView = "calendar"; // calendar | list — Hong Kong 卡賽 only
+  let showPastEvents = false;
+  let calCursor = null; // { y, m } month on screen, m = 1–12
+  let calSelected = null; // YYYY-MM-DD
   let refDecks = null, decksFailed = false;
   let communityDecks = [];
   let communityFailed = false;
@@ -363,45 +367,390 @@
       "</article>";
   }
 
+  // Hong Kong locality names that open a Mato street address. Longest first.
+  const HK_AREAS = [
+    "尖沙咀", "荔枝角", "銅鑼灣", "長沙灣", "將軍澳", "九龍灣", "牛頭角", "黃大仙", "新蒲崗",
+    "鑽石山", "九龍塘", "何文田", "土瓜灣", "堅尼地城", "大角咀", "石硤尾", "慈雲山",
+    "天水圍", "馬鞍山", "觀塘", "油麻地", "深水埗", "葵涌", "葵芳", "青衣", "荃灣",
+    "屯門", "元朗", "上水", "粉嶺", "大埔", "沙田", "火炭", "大圍", "藍田", "油塘",
+    "彩虹", "紅磡", "佐敦", "太子", "中環", "金鐘", "上環", "西環", "灣仔", "天后",
+    "炮台山", "北角", "鰂魚涌", "太古", "西灣河", "筲箕灣", "柴灣", "香港仔", "樂富",
+    "東涌", "美孚", "旺角",
+  ].sort((a, b) => b.length - a.length);
+
+  const DISTRICT_EN = {
+    "觀塘": "Kwun Tong", "尖沙咀": "Tsim Sha Tsui", "荔枝角": "Lai Chi Kok",
+    "旺角": "Mong Kok", "銅鑼灣": "Causeway Bay", "中環": "Central",
+    "荃灣": "Tsuen Wan", "沙田": "Sha Tin", "將軍澳": "Tseung Kwan O",
+    "九龍灣": "Kowloon Bay", "紅磡": "Hung Hom", "佐敦": "Jordan",
+    "太子": "Prince Edward", "深水埗": "Sham Shui Po", "長沙灣": "Cheung Sha Wan",
+    "葵涌": "Kwai Chung", "屯門": "Tuen Mun", "元朗": "Yuen Long",
+    "大埔": "Tai Po", "上水": "Sheung Shui", "黃大仙": "Wong Tai Sin",
+    "油麻地": "Yau Ma Tei", "灣仔": "Wan Chai", "北角": "North Point",
+    "柴灣": "Chai Wan", "太古": "Taikoo", "金鐘": "Admiralty",
+    "上環": "Sheung Wan", "何文田": "Ho Man Tin", "土瓜灣": "To Kwa Wan",
+    "大角咀": "Tai Kok Tsui", "美孚": "Mei Foo", "青衣": "Tsing Yi",
+    "火炭": "Fo Tan", "馬鞍山": "Ma On Shan", "東涌": "Tung Chung",
+    "新蒲崗": "San Po Kong", "藍田": "Lam Tin", "油塘": "Yau Tong",
+    "牛頭角": "Ngau Tau Kok",
+  };
+  const DISTRICT_CN = {
+    "觀塘": "观塘", "灣仔": "湾仔", "銅鑼灣": "铜锣湾", "黃大仙": "黄大仙",
+    "紅磡": "红磡", "長沙灣": "长沙湾", "馬鞍山": "马鞍山", "東涌": "东涌",
+    "藍田": "蓝田", "油塘": "油塘", "將軍澳": "将军澳", "新蒲崗": "新蒲岗",
+    "淺水灣": "浅水湾",
+  };
+
+  function pad2(n) { return String(n).padStart(2, "0"); }
+
+  function hktNowParts(date) {
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Hong_Kong",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(date || new Date());
+    const g = (type) => {
+      const p = parts.find((x) => x.type === type);
+      return p ? p.value : "";
+    };
+    let hour = g("hour");
+    if (hour === "24") hour = "00";
+    return {
+      y: +g("year"), m: +g("month"), d: +g("day"),
+      date: g("year") + "-" + g("month") + "-" + g("day"),
+      time: hour + ":" + g("minute"),
+    };
+  }
+
+  function isIsoDate(s) { return /^\d{4}-\d{2}-\d{2}$/.test(s || ""); }
+
+  /** Past once the Hong Kong calendar day has ended, or end_time has passed today. */
+  function isPastEvent(it, now) {
+    if (!it || !isIsoDate(it.date)) return false;
+    now = now || hktNowParts();
+    if (it.date < now.date) return true;
+    if (it.date > now.date) return false;
+    if (it.end_time && /^\d{2}:\d{2}$/.test(it.end_time) && it.end_time < now.time) return true;
+    return false;
+  }
+
+  function hkDistrictFromAddress(addr) {
+    const s = String(addr || "").replace(/\s+/g, "");
+    for (let i = 0; i < HK_AREAS.length; i++) {
+      if (s.startsWith(HK_AREAS[i])) return HK_AREAS[i];
+    }
+    return "";
+  }
+
+  function eventDistrict(it) {
+    return (it && (it.district || hkDistrictFromAddress(it.address))) || "";
+  }
+
+  function districtLabel(code) {
+    if (!code) return "";
+    const lang = (getLang && getLang()) || "zh-HK";
+    if (lang === "en") return DISTRICT_EN[code] || code;
+    if (lang === "zh-CN") return DISTRICT_CN[code] || code;
+    return code;
+  }
+
+  function inferFormatCode(it) {
+    const blob = [
+      it.title, it.title_zh, it.description,
+      pickI18n(it, "title"), pickI18n(it, "summary"), pickI18n(it, "body"),
+    ].join("\n");
+    const low = blob.toLowerCase();
+    const sealed = blob.indexOf("即開") >= 0 || blob.indexOf("開包") >= 0 || low.indexOf("sealed") >= 0
+      || low.indexOf("purchased on-site") >= 0 || low.indexOf("purchased on site") >= 0;
+    const constructed = blob.indexOf("構築") >= 0 || low.indexOf("constructed") >= 0;
+    if (sealed && !(constructed && low.indexOf("constructed deck") >= 0
+      && low.indexOf("purchased on-site") < 0 && low.indexOf("purchased on site") < 0
+      && blob.indexOf("即開") < 0 && blob.indexOf("開包") < 0 && low.indexOf("sealed") < 0)) {
+      return "sealed";
+    }
+    if (constructed) return "constructed";
+    return "";
+  }
+
+  function formatPresentation(it) {
+    const lang = (getLang && getLang()) || "zh-HK";
+    const map = it.format_i18n;
+    if (map && typeof map === "object") {
+      const v = map[lang] || map["zh-HK"] || map.en;
+      if (v) return { code: "custom", label: String(v) };
+    }
+    const raw = typeof it.format === "string" ? it.format.trim() : "";
+    if (raw === "constructed" || raw === "sealed") {
+      return { code: raw, label: t(raw === "constructed" ? "calFormatConstructed" : "calFormatSealed") };
+    }
+    if (raw) return { code: "custom", label: raw };
+    const inferred = inferFormatCode(it);
+    if (inferred) return { code: inferred, label: t(inferred === "constructed" ? "calFormatConstructed" : "calFormatSealed") };
+    return { code: "", label: t("calFormatUnknown") };
+  }
+
+  function shopLine(it) {
+    const shop = (it && it.venue) || "";
+    const dist = districtLabel(eventDistrict(it));
+    if (shop && dist) return shop + " · " + dist;
+    return shop || dist || "";
+  }
+
+  function mondayIndex(iso) {
+    const parts = iso.split("-").map(Number);
+    const dow = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2])).getUTCDay();
+    return (dow + 6) % 7;
+  }
+
+  function longDate(iso) {
+    if (!isIsoDate(iso)) return iso || "";
+    const parts = iso.split("-").map(Number);
+    const lang = (getLang && getLang()) || "zh-HK";
+    const names = t("calDowLong").split(",");
+    const w = names[mondayIndex(iso)] || "";
+    if (lang === "en") {
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      return w + ", " + parts[2] + " " + months[parts[1] - 1] + " " + parts[0];
+    }
+    return parts[0] + "年" + parts[1] + "月" + parts[2] + "日（" + w + "）";
+  }
+
+  function monthTitle(y, m) {
+    const lang = (getLang && getLang()) || "zh-HK";
+    if (lang === "en") {
+      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      return months[m - 1] + " " + y;
+    }
+    return t("calMonth", { y: y, m: m });
+  }
+
+  function whenLine(it) {
+    const date = longDate(it.date);
+    let time = "";
+    if (it.time && it.end_time) time = it.time + "–" + it.end_time;
+    else if (it.time) time = it.time;
+    return time ? date + " · " + time : date;
+  }
+
+  function hkEvents() {
+    return ((news && news.hk) || []).filter((it) => isIsoDate(it.date));
+  }
+
+  function visibleHkEvents() {
+    const all = hkEvents();
+    if (showPastEvents) return all;
+    const now = hktNowParts();
+    return all.filter((it) => !isPastEvent(it, now));
+  }
+
+  function ensureCalCursor() {
+    if (calCursor && calSelected) return;
+    const now = hktNowParts();
+    const upcoming = visibleHkEvents().map((it) => it.date).filter((d) => d >= now.date).sort();
+    const pick = upcoming[0] || now.date;
+    if (!calCursor) calCursor = { y: +pick.slice(0, 4), m: +pick.slice(5, 7) };
+    if (!calSelected) calSelected = pick;
+  }
+
+  function shiftMonth(delta) {
+    ensureCalCursor();
+    let y = calCursor.y;
+    let m = calCursor.m + delta;
+    while (m < 1) { m += 12; y -= 1; }
+    while (m > 12) { m -= 12; y += 1; }
+    calCursor = { y: y, m: m };
+    const prefix = y + "-" + pad2(m);
+    if (!calSelected || calSelected.slice(0, 7) !== prefix) {
+      const hit = visibleHkEvents().map((it) => it.date).filter((d) => d.slice(0, 7) === prefix).sort()[0];
+      calSelected = hit || (prefix + "-01");
+    }
+  }
+
+  function renderCalEvent(it, now) {
+    const past = isPastEvent(it, now);
+    const fmt = formatPresentation(it);
+    const shop = shopLine(it);
+    const addr = it.address || "";
+    const title = pickI18n(it, "title") || it.title_zh || it.title || "";
+    const href = it.url || it.source_url || "";
+    const fmtClass = fmt.code === "constructed" ? "is-constructed"
+      : fmt.code === "sealed" ? "is-sealed"
+      : fmt.code === "custom" ? "is-custom" : "is-unknown";
+    const actions = [];
+    if (href) {
+      actions.push('<a class="btn btn-sm btn-primary" href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(t("calRegister")) + "</a>");
+    }
+    if (hasOnSiteBody(it)) {
+      actions.push('<button type="button" class="btn btn-sm" data-news-open="' + esc(it.id) + '">' + esc(t("newsReadOnSite")) + "</button>");
+    }
+    return '<article class="cal-event' + (past ? " is-past" : "") + '">' +
+      (past ? '<span class="cal-past-tag">' + esc(t("calPastTag")) + "</span>" : "") +
+      '<h4 class="cal-event-title">' + esc(title) + "</h4>" +
+      '<dl class="cal-facts">' +
+        '<div><dt>' + esc(t("calWhenLabel")) + "</dt><dd>" + esc(whenLine(it)) + "</dd></div>" +
+        '<div><dt>' + esc(t("calShopLabel")) + "</dt><dd>" +
+          (shop ? '<span class="cal-shop">' + esc(shop) + "</span>" : "") +
+          (addr ? '<span class="cal-address">' + esc(addr) + "</span>" : "") +
+          (!shop && !addr ? "—" : "") +
+        "</dd></div>" +
+        '<div><dt>' + esc(t("calFormatLabel")) + '</dt><dd><span class="cal-format ' + fmtClass + '">' + esc(fmt.label) + "</span></dd></div>" +
+      "</dl>" +
+      (actions.length ? '<div class="cal-event-actions">' + actions.join("") + "</div>" : "") +
+      "</article>";
+  }
+
+  function renderCalendar(root) {
+    ensureCalCursor();
+    const now = hktNowParts();
+    const y = calCursor.y;
+    const m = calCursor.m;
+    const prefix = y + "-" + pad2(m);
+    const byDay = {};
+    visibleHkEvents().forEach((it) => {
+      if (!byDay[it.date]) byDay[it.date] = [];
+      byDay[it.date].push(it);
+    });
+    Object.keys(byDay).forEach((d) => {
+      byDay[d].sort((a, b) => (a.time || "").localeCompare(b.time || "") || (a.venue || "").localeCompare(b.venue || ""));
+    });
+    if (!calSelected || calSelected.slice(0, 7) !== prefix) {
+      const inMonth = Object.keys(byDay).filter((d) => d.slice(0, 7) === prefix).sort();
+      calSelected = inMonth[0] || (prefix + "-01");
+    }
+    const firstDow = new Date(Date.UTC(y, m - 1, 1)).getUTCDay();
+    const lead = (firstDow + 6) % 7;
+    const daysInMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    const dows = t("calDowShort").split(",");
+    let cells = "";
+    for (let i = 0; i < lead; i++) cells += '<span class="cal-pad"></span>';
+    for (let d = 1; d <= daysInMonth; d++) {
+      const iso = prefix + "-" + pad2(d);
+      const list = byDay[iso] || [];
+      const n = list.length;
+      const cls = ["cal-day"];
+      if (iso === now.date) cls.push("is-today");
+      if (iso === calSelected) cls.push("is-selected");
+      if (n) cls.push("has-events");
+      else cls.push("is-empty-day");
+      if (iso < now.date) cls.push("is-before");
+      if (n && list.every((it) => isPastEvent(it, now))) cls.push("is-past-mark");
+      const label = n
+        ? t("calDayEvents", { date: longDate(iso), n: n })
+        : t("calDayNone", { date: longDate(iso) });
+      const dots = '<span class="cal-dots" aria-hidden="true">' +
+        (n ? new Array(Math.min(n, 3)).fill("<i></i>").join("") : "") + "</span>";
+      const count = n > 1 ? '<span class="cal-count">' + n + "</span>" : "";
+      cells += '<button type="button" class="' + cls.join(" ") + '" data-cal-day="' + iso + '" aria-pressed="' +
+        (iso === calSelected ? "true" : "false") + '" aria-label="' + esc(label) + '">' +
+        '<span class="cal-num">' + d + "</span>" + dots + count + "</button>";
+    }
+    const selectedEvents = byDay[calSelected] || [];
+    const detail = selectedEvents.length
+      ? selectedEvents.map((it) => renderCalEvent(it, now)).join("")
+      : '<p class="empty cal-empty">' + esc(t("calEmptyDay")) + "</p>";
+    root.innerHTML =
+      '<div class="cal-toolbar">' +
+        '<div class="cal-nav-group">' +
+          '<button type="button" class="btn btn-sm cal-nav" data-cal="prev" aria-label="' + esc(t("calPrev")) + '">‹</button>' +
+          '<h2 class="cal-title">' + esc(monthTitle(y, m)) + "</h2>" +
+          '<button type="button" class="btn btn-sm cal-nav" data-cal="next" aria-label="' + esc(t("calNext")) + '">›</button>' +
+        "</div>" +
+        '<button type="button" class="btn btn-sm" data-cal="today">' + esc(t("calToday")) + "</button>" +
+      "</div>" +
+      '<div class="cal-layout">' +
+        '<div class="cal-grid" role="grid" aria-label="' + esc(monthTitle(y, m)) + '">' +
+          dows.map((name) => '<div class="cal-dow" role="columnheader">' + esc(name) + "</div>").join("") +
+          cells +
+        "</div>" +
+        '<div class="cal-detail" id="news-cal-detail" aria-live="polite">' +
+          '<h3 class="cal-detail-title">' + esc(longDate(calSelected)) + "</h3>" +
+          detail +
+        "</div>" +
+      "</div>";
+  }
+
   function renderNews() {
     const list = $("#news-list");
     if (!list) return;
+    const calEl = $("#news-calendar");
+    const viewToggle = $("#news-view-toggle");
+    const pastToggle = $("#news-past-toggle");
+    const pastInput = $("#news-show-past");
     document.querySelectorAll("[data-news]").forEach((b) => b.classList.toggle("active", b.dataset.news === newsRegion));
+    document.querySelectorAll("[data-news-view]").forEach((b) => b.classList.toggle("active", b.dataset.newsView === newsView));
+    if (pastInput) pastInput.checked = showPastEvents;
     const noteEl = $("#news-note");
     if (noteEl) noteEl.textContent = t(newsRegion === "hk" ? "newsNoteHK" : "newsNoteIntl");
-    if (newsFailed) { list.innerHTML = '<p class="empty">' + esc(t("newsLoadFail")) + "</p>"; return; }
-    if (!news) { list.innerHTML = ""; return; }
+    const showTools = newsRegion === "hk" && !newsArticleId;
+    if (viewToggle) viewToggle.hidden = !showTools;
+    if (pastToggle) pastToggle.hidden = !showTools;
+
+    if (newsFailed) {
+      if (calEl) { calEl.hidden = true; calEl.innerHTML = ""; }
+      list.hidden = false;
+      list.innerHTML = '<p class="empty">' + esc(t("newsLoadFail")) + "</p>";
+      return;
+    }
+    if (!news) {
+      if (calEl) calEl.hidden = true;
+      list.innerHTML = "";
+      return;
+    }
     const upd = $("#news-updated");
     if (upd) upd.textContent = news.updated ? t("newsUpdated", { t: news.updated }) : "";
 
     if (newsArticleId) {
       const it = findNewsItem(newsArticleId);
       if (it && hasOnSiteBody(it)) {
-        // ensure decks.json available for related_deck_ids buttons
         if (!refDecks && !decksFailed) {
           loadJSON("data/decks.json").then((d) => { refDecks = d.decks || []; renderNews(); }).catch(() => { decksFailed = true; });
         }
+        if (calEl) { calEl.hidden = true; calEl.innerHTML = ""; }
+        list.hidden = false;
         list.innerHTML = renderNewsArticle(it);
         if (noteEl) noteEl.textContent = "";
         return;
       }
-      // missing body → fall back to list (and external link)
       newsArticleId = null;
+      if (viewToggle) viewToggle.hidden = newsRegion !== "hk";
+      if (pastToggle) pastToggle.hidden = newsRegion !== "hk";
     }
 
-    const items = news[newsRegion] || [];
-    if (!items.length) { list.innerHTML = '<p class="empty">' + esc(t("newsEmpty")) + "</p>"; return; }
+    const useCal = newsRegion === "hk" && newsView === "calendar";
+    if (useCal && calEl) {
+      list.hidden = true;
+      list.innerHTML = "";
+      calEl.hidden = false;
+      renderCalendar(calEl);
+      return;
+    }
+    if (calEl) { calEl.hidden = true; calEl.innerHTML = ""; }
+    list.hidden = false;
+
+    let items = (news[newsRegion] || []).slice();
+    const now = hktNowParts();
+    if (newsRegion === "hk" && !showPastEvents) items = items.filter((it) => !isPastEvent(it, now));
+    if (!items.length) {
+      list.innerHTML = '<p class="empty">' + esc(newsRegion === "hk" ? t("calNoUpcoming") : t("newsEmpty")) + "</p>";
+      return;
+    }
     list.innerHTML = items.map((it) => {
       const title = pickI18n(it, "title") || it.title_zh || it.title;
       const summary = pickI18n(it, "summary") || it.summary_zh || "";
-      const meta = [it.date + (it.time ? " " + it.time : ""), it.venue, it.source_name || it.source].filter(Boolean).map(esc).join(" · ");
+      const fmt = newsRegion === "hk" ? formatPresentation(it) : null;
+      const when = it.date + (it.time ? " " + it.time + (it.end_time ? "–" + it.end_time : "") : "");
+      const metaParts = newsRegion === "hk"
+        ? [when, shopLine(it) || it.venue, fmt && fmt.code ? fmt.label : "", it.source_name || it.source]
+        : [it.date + (it.time ? " " + it.time : ""), it.venue, it.source_name || it.source];
+      const meta = metaParts.filter(Boolean).map(esc).join(" · ");
       const onSite = hasOnSiteBody(it);
       const tag = onSite ? "button" : "a";
       const openAttr = onSite
         ? ' type="button" data-news-open="' + esc(it.id) + '"'
         : ' href="' + esc(it.url) + '" target="_blank" rel="noopener"';
       const badge = onSite ? '<span class="news-onsite">' + esc(t("newsReadOnSite")) + "</span>" : "";
-      return '<' + tag + ' class="news-item"' + openAttr + '>' +
+      const pastCls = newsRegion === "hk" && isPastEvent(it, now) ? " is-past" : "";
+      return '<' + tag + ' class="news-item' + pastCls + '"' + openAttr + '>' +
         (it.category ? '<span class="news-cat cat-' + esc(it.category) + '">' + esc(catLabel(it.category)) + "</span>" : "") +
         '<span class="news-body"><span class="news-title">' + esc(title) + badge + "</span>" +
         (summary ? '<span class="news-summary">' + esc(summary) + "</span>" : "") +
@@ -414,6 +763,11 @@
     history.replaceState(null, "", location.pathname + location.search + "#news");
     renderNews();
   }));
+  document.addEventListener("change", (e) => {
+    if (!e.target || e.target.id !== "news-show-past") return;
+    showPastEvents = !!e.target.checked;
+    renderNews();
+  });
 
   // ---------- community data ----------
   async function refreshCommunity() {
@@ -675,6 +1029,40 @@
   }
 
   document.addEventListener("click", async (e) => {
+    const viewBtn = e.target.closest("[data-news-view]");
+    if (viewBtn) {
+      newsView = viewBtn.dataset.newsView === "list" ? "list" : "calendar";
+      newsArticleId = null;
+      if ((location.hash || "").indexOf("#news/") === 0) {
+        history.replaceState(null, "", location.pathname + location.search + "#news");
+      }
+      renderNews();
+      return;
+    }
+    const calAct = e.target.closest("[data-cal]");
+    if (calAct) {
+      const act = calAct.dataset.cal;
+      if (act === "prev") shiftMonth(-1);
+      else if (act === "next") shiftMonth(1);
+      else if (act === "today") {
+        const now = hktNowParts();
+        calCursor = { y: now.y, m: now.m };
+        calSelected = now.date;
+      }
+      renderNews();
+      return;
+    }
+    const dayBtn = e.target.closest("[data-cal-day]");
+    if (dayBtn && dayBtn.dataset.calDay) {
+      calSelected = dayBtn.dataset.calDay;
+      renderNews();
+      if (window.matchMedia && window.matchMedia("(max-width: 720px)").matches) {
+        const det = document.getElementById("news-cal-detail");
+        if (det && det.scrollIntoView) det.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+      return;
+    }
+
     const tab = e.target.closest("[data-decks-tab]");
     if (tab) {
       decksTab = tab.dataset.decksTab;
