@@ -4,6 +4,14 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.12-beta] — 2026-10-28
+
+### 新料
+- **Battle Sim 接上對戰引擎（非正式裁定／AI 預覽）**：揀好我方同對手牌組後，「開始模擬」喺本頁用 `mhr-rules-engine` 行一局 AI 對 AI（`chooseAction`，弱／普通／強）。唔經對戰 Worker，亦冇本站自寫策略。結果顯示勝負、時間線 Rush Point，同主要步驟（含引擎 `reason_zh`）。
+- 開局跟引擎要求：`seededShuffle`、抽 6、9 張 Rush stub、`beginHandAdjust`。我方係 P1、對手係 P2。未登記效果唔會觸發 TRIG／ACTI。
+- 引擎目標 pin **eaf08e0**（DSL v1.1、`place_from_retreat`、卡表含 BP01-037）。私人 git 物件 Pages 讀唔到，所以打入 `js/mhr-rules-engine.js`（已發布客戶端引擎，含 `place_from_retreat`）。BP01-037 印刷效果喺卡表；呢個 build 未登記佢嘅 TRIG，未登記效果唔會發動。頁面固定顯示「非正式裁定 · 引擎 MVP」。
+- 版本／cache-bust **1.6.12-beta**
+
 ## [1.6.11-beta] — 2026-10-28
 
 ### Added
