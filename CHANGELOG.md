@@ -4,6 +4,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.10-beta] — 2026-10-28
+
+### 新料
+- **構築／文案清理**：ASCC 冠軍（剩饭君 · YG Web Spider）Deck 參考整段備註刪走。卡表不變，SD04-002 Hawkeye 仍然 ×3。亞洲巔峰四強站內文（繁中／簡中／英文）冠軍段刪走「截圖角標被遮、以 ×3 推斷補足」句子；保留「綠軸補刀／削減 Power」。
+- 版本／cache-bust **1.6.10-beta**
+
 ## [1.6.9-beta] — 2026-10-28
 
 ### Added
