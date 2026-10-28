@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvel Hero Rush · 三個牌組介面方向</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500&family=Fraunces:ital,opsz,wght@1,9..144,560&family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@500&family=Newsreader:opsz,wght@6..72,600&family=Noto+Sans+TC:wght@500;700&family=Noto+Serif+TC:wght@600&family=Outfit:wght@400&family=Teko:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #111;
+      color: #f4efe6;
+      font-family: "Noto Sans TC", "PingFang HK", sans-serif;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 14px 22px;
+      background: #111;
+      color: #f4efe6;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    header img { height: 28px; width: auto; display: block; }
+    header p { margin: 0; font-size: 13px; letter-spacing: .04em; color: #c8c0b4; }
+    main { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr; min-height: 0; }
+    a.col {
+      text-decoration: none;
+      color: inherit;
+      min-height: calc(100vh - 57px);
+      padding: 28px 28px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    a.col:focus-visible { outline: 3px solid #111; outline-offset: -6px; }
+    .kicker { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; margin: 0 0 10px; }
+    h2 { margin: 0 0 12px; font-size: clamp(40px, 4vw, 64px); line-height: .92; letter-spacing: -0.03em; }
+    .blurb { margin: 0; max-width: 28ch; font-size: 16px; line-height: 1.45; }
+    .go { margin-top: 22px; font-size: 14px; letter-spacing: .08em; }
+    .a { background: #e7e0d2; color: #1c1712; }
+    .a .kicker { font-family: "IBM Plex Mono", monospace; color: #c4372a; }
+    .a h2 { font-family: "Newsreader", "Noto Serif TC", serif; font-weight: 600; }
+    .a .blurb, .a .go { font-family: "IBM Plex Sans", "Noto Sans TC", sans-serif; }
+    .a::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 11px; background: #c4372a; }
+    .mock {
+      margin-top: 28px;
+      border-top: 1px solid #1c1712;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+    }
+    .mock div { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; padding: 7px 0; border-bottom: 1px solid #d3c9b6; }
+    .b { background: #12100e; color: #f3ecdf; }
+    .b .kicker { font-family: Outfit, sans-serif; color: #d7c39a; }
+    .b h2 { font-family: Fraunces, "Noto Serif TC", serif; font-weight: 560; font-style: italic; }
+    .b .blurb, .b .go { font-family: Outfit, "Noto Sans TC", sans-serif; color: #d9d0c3; }
+    .b img.card {
+      width: min(220px, 70%);
+      margin-top: 28px;
+      box-shadow: 0 24px 50px rgba(0,0,0,.45);
+      transform: rotate(-7deg);
+      transform-origin: center;
+      transition: transform .35s cubic-bezier(.2,.7,.2,1);
+    }
+    .b:hover img.card { transform: rotate(-2deg) translateY(-8px); }
+    .d { background: #09090b; color: #f6f1e7; }
+    .d .kicker { font-family: Teko, sans-serif; font-size: 22px; letter-spacing: .12em; color: #f5c518; }
+    .d h2 { font-family: Teko, "Noto Sans TC", sans-serif; font-weight: 500; font-size: clamp(56px, 5vw, 84px); letter-spacing: .02em; }
+    .d h2 span { color: #e62429; }
+    .d .blurb, .d .go { font-family: Barlow, "Noto Sans TC", sans-serif; color: #d5cdc2; }
+    .slash {
+      margin-top: 24px;
+      height: 8px;
+      width: 46%;
+      background: #e62429;
+      transform: skewX(-18deg);
+    }
+    .d img.card {
+      position: absolute;
+      right: -20px;
+      bottom: -30px;
+      width: 200px;
+      opacity: .9;
+      clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
+      filter: saturate(1.05);
+    }
+    @media (max-width: 860px) {
+      main { grid-template-columns: 1fr; }
+      a.col { min-height: auto; }
+      header { flex-direction: column; align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .b img.card { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../img/logo.png" alt="Marvel Hero Rush" />
+    <p>三個可點的視覺方向 · 草稿，不會合入 main</p>
+  </header>
+  <main>
+    <a class="col a" href="revamp-a/index.html">
+      <div>
+        <p class="kicker">方向 A · Ledger</p>
+        <h2>牌組台</h2>
+        <p class="blurb">乾淨、高密度。搜尋、篩選、加減都在同一列完成，右側盯着曲線和規則。</p>
+        <div class="mock" aria-hidden="true">
+          <div><span>Antimatter Iron Man</span><span>Lv6</span><span>6500</span></div>
+          <div><span>Thunder Ally Thor</span><span>Lv6</span><span>3500</span></div>
+          <div><span>Never Back Down Hulk</span><span>Lv2</span><span>500</span></div>
+        </div>
+      </div>
+      <div class="go">打開 A →</div>
+    </a>
+    <a class="col b" href="revamp-b/index.html">
+      <div>
+        <p class="kicker">方向 B · Gallery</p>
+        <h2>先看卡面</h2>
+        <p class="blurb">一張大卡站在中間，其餘卡像收藏牆。牌組是底下那一排疊着的手牌。</p>
+        <img class="card" src="../img/cards/BP01-001-V3.webp" alt="" />
+      </div>
+      <div class="go">打開 B →</div>
+    </a>
+    <a class="col d" href="revamp-d/index.html">
+      <div>
+        <p class="kicker">方向 D · Broadcast</p>
+        <h2>MHR<span>//</span>LIVE</h2>
+        <p class="blurb">暗色賽事轉播。紅金、斜切面板、卡賽跑馬燈。跟現有青色 HUD 分開一條路。</p>
+        <div class="slash"></div>
+      </div>
+      <img class="card" src="../img/cards/SD03-001-V3.webp" alt="" />
+      <div class="go">打開 D →</div>
+    </a>
+  </main>
+</body>
+</html>
