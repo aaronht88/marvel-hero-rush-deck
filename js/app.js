@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.6.10-beta";
+  const APP_VERSION = "1.6.11-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -33,6 +33,13 @@
       }
     } catch (e) {}
   }
+  function notifyBattleDecks() {
+    try {
+      if (window.MHR_BATTLE && typeof window.MHR_BATTLE.onDecksChanged === "function") {
+        window.MHR_BATTLE.onDecksChanged();
+      }
+    } catch (e) {}
+  }
   function saveDecks() {
     try {
       const cur = decks.find((d) => d.id === currentDeckId);
@@ -40,6 +47,7 @@
       localStorage.setItem(LS_DECKS, JSON.stringify({ current: currentDeckId, decks: decks.map((d) => ({ id: d.id, name: d.name, cards: d.cards })) }));
     } catch (e) {}
     notifyGoogleSync();
+    notifyBattleDecks();
   }
   function saveFavs() {
     try { localStorage.setItem(LS_FAVS, JSON.stringify([...favs])); } catch (e) {}
@@ -1454,30 +1462,48 @@
 
   // language change re-render hook (called by i18n.js setLang)
 
-  /** Analyze share code for community submit (A hard checks using live CARDS). */
-  function analyzeShareCode(code) {
-    const r = decodeShare(code);
-    if (!r || !r.deck || !r.deck.size) {
-      return { ok: false, checklist: { code_importable: false, card_count_50: false, unique_name_leq_3: false, colors_ok: false, no_rush_points: false }, colors: [], total: 0, entries: [] };
-    }
+  function emptyDeckSummary() {
+    return {
+      ok: false,
+      checklist: {
+        code_importable: false,
+        card_count_50: false,
+        unique_name_leq_3: false,
+        colors_ok: false,
+        no_rush_points: false,
+      },
+      colors: [],
+      colorCounts: {},
+      total: 0,
+      entries: [],
+      name: null,
+    };
+  }
+
+  /** Count, colors, and construction checks for a card map (id → qty). */
+  function summarizeCardMap(map) {
+    if (!map || typeof map.forEach !== "function" || !map.size) return emptyDeckSummary();
     let total = 0;
     const byName = new Map();
     const colors = new Set();
+    const colorCounts = {};
     let rush = false;
     const entries = [];
-    r.deck.forEach((qty, id) => {
+    map.forEach((qty, id) => {
       const c = getCard(id);
       if (!c) return;
-      total += qty;
-      entries.push({ id, qty, name: c.name, no: c.card_no || id });
-      byName.set(c.name, (byName.get(c.name) || 0) + qty);
-      if (c.attribute) colors.add(c.attribute);
-      // Rush Point cards are type Rush / rush in data; also id heuristics
-      const isRush = (c.type && /rush/i.test(c.type)) || (typeof c.card_no === "string" && false);
-      if (isRush) rush = true;
+      const q = qty | 0;
+      if (q <= 0) return;
+      total += q;
+      entries.push({ id, qty: q, name: c.name, no: c.card_no || id });
+      byName.set(c.name, (byName.get(c.name) || 0) + q);
+      if (c.attribute) {
+        colors.add(c.attribute);
+        colorCounts[c.attribute] = (colorCounts[c.attribute] || 0) + q;
+      }
+      if (c.type && /rush/i.test(c.type)) rush = true;
     });
-    // Extra rush heuristic by known number ranges if type missing
-    r.deck.forEach((qty, id) => {
+    map.forEach((qty, id) => {
       const m = String(id).match(/^(BP01|SP01|EB01|SD0[1-4]|PB01|TB01)-(\d{3})/);
       if (!m) return;
       const set = m[1], n = parseInt(m[2], 10);
@@ -1490,14 +1516,44 @@
     byName.forEach((q) => { if (q > 3) nameOk = false; });
     const colorArr = [...colors];
     const checklist = {
-      code_importable: true,
+      code_importable: total > 0,
       card_count_50: total === 50,
       unique_name_leq_3: nameOk,
       colors_ok: colorArr.length >= 1 && colorArr.length <= 2,
       no_rush_points: !rush,
     };
     const ok = checklist.code_importable && checklist.card_count_50 && checklist.unique_name_leq_3 && checklist.colors_ok && checklist.no_rush_points;
-    return { ok, checklist, colors: colorArr, total, entries, name: r.name || null };
+    return { ok, checklist, colors: colorArr, colorCounts, total, entries, name: null };
+  }
+
+  /** Analyze share code for community submit (A hard checks using live CARDS). */
+  function analyzeShareCode(code) {
+    const r = decodeShare(code);
+    if (!r || !r.deck || !r.deck.size) return emptyDeckSummary();
+    const summary = summarizeCardMap(r.deck);
+    summary.name = r.name || null;
+    return summary;
+  }
+
+  /** Same checks as analyzeShareCode, for a saved deck's [id, qty] list. */
+  function summarizeCards(entries) {
+    const map = new Map();
+    if (Array.isArray(entries)) {
+      entries.forEach((pair) => {
+        if (!pair) return;
+        const qty = pair[1] | 0;
+        if (pair[0] && qty > 0) map.set(pair[0], (map.get(pair[0]) || 0) + qty);
+      });
+    }
+    return summarizeCardMap(map);
+  }
+
+  function getSavedDecks() {
+    return decks.map((d) => ({
+      id: d.id,
+      name: d.name,
+      cards: (d.id === currentDeckId ? [...deck.entries()] : (d.cards || [])).map(([id, qty]) => [id, qty]),
+    }));
   }
 
   window.MHR_APP = {
@@ -1510,6 +1566,8 @@
       return true;
     },
     analyzeShareCode,
+    summarizeCards,
+    getSavedDecks,
     getShareCode: () => encodeShare(),
     getCard,
     openCard: openModal,
@@ -1522,6 +1580,11 @@
       } else if (activePage === "builder") {
         renderBuilderCards();
       }
+      try {
+        if (window.MHR_BATTLE && typeof window.MHR_BATTLE.onShow === "function") {
+          window.MHR_BATTLE.onShow(activePage);
+        }
+      } catch (e) {}
     },
     onLangChange() {
       // refresh checkbox labels (level/range prefixes, attr colors)
@@ -1534,6 +1597,11 @@
       }
       renderDeckManager();
       renderCards(); renderDeck(); updateModalActions();
+      try {
+        if (window.MHR_BATTLE && typeof window.MHR_BATTLE.onLang === "function") {
+          window.MHR_BATTLE.onLang();
+        }
+      } catch (e) {}
     },
   };
 
@@ -1647,6 +1715,7 @@
           renderDeckSelect();
           renderCards();
           renderDeck();
+          notifyBattleDecks();
         },
       });
     }

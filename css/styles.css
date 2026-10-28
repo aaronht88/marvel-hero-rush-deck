@@ -1001,7 +1001,7 @@ body.modal-open { overflow: hidden; }
 @keyframes dd-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 
 /* news + deck reference pages */
-.page-news, .page-decks, .page-vault {
+.page-news, .page-decks, .page-vault, .page-battle-sim {
   flex: 1 1 auto; min-height: 0; overflow-y: auto; position: relative; z-index: 1;
   padding: 16px max(16px, calc((100% - 980px) / 2));
 }
@@ -1144,7 +1144,7 @@ body.modal-open { overflow: hidden; }
   /* phone: open the panel inline as a full-width row under its button */
   .filter-dd { display: contents; }
   .filter-dd-panel { position: static; flex: 1 1 100%; max-width: none; min-width: 0; max-height: none; box-shadow: none; }
-  .page-news, .page-decks, .page-vault { padding: 12px; }
+  .page-news, .page-decks, .page-vault, .page-battle-sim { padding: 12px; }
   .cal-layout { grid-template-columns: 1fr; }
   .cal-detail { position: static; }
   .cal-pad, .cal-day { min-height: 44px; padding-top: 4px; }
@@ -1489,5 +1489,99 @@ button.news-item { border: 1px solid var(--border-soft); background: var(--panel
 }
 @media (prefers-reduced-motion: reduce) {
   .race-ticker-track { animation: none; }
+}
+
+/* Battle Sim tab */
+.bsim-wrap { display: flex; flex-direction: column; gap: 14px; width: min(980px, 100%); margin: 0 auto; }
+.bsim-head { display: flex; flex-direction: column; gap: 4px; }
+.bsim-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 32px;
+  letter-spacing: .06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.bsim-disclaimer {
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid rgba(245, 197, 24, .45);
+  background: rgba(245, 197, 24, .08);
+  color: var(--gold);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.bsim-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+.bsim-side {
+  display: flex; flex-direction: column; gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  padding: 14px;
+}
+.bsim-side h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 26px;
+  letter-spacing: .08em;
+  line-height: 1;
+}
+.bsim-modes { display: flex; flex-wrap: wrap; gap: 6px; }
+.bsim-mode.active {
+  border-color: var(--cyan-dim);
+  color: var(--cyan);
+  box-shadow: 0 0 10px rgba(245, 197, 24, .18);
+  background: linear-gradient(180deg, rgba(245, 197, 24, .16), rgba(245, 197, 24, .05));
+}
+.bsim-field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+.bsim-field[hidden],
+.bsim-notice[hidden] { display: none !important; }
+.bsim-field select,
+.bsim-field textarea {
+  width: 100%;
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 8px;
+  font-family: var(--sans);
+  font-size: 13px;
+}
+.bsim-field textarea { min-height: 72px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+.bsim-field select:focus,
+.bsim-field textarea:focus { outline: none; border-color: var(--cyan-dim); box-shadow: 0 0 10px rgba(245, 197, 24, .15); }
+.bsim-preview {
+  background: rgba(0, 0, 0, .22);
+  border: 1px solid var(--border-soft);
+  padding: 10px 12px;
+  min-height: 88px;
+}
+.bsim-empty, .bsim-muted { margin: 0; color: var(--muted); font-size: 13px; }
+.bsim-bad { margin: 0; color: var(--bad); font-size: 13px; }
+.bsim-name { font-size: 14px; line-height: 1.35; margin-bottom: 4px; }
+.bsim-count {
+  font-family: var(--display);
+  font-size: 32px;
+  letter-spacing: .04em;
+  line-height: 1;
+}
+.bsim-count.is-ok { color: var(--ok); }
+.bsim-count.is-bad { color: var(--bad); }
+.bsim-colors { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin: 8px 0; font-size: 13px; }
+.bsim-colors-label { color: var(--muted); font-size: 12px; }
+.bsim-color { display: inline-flex; align-items: center; gap: 5px; }
+.bsim-checks { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.bsim-actions { display: flex; }
+.bsim-notice {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  padding: 12px 14px;
+}
+.bsim-notice p { margin: 0 0 8px; font-size: 14px; line-height: 1.5; }
+.bsim-notice p:last-child { margin-bottom: 0; }
+.bsim-demo-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+@media (max-width: 720px) {
+  .bsim-sides { grid-template-columns: 1fr; }
+  .bsim-title { font-size: 26px; }
 }
 
