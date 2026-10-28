@@ -4,6 +4,13 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.9-beta] — 2026-10-28
+
+### Added
+- **新料 · 賽事／構築**：廣州地區公開賽四強 Deck 參考。冠軍 猫岛-Icego（RB Avengers）、亞軍 魔王（RB Symbiote Knull）、季軍 猫岛-昊天（RB Avengers）、四強 番禺万磁王（BG Avengers Mill）。每副 50 張、3 張 keycards，可於 Deck 參考複製分享碼或匯入構築。
+- 季軍末三張數量請用官方碼覆核（Deck 參考短註）。
+- 版本／cache-bust **1.6.9-beta**
+
 ## [1.6.8-beta] — 2026-10-27
 
 ### Changed

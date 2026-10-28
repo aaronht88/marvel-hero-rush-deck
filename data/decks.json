@@ -1,6 +1,519 @@
 {
-  "updated": "2026-10-12",
+  "updated": "2026-10-28",
   "decks": [
+    {
+      "id": "gz-champ-icego",
+      "name": "廣州站 冠軍 猫岛-Icego · RB Avengers",
+      "colors": [
+        "Red",
+        "Blue"
+      ],
+      "set": "MIX",
+      "author": "猫岛-Icego",
+      "source": "地區公開賽·廣州站 · 冠軍",
+      "source_url": "",
+      "date": "2026-08-24",
+      "total": 50,
+      "official_code": "QbDxa5A9",
+      "keycards": [
+        "BP01-066",
+        "BP01-001",
+        "BP01-015"
+      ],
+      "code": "1|%E5%BB%A3%E5%B7%9E%E7%AB%99%20%E5%86%A0%E8%BB%8D%20%E7%8C%AB%E5%B2%9B-Icego%20%C2%B7%20RB%20Avengers|A0013A0023A0132A0153A0222A0663A0632A0643A0672A0773D0043D0113A0833A0802I0072I0031I0441I0423I0492D0012A0742",
+      "cards": [
+        {
+          "no": "BP01-001",
+          "name": "「Antimatter」Iron Man",
+          "qty": 3
+        },
+        {
+          "no": "BP01-002",
+          "name": "「Covert Ops」Black Widow",
+          "qty": 3
+        },
+        {
+          "no": "BP01-013",
+          "name": "「Wakanda Forever」Black Panther",
+          "qty": 2
+        },
+        {
+          "no": "BP01-015",
+          "name": "「Disintegration Ray」Vision",
+          "qty": 3
+        },
+        {
+          "no": "BP01-022",
+          "name": "「Top Agent」Black Widow",
+          "qty": 2
+        },
+        {
+          "no": "BP01-066",
+          "name": "「Turn The Tide」Captain America",
+          "qty": 3
+        },
+        {
+          "no": "BP01-063",
+          "name": "「Time Abduction」Loki",
+          "qty": 2
+        },
+        {
+          "no": "BP01-064",
+          "name": "「Quantum Core」Ant-Man",
+          "qty": 3
+        },
+        {
+          "no": "BP01-067",
+          "name": "「Hostile Focus」Winter Soldier",
+          "qty": 2
+        },
+        {
+          "no": "BP01-077",
+          "name": "「I Need You」Captain America",
+          "qty": 3
+        },
+        {
+          "no": "SD03-004",
+          "name": "「Cold Shadow」New Black Panther",
+          "qty": 3
+        },
+        {
+          "no": "SD03-011",
+          "name": "「Ancestral Plane」New Black Panther",
+          "qty": 3
+        },
+        {
+          "no": "BP01-083",
+          "name": "「Freedom Watch」New Captain America",
+          "qty": 3
+        },
+        {
+          "no": "BP01-080",
+          "name": "「Martyrdom」Captain America",
+          "qty": 2
+        },
+        {
+          "no": "SP01-007",
+          "name": "「Spider-Companion」Spinneret",
+          "qty": 2
+        },
+        {
+          "no": "SP01-003",
+          "name": "「Phoenix Host」Jean Grey",
+          "qty": 1
+        },
+        {
+          "no": "SP01-044",
+          "name": "「Spider-Archenemy」Electro",
+          "qty": 1
+        },
+        {
+          "no": "SP01-042",
+          "name": "「Spider-Archenemy」Green Goblin",
+          "qty": 3
+        },
+        {
+          "no": "SP01-049",
+          "name": "「Spider-Ally」Harry Osborn",
+          "qty": 2
+        },
+        {
+          "no": "SD03-001",
+          "name": "「Supreme Watcher」Captain America",
+          "qty": 2
+        },
+        {
+          "no": "BP01-074",
+          "name": "「Genius Burden」Mr.Fantastic",
+          "qty": 2
+        }
+      ]
+    },
+    {
+      "id": "gz-2nd-mowang",
+      "name": "廣州站 亞軍 魔王 · RB Symbiote Knull",
+      "colors": [
+        "Red",
+        "Blue"
+      ],
+      "set": "MIX",
+      "author": "魔王",
+      "source": "地區公開賽·廣州站 · 亞軍",
+      "source_url": "",
+      "date": "2026-08-24",
+      "total": 50,
+      "official_code": "DnC7qtFA",
+      "keycards": [
+        "SP01-047",
+        "SP01-001",
+        "SP01-053"
+      ],
+      "code": "1|%E5%BB%A3%E5%B7%9E%E7%AB%99%20%E4%BA%9E%E8%BB%8D%20%E9%AD%94%E7%8E%8B%20%C2%B7%20RB%20Symbiote%20Knull|I0013I0063I0412I0423I0433I0443I0503I0513I0521I0533I0543I0583I0473A0023A0773A0901A0113A0611A0213",
+      "cards": [
+        {
+          "no": "SP01-001",
+          "name": "「Spider-Archenemy」Carnage",
+          "qty": 3
+        },
+        {
+          "no": "SP01-006",
+          "name": "「Spider-Archenemy」Red Goblin",
+          "qty": 3
+        },
+        {
+          "no": "SP01-041",
+          "name": "「Spider-Archenemy」Doctor Octopus",
+          "qty": 2
+        },
+        {
+          "no": "SP01-042",
+          "name": "「Spider-Archenemy」Green Goblin",
+          "qty": 3
+        },
+        {
+          "no": "SP01-043",
+          "name": "「Spider-Archenemy」Kingpin",
+          "qty": 3
+        },
+        {
+          "no": "SP01-044",
+          "name": "「Spider-Archenemy」Electro",
+          "qty": 3
+        },
+        {
+          "no": "SP01-050",
+          "name": "「Spider-Archenemy」Phage",
+          "qty": 3
+        },
+        {
+          "no": "SP01-051",
+          "name": "「Spider-Archenemy」Agony",
+          "qty": 3
+        },
+        {
+          "no": "SP01-052",
+          "name": "「Spider-Archenemy」Scream",
+          "qty": 1
+        },
+        {
+          "no": "SP01-053",
+          "name": "「Spider-Archenemy」Riot",
+          "qty": 3
+        },
+        {
+          "no": "SP01-054",
+          "name": "「Spider-Archenemy」Lasher",
+          "qty": 3
+        },
+        {
+          "no": "SP01-058",
+          "name": "「Spider-Archenemy」Tombstone",
+          "qty": 3
+        },
+        {
+          "no": "SP01-047",
+          "name": "「God of Symbiotes」Knull",
+          "qty": 3
+        },
+        {
+          "no": "BP01-002",
+          "name": "「Covert Ops」Black Widow",
+          "qty": 3
+        },
+        {
+          "no": "BP01-077",
+          "name": "「I Need You」Captain America",
+          "qty": 3
+        },
+        {
+          "no": "BP01-090",
+          "name": "「Freedom Decision」Captain America",
+          "qty": 1
+        },
+        {
+          "no": "BP01-011",
+          "name": "「Thunder Speed」Thor",
+          "qty": 3
+        },
+        {
+          "no": "BP01-061",
+          "name": "「Follow Shadow」New Black Panther",
+          "qty": 1
+        },
+        {
+          "no": "BP01-021",
+          "name": "「Thunder Caller」Thor",
+          "qty": 3
+        }
+      ]
+    },
+    {
+      "id": "gz-3rd-haotian",
+      "name": "廣州站 季軍 猫岛-昊天 · RB Avengers",
+      "colors": [
+        "Red",
+        "Blue"
+      ],
+      "set": "MIX",
+      "author": "猫岛-昊天",
+      "source": "地區公開賽·廣州站 · 季軍",
+      "source_url": "",
+      "date": "2026-08-24",
+      "total": 50,
+      "official_code": "asUDTiyG",
+      "keycards": [
+        "BP01-066",
+        "BP01-011",
+        "SD03-006"
+      ],
+      "code": "1|%E5%BB%A3%E5%B7%9E%E7%AB%99%20%E5%AD%A3%E8%BB%8D%20%E7%8C%AB%E5%B2%9B-%E6%98%8A%E5%A4%A9%20%C2%B7%20RB%20Avengers|A0023A0113A0152A0131A0222A0663A0671A0773A0833D0063D0043D0112A0802I0423I0441A0632A0643D0011A0012I0062I0492I0072I0031",
+      "cards": [
+        {
+          "no": "BP01-002",
+          "name": "「Covert Ops」Black Widow",
+          "qty": 3
+        },
+        {
+          "no": "BP01-011",
+          "name": "「Thunder Speed」Thor",
+          "qty": 3
+        },
+        {
+          "no": "BP01-015",
+          "name": "「Disintegration Ray」Vision",
+          "qty": 2
+        },
+        {
+          "no": "BP01-013",
+          "name": "「Wakanda Forever」Black Panther",
+          "qty": 1
+        },
+        {
+          "no": "BP01-022",
+          "name": "「Top Agent」Black Widow",
+          "qty": 2
+        },
+        {
+          "no": "BP01-066",
+          "name": "「Turn The Tide」Captain America",
+          "qty": 3
+        },
+        {
+          "no": "BP01-067",
+          "name": "「Hostile Focus」Winter Soldier",
+          "qty": 1
+        },
+        {
+          "no": "BP01-077",
+          "name": "「I Need You」Captain America",
+          "qty": 3
+        },
+        {
+          "no": "BP01-083",
+          "name": "「Freedom Watch」New Captain America",
+          "qty": 3
+        },
+        {
+          "no": "SD03-006",
+          "name": "「Traction Arrow」Hawkeye",
+          "qty": 3
+        },
+        {
+          "no": "SD03-004",
+          "name": "「Cold Shadow」New Black Panther",
+          "qty": 3
+        },
+        {
+          "no": "SD03-011",
+          "name": "「Ancestral Plane」New Black Panther",
+          "qty": 2
+        },
+        {
+          "no": "BP01-080",
+          "name": "「Martyrdom」Captain America",
+          "qty": 2
+        },
+        {
+          "no": "SP01-042",
+          "name": "「Spider-Archenemy」Green Goblin",
+          "qty": 3
+        },
+        {
+          "no": "SP01-044",
+          "name": "「Spider-Archenemy」Electro",
+          "qty": 1
+        },
+        {
+          "no": "BP01-063",
+          "name": "「Time Abduction」Loki",
+          "qty": 2
+        },
+        {
+          "no": "BP01-064",
+          "name": "「Quantum Core」Ant-Man",
+          "qty": 3
+        },
+        {
+          "no": "SD03-001",
+          "name": "「Supreme Watcher」Captain America",
+          "qty": 1
+        },
+        {
+          "no": "BP01-001",
+          "name": "「Antimatter」Iron Man",
+          "qty": 2
+        },
+        {
+          "no": "SP01-006",
+          "name": "「Spider-Archenemy」Red Goblin",
+          "qty": 2
+        },
+        {
+          "no": "SP01-049",
+          "name": "「Spider-Ally」Harry Osborn",
+          "qty": 2
+        },
+        {
+          "no": "SP01-007",
+          "name": "「Spider-Companion」Spinneret",
+          "qty": 2
+        },
+        {
+          "no": "SP01-003",
+          "name": "「Phoenix Host」Jean Grey",
+          "qty": 1
+        }
+      ],
+      "note": "末三張數量請用官方碼覆核"
+    },
+    {
+      "id": "gz-sf-panyu",
+      "name": "廣州站 四強 番禺万磁王 · BG Avengers Mill",
+      "colors": [
+        "Blue",
+        "Green"
+      ],
+      "set": "MIX",
+      "author": "番禺万磁王",
+      "source": "地區公開賽·廣州站 · 四強",
+      "source_url": "",
+      "date": "2026-08-24",
+      "total": 50,
+      "official_code": "PMLFBaIZ",
+      "keycards": [
+        "SP01-066",
+        "SD04-001",
+        "BP01-094"
+      ],
+      "code": "1|%E5%BB%A3%E5%B7%9E%E7%AB%99%20%E5%9B%9B%E5%BC%B7%20%E7%95%AA%E7%A6%BA%E4%B8%87%E7%A3%81%E7%8E%8B%20%C2%B7%20BG%20Avengers%20Mill|A0742A0663A0673A0773A0801A0903I0423I0491I0503I0583I0442A0942A0992A1063A1042E0093A1003E0012E0022I0662I0532",
+      "cards": [
+        {
+          "no": "BP01-074",
+          "name": "「Genius Burden」Mr.Fantastic",
+          "qty": 2
+        },
+        {
+          "no": "BP01-066",
+          "name": "「Turn The Tide」Captain America",
+          "qty": 3
+        },
+        {
+          "no": "BP01-067",
+          "name": "「Hostile Focus」Winter Soldier",
+          "qty": 3
+        },
+        {
+          "no": "BP01-077",
+          "name": "「I Need You」Captain America",
+          "qty": 3
+        },
+        {
+          "no": "BP01-080",
+          "name": "「Martyrdom」Captain America",
+          "qty": 1
+        },
+        {
+          "no": "BP01-090",
+          "name": "「Freedom Decision」Captain America",
+          "qty": 3
+        },
+        {
+          "no": "SP01-042",
+          "name": "「Spider-Archenemy」Green Goblin",
+          "qty": 3
+        },
+        {
+          "no": "SP01-049",
+          "name": "「Spider-Ally」Harry Osborn",
+          "qty": 1
+        },
+        {
+          "no": "SP01-050",
+          "name": "「Spider-Archenemy」Phage",
+          "qty": 3
+        },
+        {
+          "no": "SP01-058",
+          "name": "「Spider-Archenemy」Tombstone",
+          "qty": 3
+        },
+        {
+          "no": "SP01-044",
+          "name": "「Spider-Archenemy」Electro",
+          "qty": 2
+        },
+        {
+          "no": "BP01-094",
+          "name": "「God Of Story」Loki",
+          "qty": 2
+        },
+        {
+          "no": "BP01-099",
+          "name": "「Pym Arrow」Hawkeye",
+          "qty": 2
+        },
+        {
+          "no": "BP01-106",
+          "name": "「Search For Comrade」Falcon",
+          "qty": 3
+        },
+        {
+          "no": "BP01-104",
+          "name": "「Time Reversal」Scarlet Witch",
+          "qty": 2
+        },
+        {
+          "no": "SD04-009",
+          "name": "「Tactical Repositioning」Captain America",
+          "qty": 3
+        },
+        {
+          "no": "BP01-100",
+          "name": "「Hearing Disarm」Daredevil",
+          "qty": 3
+        },
+        {
+          "no": "SD04-001",
+          "name": "「God of Trick」Loki",
+          "qty": 2
+        },
+        {
+          "no": "SD04-002",
+          "name": "「Clustered Arrow」Hawkeye",
+          "qty": 2
+        },
+        {
+          "no": "SP01-066",
+          "name": "「Restoration of Multiverse」Doctor Strange",
+          "qty": 2
+        },
+        {
+          "no": "SP01-053",
+          "name": "「Spider-Archenemy」Riot",
+          "qty": 2
+        }
+      ]
+    },
     {
       "id": "ascc-champ-shengfan",
       "name": "ASCC 冠軍 剩饭君 · YG Web Spider",
