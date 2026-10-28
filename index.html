@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&family=Teko:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=1.6.11-beta" />
+  <link rel="stylesheet" href="css/styles.css?v=1.6.12-beta" />
   <!-- GoatCounter privacy-friendly analytics -->
   <script data-goatcounter="https://aaronht88.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
@@ -21,7 +21,7 @@
         <p class="subtitle" data-i18n="subtitle">233 張實卡資料（BP01 The Avengers + SD01-04 預組）· 官方 cardlist</p>
         <p class="author-credit" data-i18n="byAuthor">by aaronht88</p>
       </div>
-      <span class="version-badge" id="version-badge">v1.6.11-beta</span>
+      <span class="version-badge" id="version-badge">v1.6.12-beta</span>
       <span class="visitor-badge" data-i18n-title="visitorViews" title="訪客瀏覽次數">👁 <span data-i18n="visitorLabel">訪客</span> <span id="visitor-count">–</span></span>
       <button id="btn-donate-top" class="btn-donate-chip" data-i18n="donateBtn">☕ 支持我</button>
     </div>
@@ -246,14 +246,15 @@
     <div id="ref-decks" class="ref-decks"></div>
   </section>
 
-  <!-- BATTLE SIM (deck pickers only; combat engine is not wired yet) -->
+  <!-- BATTLE SIM: same-page sim via vendored mhr-rules-engine (pin eaf08e0) -->
   <section class="page page-battle-sim" id="page-battle-sim" hidden>
     <div class="bsim-wrap">
       <header class="bsim-head">
         <h2 class="bsim-title" data-i18n="bsimTitle">Battle Sim</h2>
-        <p class="page-note" data-i18n="bsimIntro">為我方與對手各選一副已存牌組，或貼上分享碼。開始前會顯示張數、顏色同 50 張構築檢查。</p>
+        <p class="page-note" data-i18n="bsimIntro">為我方與對手各選一副已存牌組，或貼上分享碼。開始模擬會喺本頁用規則引擎行一局，唔經對戰伺服器。</p>
       </header>
-      <p class="bsim-disclaimer" data-i18n="bsimDisclaimer">AI／固定策略演示，非官方裁定；規則覆蓋率未完整</p>
+      <p class="bsim-disclaimer" data-i18n="bsimDisclaimer">非正式裁定 · 引擎 MVP</p>
+      <p class="bsim-engine" id="bsim-engine" data-i18n="bsimEnginePin">mhr-rules-engine eaf08e0</p>
       <div class="bsim-sides">
         <article class="bsim-side" data-bsim-side="self">
           <h3 id="bsim-self-heading" data-i18n="bsimSideSelf">我方</h3>
@@ -289,9 +290,18 @@
         </article>
       </div>
       <div class="bsim-actions">
+        <label class="bsim-field bsim-diff">
+          <span data-i18n="bsimDifficulty">AI 強度</span>
+          <select id="bsim-difficulty" aria-label="AI difficulty">
+            <option value="weak" data-i18n="bsimDiffWeak">弱</option>
+            <option value="normal" selected data-i18n="bsimDiffNormal">普通</option>
+            <option value="strong" data-i18n="bsimDiffStrong">強</option>
+          </select>
+        </label>
         <button type="button" id="bsim-start" class="btn btn-primary" data-i18n="bsimStart">開始模擬</button>
       </div>
       <div id="bsim-notice" class="bsim-notice" role="status" hidden></div>
+      <div id="bsim-result" class="bsim-result" hidden></div>
     </div>
   </section>
 
@@ -490,15 +500,16 @@
   <div id="toast" class="toast" hidden></div>
 
   <!-- data + logic (versioned query = cache busting on release) -->
-  <script src="js/i18n.js?v=1.6.11-beta"></script>
-  <script src="js/cards.js?v=1.6.11-beta"></script>
-  <script src="js/cards_cn.js?v=1.6.11-beta"></script>
-  <script src="js/rules.js?v=1.6.11-beta"></script>
-  <script src="js/qrcode.min.js?v=1.6.11-beta"></script>
-  <script src="js/google-config.js?v=1.6.11-beta"></script>
-  <script src="js/google-auth.js?v=1.6.11-beta"></script>
-  <script src="js/app.js?v=1.6.11-beta"></script>
-  <script src="js/battle-sim.js?v=1.6.11-beta"></script>
-  <script src="js/pages.js?v=1.6.11-beta"></script>
+  <script src="js/i18n.js?v=1.6.12-beta"></script>
+  <script src="js/cards.js?v=1.6.12-beta"></script>
+  <script src="js/cards_cn.js?v=1.6.12-beta"></script>
+  <script src="js/rules.js?v=1.6.12-beta"></script>
+  <script src="js/qrcode.min.js?v=1.6.12-beta"></script>
+  <script src="js/google-config.js?v=1.6.12-beta"></script>
+  <script src="js/google-auth.js?v=1.6.12-beta"></script>
+  <script src="js/app.js?v=1.6.12-beta"></script>
+  <script src="js/mhr-rules-engine.js?v=1.6.12-beta"></script>
+  <script src="js/battle-sim.js?v=1.6.12-beta"></script>
+  <script src="js/pages.js?v=1.6.12-beta"></script>
 </body>
 </html>
