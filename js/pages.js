@@ -1,12 +1,12 @@
 // =============================================================
 // Marvel Hero Rush Deck Builder — top-level pages
-// Deck Builder / News (HK + intl) / Deck reference (+ community)
+// Deck Builder / Vault / News / Deck reference / Battle Sim
 // =============================================================
 (function () {
   const { t, getLang } = window.MHR_I18N;
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const PAGES = ["builder", "vault", "news", "decks"];
+  const PAGES = ["builder", "vault", "news", "decks", "battle-sim"];
   const COLOR_VAR = { Red: "var(--red)", Yellow: "var(--yellow)", Blue: "var(--blue)", Green: "var(--green)" };
   const CHECK_LABELS = {
     card_count_50: "A1 · 剛好 50 張角色卡",
@@ -80,6 +80,11 @@
       const on = b.dataset.page === p;
       b.classList.toggle("active", on);
       b.setAttribute("aria-selected", String(on));
+      if (on) {
+        requestAnimationFrame(() => {
+          try { b.scrollIntoView({ inline: "nearest", block: "nearest" }); } catch (e) {}
+        });
+      }
     });
     PAGES.forEach((id) => { const el = $("#page-" + id); if (el) el.hidden = id !== p; });
 
