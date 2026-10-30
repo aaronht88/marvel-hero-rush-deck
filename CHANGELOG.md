@@ -4,6 +4,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.11-beta] — 2026-10-30
+
+### 新料
+- **移除頂部賽事跑馬燈**：頁頂香港卡賽跑馬燈已拆除，騰出直向空間。News 分頁、月曆與消息資料維持不變。
+- 版本／cache-bust **1.6.11-beta**
+
 ## [1.6.10-beta] — 2026-10-28
 
 ### 新料

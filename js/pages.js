@@ -676,27 +676,7 @@
       "</div>";
   }
 
-  function renderTicker() {
-    const track = $("#race-ticker");
-    if (!track) return;
-    if (!news) { track.innerHTML = ""; return; }
-    const now = hktNowParts();
-    let items = (news.hk || []).filter((it) => it && it.date && !isPastEvent(it, now));
-    items.sort((a, b) => String(a.date).localeCompare(String(b.date)) || String(a.time || "").localeCompare(String(b.time || "")));
-    if (!items.length) items = (news.intl || []).filter((it) => it && (it.title || it.title_zh)).slice(0, 6);
-    items = items.slice(0, 10);
-    if (!items.length) { track.innerHTML = ""; return; }
-    const bits = items.map((it) => {
-      const title = pickI18n(it, "title") || it.title_zh || it.title || "";
-      const when = String(it.date || "").slice(5);
-      const place = it.venue || "";
-      return "<span><b>" + esc(when) + "</b>" + esc(title) + (place ? " · " + esc(place) : "") + "</span>";
-    }).join("");
-    track.innerHTML = bits + bits;
-  }
-
   function renderNews() {
-    renderTicker();
     const list = $("#news-list");
     if (!list) return;
     const calEl = $("#news-calendar");
@@ -1056,10 +1036,6 @@
   }
 
   document.addEventListener("click", async (e) => {
-    if (e.target.closest("#race-ticker-jump")) {
-      showPage("news", true);
-      return;
-    }
     const viewBtn = e.target.closest("[data-news-view]");
     if (viewBtn) {
       newsView = viewBtn.dataset.newsView === "list" ? "list" : "calendar";
@@ -1482,6 +1458,5 @@
   {
     const boot = parseHash();
     showPage(boot.page, false, { newsId: boot.newsId });
-    ensureNews().then(() => renderTicker());
   }
 })();
