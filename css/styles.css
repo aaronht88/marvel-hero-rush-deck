@@ -1361,34 +1361,6 @@ button.news-item { border: 1px solid var(--border-soft); background: var(--panel
   font-family: var(--sans);
 }
 
-/* 卡賽 ticker */
-.race-ticker {
-  position: relative; z-index: 2;
-  display: flex; align-items: stretch;
-  background: #070708;
-  border-top: 1px solid rgba(230, 36, 41, .75);
-  border-bottom: 1px solid rgba(245, 197, 24, .28);
-  min-height: 34px;
-}
-.race-live {
-  flex: none; align-self: center;
-  margin: 4px 12px;
-  background: var(--marvel-red); color: #fff; border: 0; cursor: pointer;
-  transform: skewX(-12deg);
-  padding: 2px 12px 0;
-  font-family: var(--display); font-size: 18px; letter-spacing: .08em; line-height: 1;
-}
-.race-live:hover { background: #ff3b40; }
-.race-ticker-viewport { overflow: hidden; flex: 1; display: flex; align-items: center; }
-.race-ticker-track {
-  display: flex; gap: 40px; width: max-content;
-  animation: race-tick 38s linear infinite;
-  font-size: 13px; letter-spacing: .03em; white-space: nowrap;
-}
-.race-ticker:hover .race-ticker-track { animation-play-state: paused; }
-.race-ticker-track b { color: var(--gold); font-weight: 600; margin-right: 8px; }
-@keyframes race-tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
 /* Builder tiles: fighter-select plate */
 #card-grid .card {
   background: #161318;
@@ -1480,14 +1452,10 @@ button.news-item { border: 1px solid var(--border-soft); background: var(--panel
   .topbar h1 { font-size: 26px; }
   .topbar h1 small { font-size: 14px; }
   .page-tab { font-size: 20px; padding: 8px 10px 4px; }
-  .race-live { font-size: 16px; margin: 4px 8px; padding: 2px 8px 0; }
   .deck-count { font-size: 36px; }
   #card-grid .card .cname { font-size: 18px; }
   .btn { min-height: 40px; font-size: 18px; }
   .btn-sm { min-height: 36px; }
   .modal-name { font-size: 28px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .race-ticker-track { animation: none; }
 }
 
