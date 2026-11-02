@@ -4,6 +4,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.12-beta] — 2026-11-02
+
+### 新料
+- **SP01-065 英文效果更正**：「Echo of Fate」Spider-Man（GR 同 MR）英文效果之前係從 SP01-064「Dual Destiny」Scarlet Spider 複製過嚟（互換 → AIR STRIKE／BLOCK）。已改到同卡面及同名再錄 EB01-014 一致。
+- 版本／cache-bust **1.6.12-beta**
+
 ## [1.6.11-beta] — 2026-10-30
 
 ### 新料
