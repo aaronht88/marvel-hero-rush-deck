@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>方向 B · 卡面陳列 — Marvel Hero Rush</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,560;1,9..144,560&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@600&family=Outfit:wght@380;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #12100e;
+      --ink: #f3ecdf;
+      --muted: #b5a894;
+      --gold: #d7c39a;
+      --line: rgba(215, 195, 154, .35);
+      --serif: "Fraunces", "Noto Serif TC", "Songti TC", serif;
+      --sans: "Outfit", "Noto Sans TC", "PingFang HK", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    button, input { font-family: inherit; color: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 1px solid var(--gold); outline-offset: 3px; }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 22px 8px;
+    }
+    .mark {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+    .mark small {
+      display: block;
+      font-family: var(--sans);
+      font-style: normal;
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .search {
+      flex: 1;
+      max-width: 420px;
+      border-bottom: 1px solid var(--line);
+    }
+    .search input {
+      width: 100%;
+      background: transparent;
+      border: 0;
+      padding: 8px 0;
+      font-size: 15px;
+    }
+    .search input:focus { outline: none; }
+    .swatches { display: flex; gap: 8px; }
+    .swatch {
+      width: 14px; height: 14px; padding: 0;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      background: var(--c);
+      box-shadow: 0 0 0 1px rgba(243, 236, 223, .25);
+    }
+    .swatch.is-on { box-shadow: 0 0 0 2px var(--gold); }
+    .proto-nav { margin-left: auto; display: flex; gap: 14px; }
+    .proto-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .proto-nav a[aria-current="page"] { color: var(--gold); }
+    .stage-wrap {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(460px, 48%) 1fr;
+    }
+    .stage {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 18px 36px 16px;
+    }
+    .wash {
+      position: absolute;
+      inset: -12%;
+      width: 124%;
+      height: 124%;
+      object-fit: cover;
+      filter: blur(36px) saturate(1.15) brightness(.38);
+      transform: scale(1.05);
+    }
+    .stage figure, .caption { position: relative; z-index: 1; margin: 0; }
+    .caption { text-align: center; max-width: 520px; }
+    .hero {
+      width: auto;
+      height: clamp(380px, calc(100vh - 470px), 640px);
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, .55);
+      background: #2a241c;
+    }
+    .epithet {
+      margin: 0 0 8px;
+      color: var(--gold);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    .caption h2 {
+      font-family: var(--serif);
+      font-weight: 560;
+      font-size: clamp(34px, 3.6vw, 52px);
+      line-height: .92;
+      letter-spacing: -0.035em;
+      margin: 0 0 8px;
+    }
+    .facts {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: .04em;
+    }
+    .effect {
+      margin: 0 auto 12px;
+      max-width: 46ch;
+      font-size: 14px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .qty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .qty button {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--gold);
+      min-width: 42px;
+      height: 36px;
+      font-size: 16px;
+    }
+    .qty button.primary {
+      background: var(--gold);
+      color: #1a140c;
+      padding: 0 16px;
+      letter-spacing: .08em;
+    }
+    .qty em { font-style: normal; font-family: var(--serif); font-size: 28px; }
+    .gallery-col { min-height: 0; display: flex; flex-direction: column; border-left: 1px solid rgba(215,195,154,.18); }
+    .gallery-note {
+      padding: 8px 22px 0;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .gallery {
+      min-height: 0;
+      overflow: auto;
+      padding: 16px 22px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+      gap: 22px 16px;
+      align-content: start;
+    }
+    .gallery button {
+      background: none;
+      border: 0;
+      padding: 0;
+      position: relative;
+    }
+    .gallery img, .hand img {
+      width: 100%;
+      aspect-ratio: 63 / 88;
+      object-fit: cover;
+      display: block;
+      background: #2a241c;
+      box-shadow: 0 16px 30px rgba(0, 0, 0, .4);
+    }
+    .gallery button:hover img { transform: translateY(-8px); }
+    .gallery img { transition: transform .25s cubic-bezier(.2,.7,.2,1); }
+    .gallery button.is-on img { outline: 1px solid var(--gold); outline-offset: 5px; }
+    .badge {
+      position: absolute;
+      right: -4px;
+      bottom: -4px;
+      background: var(--gold);
+      color: #1a140c;
+      font-family: var(--serif);
+      font-size: 13px;
+      min-width: 20px;
+      text-align: center;
+      padding: 0 4px;
+    }
+    .bottom { border-top: 1px solid var(--line); background: #0d0c0a; }
+    .news[hidden] { display: none; }
+    .news {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .news article { padding: 16px 22px 18px; border-right: 1px solid var(--line); }
+    .news article:last-child { border-right: 0; }
+    .news .date {
+      font-family: var(--serif);
+      font-size: 42px;
+      line-height: .8;
+      margin: 0;
+      letter-spacing: -0.04em;
+    }
+    .news .date span { font-family: var(--sans); font-size: 11px; letter-spacing: .18em; display: block; margin-top: 6px; color: var(--gold); }
+    .news h3 { margin: 8px 0 4px; font-weight: 500; font-size: 16px; }
+    .news p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .news a { color: var(--gold); }
+    .handbar {
+      display: grid;
+      grid-template-columns: 180px 1fr auto;
+      gap: 12px;
+      align-items: end;
+      padding: 10px 18px 12px;
+    }
+    .hand-meta { padding-bottom: 8px; }
+    .hand-meta strong {
+      display: block;
+      font-family: var(--serif);
+      font-weight: 560;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+    }
+    .hand-meta span { color: var(--muted); font-size: 12px; letter-spacing: .08em; }
+    .hand {
+      display: flex;
+      align-items: flex-end;
+      overflow-x: auto;
+      min-height: 112px;
+      padding: 8px 8px 4px;
+    }
+    .hand button {
+      background: none;
+      border: 0;
+      padding: 0;
+      width: 72px;
+      margin-left: -28px;
+      position: relative;
+      flex: 0 0 auto;
+    }
+    .hand button:first-child { margin-left: 0; }
+    .hand button:hover { transform: translateY(-14px); z-index: 3; }
+    .hand button.is-on { z-index: 2; }
+    .hand button.is-on img { outline: 1px solid var(--gold); outline-offset: 3px; }
+    .side-actions { display: flex; flex-direction: column; gap: 8px; padding-bottom: 8px; }
+    .side-actions button {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--gold);
+      padding: 8px 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+    .side-actions button.is-on { background: var(--gold); color: #1a140c; }
+    #toast {
+      position: fixed; top: 64px; left: 32px;
+      background: var(--gold); color: #1a140c;
+      padding: 8px 12px; font-size: 13px;
+    }
+    @media (max-width: 980px) {
+      .stage-wrap { grid-template-columns: 1fr; }
+      .stage { padding: 16px; }
+      .hero { max-height: 42vh; }
+      .gallery { max-height: 46vh; }
+      .news { grid-template-columns: 1fr; }
+      .handbar { grid-template-columns: 1fr; }
+      header { flex-wrap: wrap; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="mark">陳列室<small>方向 B · 卡面優先</small></div>
+    <label class="search"><input id="q" type="search" placeholder="搜尋 Iron Man、SP01、Avengers…" autocomplete="off" /></label>
+    <div class="swatches" aria-label="顏色">
+      <button type="button" class="swatch" data-act="color" data-color="Red" style="--c:#d23a2e" aria-label="紅"></button>
+      <button type="button" class="swatch" data-act="color" data-color="Yellow" style="--c:#e2b325" aria-label="黃"></button>
+      <button type="button" class="swatch" data-act="color" data-color="Blue" style="--c:#6ea2ff" aria-label="藍"></button>
+      <button type="button" class="swatch" data-act="color" data-color="Green" style="--c:#3cbf78" aria-label="綠"></button>
+    </div>
+    <nav class="proto-nav" aria-label="原型">
+      <a href="../index.html">目錄</a>
+      <a href="../revamp-a/index.html">A</a>
+      <a href="./index.html" aria-current="page">B</a>
+      <a href="../revamp-d/index.html">D</a>
+    </nav>
+  </header>
+
+  <div class="stage-wrap">
+    <section class="stage" id="stage"></section>
+    <div class="gallery-col">
+      <div class="gallery-note" id="gallery-note"></div>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="news" id="news" hidden></div>
+    <div class="handbar">
+      <div class="hand-meta" id="hand-meta"></div>
+      <div class="hand" id="hand"></div>
+      <div class="side-actions">
+        <button type="button" data-act="news" id="news-btn">卡賽</button>
+        <button type="button" data-act="reset">還原</button>
+      </div>
+    </div>
+  </div>
+  <div id="toast" hidden></div>
+  <script src="../sample-data.js"></script>
+  <script>
+    const SAMPLE = window.MHR_SAMPLE;
+    const ASSET = "../../";
+    const KEY = "mhr-proto-b";
+    const COLOR = { Red: "紅", Yellow: "黃", Blue: "藍", Green: "綠" };
+    const byId = Object.fromEntries(SAMPLE.cards.map((c) => [c.id, c]));
+    const MONTH = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+
+    function loadDeck() {
+      try {
+        const raw = sessionStorage.getItem(KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return { name: SAMPLE.seed.name, counts: { ...SAMPLE.seed.counts } };
+    }
+    const state = {
+      q: "",
+      colors: new Set(),
+      selected: "BP01-001-V3",
+      news: false,
+      deck: loadDeck()
+    };
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+    }
+    function save() { sessionStorage.setItem(KEY, JSON.stringify(state.deck)); }
+    function copiesOfName(name) {
+      let n = 0;
+      for (const [id, q] of Object.entries(state.deck.counts)) {
+        if (byId[id] && byId[id].name === name) n += q;
+      }
+      return n;
+    }
+    function splitName(name) {
+      const m = String(name).match(/^「([^」]*)」\s*(.*)$/);
+      if (!m) return { epithet: "", hero: name };
+      return { epithet: m[1], hero: m[2] || name };
+    }
+    function deckRows() {
+      const rows = [];
+      for (const [id, qty] of Object.entries(state.deck.counts)) {
+        if (byId[id] && qty > 0) rows.push({ ...byId[id], qty });
+      }
+      rows.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name));
+      return rows;
+    }
+    function filtered() {
+      const q = state.q.trim().toLowerCase();
+      return SAMPLE.cards.filter((c) => {
+        if (state.colors.size && !state.colors.has(c.attribute)) return false;
+        if (!q) return true;
+        return `${c.name} ${c.card_no} ${c.feature} ${c.effect} ${c.set}`.toLowerCase().includes(q);
+      });
+    }
+    let toastTimer;
+    function toast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.hidden = true; }, 2000);
+    }
+    function add(id, delta) {
+      const card = byId[id];
+      if (!card) return;
+      const cur = state.deck.counts[id] || 0;
+      if (delta > 0 && copiesOfName(card.name) >= 3) { toast("同名最多 3 張"); return; }
+      const next = cur + delta;
+      if (next <= 0) delete state.deck.counts[id];
+      else state.deck.counts[id] = next;
+      state.selected = id;
+      save();
+      render();
+    }
+    function cardBtn(c, cls) {
+      const qty = state.deck.counts[c.id] || 0;
+      const on = c.id === state.selected ? "is-on" : "";
+      return `<button type="button" class="${cls || ""} ${on}" data-act="select" data-id="${esc(c.id)}" aria-label="${esc(c.name)}">
+        <img src="${ASSET}${esc(c.art)}" alt="" />
+        ${qty ? `<span class="badge">${qty}</span>` : ""}
+      </button>`;
+    }
+    function render() {
+      const list = filtered();
+      const deck = deckRows();
+      const total = deck.reduce((s, r) => s + r.qty, 0);
+      const colors = [...new Set(deck.map((r) => COLOR[r.attribute]))];
+      const sel = byId[state.selected] || list[0] || SAMPLE.cards[0];
+      state.selected = sel.id;
+      const name = splitName(sel.name);
+      const qty = state.deck.counts[sel.id] || 0;
+      document.getElementById("stage").innerHTML = `
+        <img class="wash" src="${ASSET}${esc(sel.art)}" alt="" />
+        <figure><img class="hero" src="${ASSET}${esc(sel.art)}" alt="${esc(sel.name)}" /></figure>
+        <div class="caption">
+          <p class="epithet">${esc(name.epithet || sel.card_no)}</p>
+          <h2>${esc(name.hero)}</h2>
+          <p class="facts">${esc(sel.card_no)} · Lv ${sel.level} · ${sel.power} · 範圍 ${sel.attackRange} · ${esc(sel.rarity)} · ${COLOR[sel.attribute]}<br />${esc(sel.feature)}</p>
+          <p class="effect">${esc(sel.effect).replaceAll("\n", " ")}</p>
+          <div class="qty">
+            <button type="button" data-act="add" data-id="${esc(sel.id)}" data-delta="-1" aria-label="減少">−</button>
+            <em>${qty}</em>
+            <button type="button" class="primary" data-act="add" data-id="${esc(sel.id)}" data-delta="1">放入牌組</button>
+          </div>
+        </div>`;
+      document.getElementById("gallery-note").textContent =
+        list.length === SAMPLE.cards.length ? "全部卡面" : `${list.length} 張卡面`;
+      document.getElementById("gallery").innerHTML = list.map((c) => cardBtn(c)).join("")
+        || `<p style="color:#b5a894">沒有符合的卡面。</p>`;
+      document.getElementById("hand-meta").innerHTML =
+        `<strong>${esc(state.deck.name)}</strong><span>${total} / 50 · ${colors.join("  ") || "—"} · ${deck.length} 種</span>`;
+      document.getElementById("hand").innerHTML = deck.map((c) => cardBtn(c)).join("")
+        || `<p style="color:#b5a894;padding-bottom:16px">從右邊點一張卡，再放入牌組。</p>`;
+      document.querySelectorAll(".swatch").forEach((b) => b.classList.toggle("is-on", state.colors.has(b.dataset.color)));
+      document.getElementById("news").hidden = !state.news;
+      document.getElementById("news-btn").classList.toggle("is-on", state.news);
+      document.getElementById("news").innerHTML = SAMPLE.news.map((n) => {
+        const d = new Date(n.date + "T00:00:00");
+        return `<article>
+          <p class="date">${d.getDate()}<span>${MONTH[d.getMonth()]} · ${esc(n.kicker)}</span></p>
+          <h3>${esc(n.title)}</h3>
+          <p>${esc(n.place)}。${esc(n.summary)}</p>
+          <p><a href="${esc(n.href)}" target="_blank" rel="noopener">看公告</a></p>
+        </article>`;
+      }).join("");
+    }
+    document.body.addEventListener("click", (e) => {
+      const t = e.target.closest("[data-act]");
+      if (!t) return;
+      const act = t.dataset.act;
+      if (act === "select") { state.selected = t.dataset.id; render(); }
+      else if (act === "add") add(t.dataset.id, Number(t.dataset.delta));
+      else if (act === "color") {
+        const c = t.dataset.color;
+        if (state.colors.has(c)) state.colors.delete(c); else state.colors.add(c);
+        render();
+      } else if (act === "news") {
+        state.news = !state.news;
+        render();
+      } else if (act === "reset") {
+        state.deck = { name: SAMPLE.seed.name, counts: { ...SAMPLE.seed.counts } };
+        save();
+        render();
+        toast("已還原範例牌組");
+      }
+    });
+    document.getElementById("q").addEventListener("input", (e) => { state.q = e.target.value; render(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault();
+        document.getElementById("q").focus();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>
