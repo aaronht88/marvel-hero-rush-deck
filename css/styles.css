@@ -1774,3 +1774,7 @@ button.version-badge:hover {
   .topbar h1 { font-size: 18px; }
 }
 
+/* Deck Ref is the reference-list tab. Keep the Broadcast face, but do not
+   uppercase this label into DECKS / DECK REF. */
+.page-tab[data-page="decks"] { text-transform: none; }
+
