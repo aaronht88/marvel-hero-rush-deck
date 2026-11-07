@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.6.12-beta";
+  const APP_VERSION = "1.6.13-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -22,6 +22,7 @@
   let view = "all";          // "all" | "fav" | "rush" (Vault is its own page)
   let activePage = "builder"; // synced via MHR_APP.onPageShow from pages.js
   let urlImportDone = false; // set when ?deck= import created/switched a deck
+  let justAddedId = null;    // tile that should play the add confirmation
 
   // ---------- persistence ----------
   const LS_DECKS = "mhr_decks_v3", LS_FAVS = "mhr_favs_v2", LS_LEGACY_DECK = "mhr_deck_v2", LS_VAULT = "mhr_vault_v1", LS_VAULT_UI = "mhr_vault_ui_v1";
@@ -502,15 +503,17 @@
       const attrChip = card.attribute
         ? `<span class="chip chip-attr chip-${card.attribute}">${attrLabel(card.attribute)}</span>`
         : "";
+      if (justAddedId === card.id) el.classList.add("is-just-added");
+      const cardName = cnCard(card, "name");
       el.innerHTML = `
-        <div class="art"><img loading="lazy" src="${card.art}" alt="${cnCard(card, "name")}" onerror="this.style.display='none'"></div>
+        <div class="art"><img loading="lazy" src="${card.art}" alt="${cardName}" onerror="this.style.display='none'"></div>
         <div class="badges">
           ${inFav ? '<span class="badge badge-fav">★</span>' : ""}
           ${inDeck ? `<span class="badge badge-deck">×${inDeck}</span>` : ""}
           ${vaultBadge}
         </div>
         <div class="meta">
-          <div class="cname" title="${cnCard(card, "name")}">${cnCard(card, "name")}</div>
+          <div class="cname" title="${cardName}">${cardName}</div>
           <div class="ctags">${tags}</div>
           <div class="cmeta">
             ${attrChip}
@@ -518,14 +521,35 @@
             <span class="chip chip-set" title="${CARD_SETS[card.set] || card.set}">${card.set}</span>
           </div>
         </div>`;
-      el.addEventListener("click", () => openModal(card.id));
+      const inspect = document.createElement("button");
+      inspect.type = "button";
+      inspect.className = "card-inspect";
+      inspect.textContent = "i";
+      inspect.title = t("inspectCard");
+      inspect.setAttribute("aria-label", t("inspectCardNamed", { name: cardName }));
+      inspect.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openModal(card.id);
+      });
+      el.appendChild(inspect);
+      el.title = t("addCardHint");
+      el.addEventListener("click", (e) => {
+        if (el.dataset.dragging) return;
+        if (e.target.closest(".card-inspect")) return;
+        addCard(card.id);
+      });
       if (el.draggable) {
         el.addEventListener("dragstart", (e) => {
           e.dataTransfer.setData("text/plain", card.id);
           e.dataTransfer.effectAllowed = "copy";
           el.classList.add("dragging");
+          el.dataset.dragging = "1";
         });
-        el.addEventListener("dragend", () => el.classList.remove("dragging"));
+        el.addEventListener("dragend", () => {
+          el.classList.remove("dragging");
+          setTimeout(() => { delete el.dataset.dragging; }, 0);
+        });
       }
       cardGrid.appendChild(el);
     });
@@ -554,8 +578,11 @@
       return false;
     }
     deck.set(id, cur + 1);
+    justAddedId = id;
     saveDecks();
     renderCards(); renderDeck(); updateModalActions(); renderDeckSelect();
+    clearTimeout(addCard._flash);
+    addCard._flash = setTimeout(() => { justAddedId = null; }, 700);
     if (!silent) toast(t("toastAdded"));
     return true;
   }
@@ -921,7 +948,7 @@
     });
     const hint = document.createElement("p");
     hint.className = "sim-hint";
-    hint.textContent = "👆 " + t("simClickHint");
+    hint.textContent = t("simClickHint");
     content.appendChild(hint);
   }
   function openSimulator() { renderSimulator(); showOverlay($("#sim-modal")); }
@@ -1134,6 +1161,12 @@
   function hideWelcome() { hideOverlay($("#welcome-modal")); }
   const wlStart = $("#wl-start");
   if (wlStart) wlStart.addEventListener("click", hideWelcome);
+  const wlClose = $("#wl-close");
+  if (wlClose) wlClose.addEventListener("click", hideWelcome);
+  const welcomeModal = $("#welcome-modal");
+  if (welcomeModal) {
+    welcomeModal.addEventListener("click", (e) => { if (e.target === welcomeModal) hideWelcome(); });
+  }
   const versionBadge = $("#version-badge");
   if (versionBadge) versionBadge.addEventListener("click", showWelcome);
 
@@ -1371,6 +1404,7 @@
       else if (!$("#sim-modal").hidden) closeSimulator();
       else if (!$("#donation-modal").hidden) closeDonation();
       else if (!$("#import-modal").hidden) closeImportModal();
+      else if (!$("#welcome-modal").hidden) hideWelcome();
       return;
     }
     if (modal.hidden) return;
@@ -1554,7 +1588,8 @@
     }
   } catch (e) {}
   renderDeckSelect();
-  $("#version-badge").textContent = "v" + APP_VERSION;
+  const versionNum = $("#version-badge-num");
+  if (versionNum) versionNum.textContent = "v" + APP_VERSION;
   // language: saved choice wins; otherwise auto-detect from browser
   function detectLang() {
     const nav = (navigator.language || navigator.userLanguage || "zh-HK").toLowerCase();
@@ -1654,5 +1689,4 @@
     console.warn("[MHR] Google sync init failed", e);
   }
 
-  showWelcome();
 })();
