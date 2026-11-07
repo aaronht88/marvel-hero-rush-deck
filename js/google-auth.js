@@ -554,6 +554,11 @@
 
     const configured = isConfigured();
     const signed = isSignedIn();
+    const showUser = !!(configured && signed);
+    if (ui.chip) {
+      ui.chip.classList.toggle("is-signed-in", showUser);
+      ui.chip.classList.toggle("is-signed-out", !showUser);
+    }
 
     if (!configured) {
       if (ui.btnSignIn) {
