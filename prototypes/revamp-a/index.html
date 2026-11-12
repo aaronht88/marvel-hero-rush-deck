@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>方向 A · 高密度牌組台 — Marvel Hero Rush</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:opsz,wght@6..72,500;6..72,650&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1c1712;
+      --muted: #6f675e;
+      --paper: #e7e0d2;
+      --sheet: #f4efe4;
+      --line: #d3c9b6;
+      --line-strong: #1c1712;
+      --red: #c4372a;
+      --red-soft: #f3ddd4;
+      --sans: "IBM Plex Sans", "Noto Sans TC", "PingFang HK", "Microsoft JhengHei", sans-serif;
+      --serif: "Newsreader", "Noto Serif TC", "Songti TC", PMingLiU, serif;
+      --mono: "IBM Plex Mono", "Noto Sans TC", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, var(--red) 0 11px, transparent 11px),
+        var(--paper);
+      font-family: var(--sans);
+      font-size: 14px;
+      letter-spacing: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    button, input { font-family: inherit; color: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+    header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 22px;
+      align-items: end;
+      padding: 14px 22px 12px 26px;
+      border-bottom: 1px solid var(--ink);
+    }
+    .brand { display: flex; gap: 12px; align-items: baseline; }
+    .brand h1 {
+      font-family: var(--serif);
+      font-weight: 650;
+      font-size: 28px;
+      line-height: .9;
+      margin: 0;
+      letter-spacing: -0.03em;
+    }
+    .brand p { margin: 0; color: var(--muted); font-size: 12px; }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin: 0 0 4px;
+    }
+    .proto-nav { display: flex; gap: 0; align-self: center; justify-self: center; }
+    .proto-nav a {
+      color: var(--ink);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 6px 10px;
+      border: 1px solid transparent;
+    }
+    .proto-nav a[aria-current="page"] { border-color: var(--ink); background: var(--sheet); }
+    .rules {
+      font-family: var(--mono);
+      font-size: 12px;
+      text-align: right;
+      line-height: 1.45;
+    }
+    .rules b { font-weight: 500; }
+    .rules .bad { color: var(--red); }
+    .workspace {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 392px;
+    }
+    .browser { min-height: 0; display: flex; flex-direction: column; }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      align-items: center;
+      padding: 10px 16px 10px 26px;
+      border-bottom: 1px solid var(--line);
+    }
+    .search {
+      flex: 1 1 220px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--ink);
+      min-width: 180px;
+    }
+    .search span { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .search input {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      padding: 6px 0;
+      font-size: 14px;
+    }
+    .search input:focus { outline: none; }
+    .seg, .levels { display: flex; }
+    .seg button, .levels button, .textbtn {
+      background: transparent;
+      border: 1px solid var(--line);
+      border-right-width: 0;
+      padding: 5px 9px;
+      font-size: 12px;
+    }
+    .seg button:last-child, .levels button:last-child { border-right-width: 1px; }
+    .seg button.is-on, .levels button.is-on { background: var(--ink); color: var(--sheet); }
+    .swatches { display: flex; gap: 4px; }
+    .swatch {
+      width: 28px; height: 28px;
+      border: 1px solid var(--ink);
+      background: var(--sheet);
+      padding: 0;
+      position: relative;
+    }
+    .swatch i {
+      display: block; width: 12px; height: 12px; margin: 0 auto;
+      background: var(--c);
+    }
+    .swatch.is-on { background: var(--ink); }
+    .textbtn {
+      border-right-width: 1px;
+      background: transparent;
+    }
+    .textbtn:hover, .seg button:hover, .levels button:hover { background: rgba(28,23,18,.05); }
+    .seg button.is-on:hover, .levels button.is-on:hover { background: var(--ink); }
+    .shown { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .scroller { flex: 1; min-height: 0; overflow: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      position: sticky; top: 0; z-index: 1;
+      background: #efe8da;
+      text-align: left;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--ink);
+      white-space: nowrap;
+    }
+    th button {
+      background: none; border: 0; padding: 0;
+      font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit;
+    }
+    th button.is-on { color: var(--ink); }
+    td {
+      padding: 5px 8px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    tbody tr.is-selected { background: var(--red-soft); box-shadow: inset 3px 0 0 var(--red); }
+    tbody tr:hover { background: rgba(196, 55, 42, .06); }
+    tbody tr.is-selected:hover { background: var(--red-soft); }
+    .num { text-align: right; font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+    .thumbbtn, .namebtn { background: none; border: 0; padding: 0; text-align: left; }
+    .thumbbtn img {
+      width: 30px; height: 42px; object-fit: cover; object-position: top;
+      display: block; background: #ddd4c4;
+    }
+    .namebtn { font-weight: 600; font-size: 13.5px; max-width: 280px; overflow: hidden; text-overflow: ellipsis; }
+    .no { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .pip { width: 9px; height: 9px; display: inline-block; background: var(--c); border-radius: 0; }
+    .rar { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; }
+    .stepper { display: inline-flex; align-items: center; gap: 0; }
+    .stepper button {
+      width: 22px; height: 22px; padding: 0;
+      border: 1px solid var(--ink); background: var(--sheet); line-height: 1;
+    }
+    .stepper button:hover { background: var(--ink); color: var(--sheet); }
+    .stepper em { font-style: normal; font-family: var(--mono); min-width: 16px; text-align: center; font-size: 12px; }
+    aside {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--sheet);
+      border-left: 1px solid var(--ink);
+    }
+    .inspector {
+      display: grid;
+      grid-template-columns: 108px 1fr;
+      gap: 12px;
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .inspector img { width: 108px; background: #ddd4c4; display: block; }
+    .inspector .kicker { font-family: var(--mono); font-size: 11px; color: var(--muted); margin: 0 0 4px; }
+    .inspector h2 {
+      font-family: var(--serif);
+      font-size: 22px;
+      line-height: 1;
+      margin: 0 0 6px;
+      letter-spacing: -0.02em;
+      font-weight: 650;
+    }
+    .inspector .meta { font-size: 12px; margin: 0 0 6px; }
+    .inspector .effect {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.45;
+      color: #3a342c;
+      max-height: 88px;
+      overflow: auto;
+    }
+    .deckhead {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 8px; padding: 10px 14px 0;
+    }
+    .deckhead input {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-weight: 650;
+      border: 0;
+      background: transparent;
+      width: 100%;
+      padding: 0;
+      letter-spacing: -0.02em;
+    }
+    .ghost {
+      background: none; border: 0; padding: 0;
+      font-family: var(--mono); font-size: 11px; color: var(--muted);
+      text-decoration: underline; text-underline-offset: 3px;
+    }
+    .curve {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      padding: 10px 14px 8px;
+      align-items: end;
+    }
+    .curve div { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .curve i {
+      display: block; width: 100%; height: 36px;
+      background:
+        linear-gradient(var(--ink), var(--ink)) bottom / 100% var(--h, 0%) no-repeat,
+        repeating-linear-gradient(to top, transparent 0 5px, rgba(28,23,18,.08) 5px 6px);
+    }
+    .curve b { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--muted); }
+    .statusline {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      padding: 0 14px 8px;
+      font-family: var(--mono); font-size: 11px;
+    }
+    .pill { border: 1px solid var(--line); padding: 2px 6px; }
+    .pill.ok { border-color: var(--ink); }
+    .pill.bad { border-color: var(--red); color: var(--red); }
+    .deckscroll { flex: 1; min-height: 0; overflow: auto; padding: 0 6px 16px; }
+    .lv {
+      display: flex; justify-content: space-between;
+      margin: 8px 8px 2px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+      border-bottom: 1px solid var(--ink); padding-bottom: 2px;
+    }
+    .drow {
+      display: grid;
+      grid-template-columns: 16px 1fr auto auto;
+      gap: 6px;
+      align-items: center;
+      padding: 3px 8px;
+      font-size: 13px;
+    }
+    .drow button.namebtn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .drow .qty { font-family: var(--mono); font-size: 12px; }
+    .empty { padding: 18px 14px; color: var(--muted); }
+    .news { padding: 8px 0 28px; }
+    .news article {
+      padding: 16px 26px 16px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 8px 16px;
+    }
+    .news time { font-family: var(--mono); font-size: 12px; }
+    .news .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--red); margin: 0; }
+    .news h3 { font-family: var(--serif); font-size: 26px; margin: 0; font-weight: 650; letter-spacing: -0.02em; }
+    .news p { margin: 4px 0 0; max-width: 62ch; }
+    .news a { color: var(--red); }
+    #toast {
+      position: fixed; bottom: 16px; left: 28px;
+      background: var(--ink); color: var(--sheet);
+      padding: 8px 12px; font-size: 13px;
+    }
+    @media (max-width: 980px) {
+      body { height: auto; }
+      header { grid-template-columns: 1fr; }
+      .rules { text-align: left; }
+      .workspace { grid-template-columns: 1fr; }
+      .scroller { max-height: 68vh; }
+      aside { border-left: 0; border-top: 1px solid var(--ink); min-height: 70vh; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div>
+        <p class="eyebrow">方向 A · Ledger</p>
+        <h1>牌組台</h1>
+        <p>列上直接加減。右側只留曲線、規則、正在看的那張卡。</p>
+      </div>
+    </div>
+    <nav class="proto-nav" aria-label="原型">
+      <a href="../index.html">目錄</a>
+      <a href="./index.html" aria-current="page">A 密度</a>
+      <a href="../revamp-b/index.html">B 卡面</a>
+      <a href="../revamp-d/index.html">D 賽事</a>
+    </nav>
+    <div class="rules" id="rules"></div>
+  </header>
+
+  <div class="workspace">
+    <section class="browser">
+      <div class="toolbar">
+        <label class="search">
+          <span>/</span>
+          <input id="q" type="search" placeholder="卡名、編號、特徵、效果" autocomplete="off" />
+        </label>
+        <div class="swatches" role="group" aria-label="顏色">
+          <button type="button" class="swatch" data-act="color" data-color="Red" style="--c:#d23a2e" aria-label="紅" aria-pressed="false"><i></i></button>
+          <button type="button" class="swatch" data-act="color" data-color="Yellow" style="--c:#d6a20a" aria-label="黃" aria-pressed="false"><i></i></button>
+          <button type="button" class="swatch" data-act="color" data-color="Blue" style="--c:#2f6fe0" aria-label="藍" aria-pressed="false"><i></i></button>
+          <button type="button" class="swatch" data-act="color" data-color="Green" style="--c:#1f9a55" aria-label="綠" aria-pressed="false"><i></i></button>
+        </div>
+        <div class="levels" role="group" aria-label="等級">
+          <button type="button" data-act="level" data-level="1">1</button>
+          <button type="button" data-act="level" data-level="2">2</button>
+          <button type="button" data-act="level" data-level="3">3</button>
+          <button type="button" data-act="level" data-level="4">4</button>
+          <button type="button" data-act="level" data-level="5">5</button>
+          <button type="button" data-act="level" data-level="6">6</button>
+        </div>
+        <div class="seg" role="group" aria-label="版面">
+          <button type="button" data-act="view" data-view="cards">卡庫</button>
+          <button type="button" data-act="view" data-view="news">卡賽</button>
+        </div>
+        <button type="button" class="textbtn" data-act="clear">清除</button>
+        <span class="shown" id="shown"></span>
+      </div>
+      <div class="scroller">
+        <table id="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th><button type="button" data-act="sort" data-sort="name">卡名</button></th>
+              <th><button type="button" data-act="sort" data-sort="no">編號</button></th>
+              <th class="num"><button type="button" data-act="sort" data-sort="level">Lv</button></th>
+              <th class="num"><button type="button" data-act="sort" data-sort="power">戰力</button></th>
+              <th class="num"><button type="button" data-act="sort" data-sort="range">範圍</button></th>
+              <th>色</th>
+              <th>稀有</th>
+              <th class="num">牌組</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div class="news" id="news" hidden></div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="inspector" id="inspector"></div>
+      <div class="deckhead">
+        <input id="deck-name" aria-label="牌組名稱" />
+        <button type="button" class="ghost" data-act="reset">還原範例</button>
+      </div>
+      <div class="curve" id="curve" aria-label="等級曲線"></div>
+      <div class="statusline" id="status"></div>
+      <div class="deckscroll" id="deck"></div>
+    </aside>
+  </div>
+  <div id="toast" hidden></div>
+  <script src="../sample-data.js"></script>
+  <script>
+    const SAMPLE = window.MHR_SAMPLE;
+    const ASSET = "../../";
+    const KEY = "mhr-proto-a";
+    const COLOR = {
+      Red: { zh: "紅", hex: "#d23a2e" },
+      Yellow: { zh: "黃", hex: "#d6a20a" },
+      Blue: { zh: "藍", hex: "#2f6fe0" },
+      Green: { zh: "綠", hex: "#1f9a55" }
+    };
+    const byId = Object.fromEntries(SAMPLE.cards.map((c) => [c.id, c]));
+
+    function loadDeck() {
+      try {
+        const raw = sessionStorage.getItem(KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return { name: SAMPLE.seed.name, counts: { ...SAMPLE.seed.counts } };
+    }
+
+    const state = {
+      q: "",
+      colors: new Set(),
+      levels: new Set(),
+      sort: "level",
+      view: "cards",
+      selected: "BP01-001-V3",
+      deck: loadDeck()
+    };
+
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+    }
+    function save() { sessionStorage.setItem(KEY, JSON.stringify(state.deck)); }
+    function copiesOfName(name) {
+      let n = 0;
+      for (const [id, q] of Object.entries(state.deck.counts)) {
+        if (byId[id] && byId[id].name === name) n += q;
+      }
+      return n;
+    }
+    function rowsInDeck() {
+      const rows = [];
+      for (const [id, qty] of Object.entries(state.deck.counts)) {
+        if (byId[id] && qty > 0) rows.push({ ...byId[id], qty });
+      }
+      rows.sort((a, b) => a.level - b.level || a.card_no.localeCompare(b.card_no));
+      return rows;
+    }
+    function stats(rows) {
+      const total = rows.reduce((s, r) => s + r.qty, 0);
+      const colors = [...new Set(rows.map((r) => r.attribute))];
+      const curve = [0, 0, 0, 0, 0, 0];
+      let power = 0;
+      for (const r of rows) {
+        if (r.level >= 1 && r.level <= 6) curve[r.level - 1] += r.qty;
+        power += r.power * r.qty;
+      }
+      return { total, colors, curve, avg: total ? Math.round(power / total) : 0 };
+    }
+    function filtered() {
+      const q = state.q.trim().toLowerCase();
+      const list = SAMPLE.cards.filter((c) => {
+        if (state.colors.size && !state.colors.has(c.attribute)) return false;
+        if (state.levels.size && !state.levels.has(c.level)) return false;
+        if (!q) return true;
+        return `${c.name} ${c.card_no} ${c.feature} ${c.effect} ${c.rarity} ${c.set}`.toLowerCase().includes(q);
+      });
+      const cmp = {
+        level: (a, b) => a.level - b.level || b.power - a.power || a.card_no.localeCompare(b.card_no),
+        power: (a, b) => b.power - a.power || a.level - b.level,
+        name: (a, b) => a.name.localeCompare(b.name),
+        no: (a, b) => a.card_no.localeCompare(b.card_no),
+        range: (a, b) => a.attackRange - b.attackRange || a.level - b.level
+      };
+      list.sort(cmp[state.sort] || cmp.level);
+      return list;
+    }
+
+    let toastTimer;
+    function toast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { el.hidden = true; }, 2200);
+    }
+
+    function add(id, delta) {
+      const card = byId[id];
+      if (!card) return;
+      const cur = state.deck.counts[id] || 0;
+      if (delta > 0 && copiesOfName(card.name) >= 3) {
+        toast("同名最多 3 張");
+        return;
+      }
+      const next = cur + delta;
+      if (next <= 0) delete state.deck.counts[id];
+      else state.deck.counts[id] = next;
+      state.selected = id;
+      save();
+      render();
+    }
+
+    function renderNews() {
+      document.getElementById("news").innerHTML = SAMPLE.news.map((n) => `
+        <article>
+          <time datetime="${esc(n.date)}">${esc(n.date.slice(5).replace("-", "."))}</time>
+          <div>
+            <p class="kicker">${esc(n.kicker)}</p>
+            <h3>${esc(n.title)}</h3>
+            <p>${esc(n.place)}</p>
+            <p>${esc(n.summary)}</p>
+            <p><a href="${esc(n.href)}" target="_blank" rel="noopener">原文</a></p>
+          </div>
+        </article>`).join("");
+    }
+
+    function render() {
+      const list = filtered();
+      const deck = rowsInDeck();
+      const st = stats(deck);
+      const need = 50 - st.total;
+      const colorText = st.colors.map((c) => COLOR[c].zh).join("＋") || "未選色";
+      const overColor = st.colors.length > 2;
+      const overCount = st.total > 50;
+      document.getElementById("rules").innerHTML =
+        `<b>${st.total} / 50</b> 張` +
+        (need > 0 ? ` · 還差 ${need}` : overCount ? ` · <span class="bad">超出 ${st.total - 50}</span>` : ` · 張數剛好`) +
+        ` · ${overColor ? `<span class="bad">${esc(colorText)}（超過 2 色）</span>` : esc(colorText)}` +
+        ` · 均戰 ${st.avg}`;
+
+      document.getElementById("shown").textContent =
+        state.view === "cards" ? `${list.length} / ${SAMPLE.cards.length}` : "卡賽";
+
+      document.getElementById("table").hidden = state.view !== "cards";
+      document.getElementById("news").hidden = state.view !== "news";
+
+      document.querySelectorAll("[data-color]").forEach((b) => {
+        const on = state.colors.has(b.dataset.color);
+        b.classList.toggle("is-on", on);
+        b.setAttribute("aria-pressed", String(on));
+      });
+      document.querySelectorAll("[data-level]").forEach((b) => {
+        const on = state.levels.has(Number(b.dataset.level));
+        b.classList.toggle("is-on", on);
+        b.setAttribute("aria-pressed", String(on));
+      });
+      document.querySelectorAll("[data-view]").forEach((b) => {
+        b.classList.toggle("is-on", b.dataset.view === state.view);
+      });
+      document.querySelectorAll("[data-sort]").forEach((b) => {
+        b.classList.toggle("is-on", b.dataset.sort === state.sort);
+      });
+
+      const nameInput = document.getElementById("deck-name");
+      if (document.activeElement !== nameInput) nameInput.value = state.deck.name;
+
+      document.getElementById("rows").innerHTML = list.map((c) => {
+        const qty = state.deck.counts[c.id] || 0;
+        const col = COLOR[c.attribute];
+        return `<tr class="${c.id === state.selected ? "is-selected" : ""}">
+          <td><button class="thumbbtn" type="button" data-act="select" data-id="${esc(c.id)}" aria-label="${esc(c.name)}"><img src="${ASSET}${esc(c.art)}" alt="" /></button></td>
+          <td><button class="namebtn" type="button" data-act="select" data-id="${esc(c.id)}">${esc(c.name)}</button></td>
+          <td class="no">${esc(c.card_no)}</td>
+          <td class="num">${c.level}</td>
+          <td class="num">${c.power}</td>
+          <td class="num">${c.attackRange}</td>
+          <td><i class="pip" style="--c:${col.hex}" title="${col.zh}"></i></td>
+          <td class="rar">${esc(c.rarity)}</td>
+          <td class="num"><span class="stepper">
+            <button type="button" data-act="add" data-id="${esc(c.id)}" data-delta="-1" aria-label="減少">−</button>
+            <em>${qty}</em>
+            <button type="button" data-act="add" data-id="${esc(c.id)}" data-delta="1" aria-label="增加">＋</button>
+          </span></td>
+        </tr>`;
+      }).join("") || `<tr><td colspan="9" class="empty">沒有符合的卡。</td></tr>`;
+
+      const sel = byId[state.selected] || list[0] || SAMPLE.cards[0];
+      state.selected = sel.id;
+      const col = COLOR[sel.attribute];
+      document.getElementById("inspector").innerHTML = `
+        <img src="${ASSET}${esc(sel.art)}" alt="" />
+        <div>
+          <p class="kicker">${esc(sel.card_no)} · ${esc(sel.rarity)} · ${esc(sel.set)} · ${col.zh}</p>
+          <h2>${esc(sel.name)}</h2>
+          <p class="meta">Lv ${sel.level} · 戰力 ${sel.power} · 範圍 ${sel.attackRange}<br />${esc(sel.feature)}</p>
+          <p class="effect">${esc(sel.effect).replaceAll("\n", "<br />")}</p>
+        </div>`;
+
+      const max = Math.max(1, ...st.curve);
+      document.getElementById("curve").innerHTML = st.curve.map((n, i) =>
+        `<div><i style="--h:${Math.round((n / max) * 100)}%"></i><b>Lv${i + 1} · ${n}</b></div>`
+      ).join("");
+
+      document.getElementById("status").innerHTML = `
+        <span class="pill ${st.total === 50 ? "ok" : "bad"}">${st.total === 50 ? "50 張" : st.total < 50 ? `差 ${50 - st.total}` : `多 ${st.total - 50}`}</span>
+        <span class="pill ${overColor ? "bad" : "ok"}">${overColor ? "超過 2 色" : (st.colors.length ? colorText : "未選色")}</span>
+        <span class="pill ok">同名 ≤ 3</span>`;
+
+      if (!deck.length) {
+        document.getElementById("deck").innerHTML = `<p class="empty">牌組是空的。在左列按 ＋。</p>`;
+      } else {
+        let html = "";
+        let last = 0;
+        for (const r of deck) {
+          if (r.level !== last) {
+            html += `<div class="lv"><span>LV ${r.level}</span><span>${st.curve[r.level - 1]}</span></div>`;
+            last = r.level;
+          }
+          const c = COLOR[r.attribute];
+          html += `<div class="drow">
+            <i class="pip" style="--c:${c.hex}"></i>
+            <button class="namebtn" type="button" data-act="select" data-id="${esc(r.id)}">${esc(r.name)}</button>
+            <span class="qty">×${r.qty}</span>
+            <span class="stepper">
+              <button type="button" data-act="add" data-id="${esc(r.id)}" data-delta="-1" aria-label="減少">−</button>
+              <button type="button" data-act="add" data-id="${esc(r.id)}" data-delta="1" aria-label="增加">＋</button>
+            </span>
+          </div>`;
+        }
+        document.getElementById("deck").innerHTML = html;
+      }
+    }
+
+    document.body.addEventListener("click", (e) => {
+      const t = e.target.closest("[data-act]");
+      if (!t) return;
+      const act = t.dataset.act;
+      if (act === "select") { state.selected = t.dataset.id; render(); }
+      else if (act === "add") add(t.dataset.id, Number(t.dataset.delta));
+      else if (act === "color") {
+        const c = t.dataset.color;
+        if (state.colors.has(c)) state.colors.delete(c); else state.colors.add(c);
+        state.view = "cards";
+        render();
+      } else if (act === "level") {
+        const n = Number(t.dataset.level);
+        if (state.levels.has(n)) state.levels.delete(n); else state.levels.add(n);
+        state.view = "cards";
+        render();
+      } else if (act === "sort") {
+        state.sort = t.dataset.sort;
+        state.view = "cards";
+        render();
+      } else if (act === "view") {
+        state.view = t.dataset.view;
+        render();
+      } else if (act === "clear") {
+        state.colors.clear();
+        state.levels.clear();
+        state.q = "";
+        document.getElementById("q").value = "";
+        state.view = "cards";
+        render();
+      } else if (act === "reset") {
+        state.deck = { name: SAMPLE.seed.name, counts: { ...SAMPLE.seed.counts } };
+        save();
+        render();
+        toast("已還原範例牌組");
+      }
+    });
+
+    document.getElementById("q").addEventListener("input", (e) => {
+      state.q = e.target.value;
+      state.view = "cards";
+      render();
+    });
+    document.getElementById("deck-name").addEventListener("input", (e) => {
+      state.deck.name = e.target.value;
+      save();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault();
+        document.getElementById("q").focus();
+      }
+    });
+
+    renderNews();
+    render();
+  </script>
+</body>
+</html>
