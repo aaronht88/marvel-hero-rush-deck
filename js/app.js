@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.6.13-beta";
+  const APP_VERSION = "1.6.14-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -676,66 +676,9 @@
   function openDeckManager() { renderDeckManager(); showOverlay(dmModal); }
   function closeDeckManager() { hideOverlay(dmModal); }
   // ---------- share code (compact format; legacy base64 still decodable) ----------
-  const SERIES_LETTER = { SP01: "I", EB01: "F", PB01: "G", TB01: "H", BP01: "A", SD01: "B", SD02: "C", SD03: "D", SD04: "E" };
-  const LETTER_SERIES = { A: "BP01", B: "SD01", C: "SD02", D: "SD03", E: "SD04", F: "EB01", G: "PB01", H: "TB01", I: "SP01" };
-  function encodeShareFor(cardsArr, deckName) {
-    let out = "";
-    for (const [id, qty] of cardsArr) {
-      const m = id.match(/^(SP01|EB01|PB01|TB01|BP01|SD0[1-4])-(\d{3})(-V(\d+))?$/);
-      if (!m) return encodeShareForLegacy(cardsArr); // unknown id → fall back to legacy
-      out += SERIES_LETTER[m[1]] + m[2] + (m[4] ? "v" + m[4] : "") + Math.min(qty | 0, 35).toString(36);
-    }
-    if (deckName && deckName.trim()) {
-      const n = encodeURIComponent(deckName.trim().slice(0, 60));
-      out = "1|" + n + "|" + out;
-    }
-    return out;
-  }
-  function encodeShareForLegacy(cardsArr) {
-    return btoa(unescape(encodeURIComponent(JSON.stringify(cardsArr.map(([id, qty]) => [id, qty])))));
-  }
-  function decodeShare(code) {
-    try {
-      const s = (code || "").trim();
-      let cardsPart = s;
-      let deckName = null;
-      if (s.startsWith("1|")) {
-        const idx = s.indexOf("|", 2);
-        if (idx === -1) return null;
-        deckName = s.slice(2, idx);
-        try { deckName = decodeURIComponent(deckName); } catch (e) {}
-        cardsPart = s.slice(idx + 1);
-      }
-      let m;
-      if (/^[A-I]/.test(cardsPart)) {
-        // compact format: starts with a series letter
-        m = new Map();
-        let i = 0;
-        while (i < cardsPart.length) {
-          const letter = cardsPart[i++];
-          const num = cardsPart.substr(i, 3); i += 3;
-          if (!LETTER_SERIES[letter] || !/^\d{3}$/.test(num)) return null;
-          let id = LETTER_SERIES[letter] + "-" + num;
-          if (cardsPart[i] === "v") {
-            i++;
-            let v = "";
-            while (i < cardsPart.length && /\d/.test(cardsPart[i])) v += cardsPart[i++];
-            if (!v) return null;
-            id += "-V" + v;
-          }
-          if (i >= cardsPart.length) return null;
-          const qty = parseInt(cardsPart[i++], 36);
-          if (qty > 0 && getCard(id)) m.set(id, qty);
-        }
-      } else {
-        // legacy base64 JSON
-        const arr = JSON.parse(decodeURIComponent(escape(atob(cardsPart))));
-        m = new Map();
-        arr.forEach(([id, qty]) => { if (getCard(id)) m.set(id, qty | 0); });
-      }
-      return { deck: m, name: deckName };
-    } catch (e) { return null; }
-  }
+  // Codec lives in js/share-code.js. Variant tokens are "v" + variant digits +
+  // one base36 quantity char; the decoder must not swallow qty 1-9 into the variant.
+  const { encodeShareFor, decodeShare } = window.MHR_SHARE;
 
   // ---------- donation overlay ----------
   function openDonation() { showOverlay($("#donation-modal")); }
