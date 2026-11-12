@@ -6,7 +6,9 @@ Sources
 - hk:   Saka Saka Ltd. (HK distributor) venue page on Mato — schema.org Event JSON-LD.
         Each event page adds shop address, district, end time, and format
         (constructed / sealed). Rows that drop off the venue list are kept so
-        the calendar can still show past events.
+        the calendar can still show past events. November 2026 Mato rows at the
+        official Weekly Casual shops are dropped; those sessions live as
+        ig-marvelherorush-asia-weekly-casual-* items from the Instagram post.
 
 Optional hand-written rewrites live in data/news_overrides.json, keyed by item id.
   Legacy: {"title_zh", "summary_zh"}
@@ -203,19 +205,77 @@ def fetch_hk():
     return items
 
 
+# November 2026 Weekly Casual shops on the official Instagram schedule
+# https://www.instagram.com/p/DfEGfZhIEYC/
+# Mato rows at these shops during 2026-11 are dropped: some dates disagree
+# with the post, and the ones that match would duplicate the official events.
+OFFICIAL_NOV_2026_SHOPS = {
+    "mrboard",
+    "acard",
+    "cardlab",
+    "cardpool",
+    "cardslash",
+    "cdtown",
+    "chalice",
+    "ciaocard",
+    "kkzone",
+    "top3",
+    "shunbaakzan",
+}
+
+
+def norm_hk_shop(name):
+    """Fold venue spellings (#Mr_Board, Chalice Collectible, 純白鎮) to one key."""
+    s = re.sub(r"[\s#_.·,，()（）]+", "", name or "")
+    low = s.lower()
+    aliases = {
+        "mrboard": "mrboard",
+        "acard": "acard",
+        "acardtcg": "acard",
+        "cardlab": "cardlab",
+        "cardpool": "cardpool",
+        "cardpooltcg": "cardpool",
+        "cardpooltcgcolimited": "cardpool",
+        "cardslash": "cardslash",
+        "cdtown": "cdtown",
+        "chalice": "chalice",
+        "chalicecollectible": "chalice",
+        "ciaocard": "ciaocard",
+        "kkzone": "kkzone",
+        "kkzonetcg": "kkzone",
+        "top3": "top3",
+        "top3cardgame": "top3",
+        "純白鎮": "shunbaakzan",
+        "纯白镇": "shunbaakzan",
+        "shunbaakzan": "shunbaakzan",
+    }
+    return aliases.get(low, aliases.get(s, low))
+
+
+def superseded_nov_mato(it):
+    """True when a November 2026 Mato row is covered by the official shop list."""
+    if not str((it or {}).get("id", "")).startswith("mato-"):
+        return False
+    if not re.match(r"2026-11-\d{2}$", str(it.get("date") or "")):
+        return False
+    return norm_hk_shop(it.get("venue")) in OFFICIAL_NOV_2026_SHOPS
+
+
 def merge_hk_history(fresh, old_items, ovr):
     """Keep dated hk rows after they leave the Mato venue list, and backfill override ids.
 
     The calendar hides past events by default; dropping them here would make
     「顯示已結束賽事」 empty. Override copy is merged later by id.
+    November 2026 Mato rows at the official Weekly Casual shops are omitted so
+    the calendar keeps the @marvelherorush.asia session list.
     """
     by_id = {}
     for it in fresh:
-        if it.get("id"):
+        if it.get("id") and not superseded_nov_mato(it):
             by_id[it["id"]] = it
     for prev in old_items or []:
         oid = prev.get("id")
-        if oid and oid not in by_id and prev.get("date"):
+        if oid and oid not in by_id and prev.get("date") and not superseded_nov_mato(prev):
             by_id[oid] = prev
     for oid, ov in (ovr or {}).items():
         if not str(oid).startswith("mato-") or oid in by_id:
@@ -229,6 +289,8 @@ def merge_hk_history(fresh, old_items, ovr):
             print(f"[warn] hk history missing {oid}", file=sys.stderr)
             continue
         rec["id"] = oid
+        if superseded_nov_mato(rec):
+            continue
         by_id[oid] = rec
     items = list(by_id.values())
     items.sort(key=lambda i: (i.get("date", ""), i.get("time", ""), i.get("id", "")))
