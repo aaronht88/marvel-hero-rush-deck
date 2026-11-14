@@ -5,7 +5,7 @@
 // Rules, provided by user 2026-08-10):
 //   - DECK: exactly 50 character cards (角色卡)
 //   - COLORS: deck characters may contain AT MOST 2 colors
-//     (attribute: Red/Yellow/Blue/Green)
+//     (attribute: Red/Yellow/Blue/Green/Orange/Purple)
 //   - COPY LIMIT: max 3 cards with the SAME NAME (名称相同)
 //     (variant prints share the same name → share the limit)
 //   - RUSH DECK: players separately choose 9 Rush Cards (冲击卡);
@@ -28,7 +28,7 @@ const RULES = {
     deckOutWin: true, // opponent deck at 0 also wins
   },
   characterLevels: 6,
-  attributes: ["Red", "Yellow", "Blue", "Green"],
+  attributes: ["Red", "Yellow", "Blue", "Green", "Orange", "Purple"],
 
   // validation toggle: when false, deck is built freely (no hard errors)
   enforce: true,

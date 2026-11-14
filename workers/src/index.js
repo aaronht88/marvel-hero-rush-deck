@@ -289,9 +289,11 @@ async function handleSyncPut(request, env, user) {
 }
 
 /** Server-side share-code parse (compact + legacy). No card DB — ids + qty only. */
+// A–I are stable. J=SD05 K=SD06 L=LP01 M=PB02 N=CB01 (1.6.14).
 const LETTER_SERIES = {
   A: "BP01", B: "SD01", C: "SD02", D: "SD03", E: "SD04",
   F: "EB01", G: "PB01", H: "TB01", I: "SP01",
+  J: "SD05", K: "SD06", L: "LP01", M: "PB02", N: "CB01",
 };
 
 function parseShareCode(code) {
@@ -310,7 +312,7 @@ function parseShareCode(code) {
       cardsPart = s.slice(idx + 1);
     }
     const entries = [];
-    if (/^[A-I]/.test(cardsPart)) {
+    if (/^[A-N]/.test(cardsPart)) {
       let i = 0;
       while (i < cardsPart.length) {
         const letter = cardsPart[i++];
@@ -323,6 +325,15 @@ function parseShareCode(code) {
           let v = "";
           while (i < cardsPart.length && /\d/.test(cardsPart[i])) v += cardsPart[i++];
           if (!v) return null;
+          // Same rule as the client: a digit copy count is not part of -V.
+          const next = cardsPart[i];
+          if (v.length > 1 && (!next || /[A-N]/.test(next))) {
+            const qty = parseInt(v.slice(-1), 36);
+            id += "-V" + v.slice(0, -1);
+            if (!qty || qty < 1) return null;
+            entries.push({ id, qty });
+            continue;
+          }
           id += "-V" + v;
         }
         if (i >= cardsPart.length) return null;
@@ -348,13 +359,16 @@ function parseShareCode(code) {
 }
 
 function isRushPointId(id) {
-  // Rush Points: BP01-121~150, SP01-081~100, starter/EB rush prints — heuristic by known ranges
-  const m = String(id).match(/^(BP01|SP01|EB01|SD0[1-4]|PB01|TB01)-(\d{3})/);
+  // Rush Points: BP01-121~150, SP01-081~100, starter/EB rush prints — heuristic by known ranges.
+  // SD05/SD06 rush is the -019 token. LP01 rush prints are LP01-073~105.
+  const m = String(id).match(/^(BP01|SP01|EB01|LP01|PB0[12]|TB01|CB01|SD0[1-6])-(\d{3})/);
   if (!m) return false;
   const set = m[1];
   const n = parseInt(m[2], 10);
   if (set === "BP01" && n >= 121 && n <= 150) return true;
   if (set === "SP01" && n >= 81 && n <= 100) return true;
+  if (set === "LP01" && n >= 73 && n <= 105) return true;
+  if ((set === "SD05" || set === "SD06") && n === 19) return true;
   // Starter / EB01 often use -121 style single rush; treat high numbers cautiously
   if (/^SD0[1-4]$/.test(set) && n >= 121) return true;
   if (set === "EB01" && n >= 121) return true;

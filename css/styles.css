@@ -26,6 +26,8 @@
   --yellow: #f0c000;
   --blue: #3d8bff;
   --green: #35c96a;
+  --orange: #f07a12;
+  --purple: #9b59e0;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --display: "Teko", "Noto Sans TC", "PingFang HK", "Microsoft JhengHei", sans-serif;
@@ -316,6 +318,8 @@ body.modal-open { overflow: hidden; }
 .card.attr-Yellow { border-top-color: var(--yellow); }
 .card.attr-Blue { border-top-color: var(--blue); }
 .card.attr-Green { border-top-color: var(--green); }
+.card.attr-Orange { border-top-color: var(--orange); }
+.card.attr-Purple { border-top-color: var(--purple); }
 .card .art {
   aspect-ratio: 63/88; display: flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, #1a1416, #24181a); overflow: hidden;
@@ -514,6 +518,8 @@ body.modal-open { overflow: hidden; }
 .chip-Yellow { background: linear-gradient(180deg, #ffd740, #b8860b); color: #221a00; }
 .chip-Blue { background: linear-gradient(180deg, #64b5f6, #1565c0); }
 .chip-Green { background: linear-gradient(180deg, #66bb6a, #1b8a3d); }
+.chip-Orange { background: linear-gradient(180deg, #ffb74d, #e65100); }
+.chip-Purple { background: linear-gradient(180deg, #ce93d8, #6a1b9a); }
 .chip-set { background: linear-gradient(180deg, #39445e, #222c42); color: #aebfdd; border: 1px solid rgba(174, 191, 221, .35); font-family: var(--display); font-weight: 700; cursor: help; }
 .chip-set:hover { color: #fff; border-color: var(--cyan-dim); }
 .rar { display: inline-block; font-size: 12px; padding: 1px 4px; border-radius: 3px; font-weight: 700; letter-spacing: .4px; white-space: nowrap; }
@@ -528,6 +534,7 @@ body.modal-open { overflow: hidden; }
 .rar-PR { background: linear-gradient(180deg, #b04a9a, #6e2a5e); color: #ffd0f0; }
 .rar-TR { background: linear-gradient(180deg, #a8741a, #5e3c08); color: #ffe8b8; }
 .rar-HR { background: linear-gradient(180deg, #c43a5e, #7a1a38); color: #ffd0dc; }
+.rar-CR { background: linear-gradient(180deg, #3d7ea0, #1d4e66); color: #d6f3ff; }
 
 /* ---------- Deck panel ---------- */
 .deck-header {
@@ -631,6 +638,8 @@ body.modal-open { overflow: hidden; }
 .sim-card.attr-Yellow { border-top-color: var(--yellow); }
 .sim-card.attr-Blue { border-top-color: var(--blue); }
 .sim-card.attr-Green { border-top-color: var(--green); }
+.sim-card.attr-Orange { border-top-color: var(--orange); }
+.sim-card.attr-Purple { border-top-color: var(--purple); }
 .sim-art { aspect-ratio: 63/88; background: #1a1416; }
 .sim-art img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
 .sim-name { font-size: 12px; padding: 4px 6px 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; box-sizing: border-box; }
@@ -1380,6 +1389,8 @@ button.news-item { border: 1px solid var(--border-soft); background: var(--panel
 #card-grid .card.attr-Yellow { --tile: var(--yellow); }
 #card-grid .card.attr-Blue { --tile: var(--blue); }
 #card-grid .card.attr-Green { --tile: var(--green); }
+#card-grid .card.attr-Orange { --tile: var(--orange); }
+#card-grid .card.attr-Purple { --tile: var(--purple); }
 #card-grid .card .art { aspect-ratio: 1 / .92; background: #221c1e; }
 #card-grid .card .art img { object-position: center 14%; }
 #page-builder #card-grid.card-grid {
@@ -1616,6 +1627,8 @@ button.version-badge:hover {
 .chip-Yellow { background: #c9a000; color: #1a1200; }
 .chip-Blue { background: #1565c0; }
 .chip-Green { background: #1b8a3d; }
+.chip-Orange { background: #e65100; }
+.chip-Purple { background: #6a1b9a; }
 .chip-set, .sim-chip-set { background: #222c42; }
 .rar-SR { background: #2a3a5a; }
 .rar-GR { background: #5a4a00; }
@@ -1627,6 +1640,7 @@ button.version-badge:hover {
 .rar-PR { background: #6e2a5e; }
 .rar-TR { background: #5e3c08; }
 .rar-HR { background: #7a1a38; }
+.rar-CR { background: #1d4e66; }
 .card .art { background: #1a1416; }
 
 .deck-panel, .deck-panel.drag-over { box-shadow: none; }

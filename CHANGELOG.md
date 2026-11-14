@@ -4,6 +4,14 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.14-beta] — 2026-11-15
+
+### 新料
+- **新系列**（官方 cardlist，2026-11-15）：SD05 SOUL、SD06 POWER、LP01 Lite Pack、PB02 Promotion Pack，以及簡中卡表先有、英文卡表未收的 CB01 命運相會。卡庫 **449 → 683**（528 角色 + 155 Rush Point）。
+- **新顏色**：橙（Orange）、紫（Purple）可以篩選、計入牌組統計，繁中／簡中／英文都有標籤。構築規則不變：剛好 50 張、最多 2 色、同名最多 3 張。
+- **分享碼新字母**（A–I 不變）：J=SD05、K=SD06、L=LP01、M=PB02、N=CB01。異畫張數 1–9 不再被讀進版本號，所以 `v23` 係 -V2 ×3，舊碼唔含 `v` 的不受影響。
+- 版本／cache-bust **1.6.14-beta**
+
 ## [1.6.13-beta] — 2026-11-07
 
 ### 新料
