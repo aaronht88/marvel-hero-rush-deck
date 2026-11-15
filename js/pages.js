@@ -7,7 +7,7 @@
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const PAGES = ["builder", "vault", "news", "decks"];
-  const COLOR_VAR = { Red: "var(--red)", Yellow: "var(--yellow)", Blue: "var(--blue)", Green: "var(--green)" };
+  const COLOR_VAR = { Red: "var(--red)", Yellow: "var(--yellow)", Blue: "var(--blue)", Green: "var(--green)", Orange: "var(--orange)", Purple: "var(--purple)" };
   const CHECK_LABELS = {
     card_count_50: "A1 · 剛好 50 張角色卡",
     unique_name_leq_3: "A2 · 同名最多 3 張",

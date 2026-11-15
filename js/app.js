@@ -4,7 +4,7 @@
 // Depends on: i18n.js, cards.js (window.MHR_DATA), rules.js (window.MHR_RULES)
 
 (function () {
-  const APP_VERSION = "1.6.13-beta";
+  const APP_VERSION = "1.6.14-beta";
   const { CARDS, RARITIES, CARD_SETS, ATTRIBUTES } = window.MHR_DATA;
   const RULES = window.MHR_RULES;
   const { t, setLang, getLang } = window.MHR_I18N;
@@ -327,9 +327,9 @@
     el._hideT = setTimeout(() => { el.hidden = true; el.classList.remove("closing"); }, 200);
   }
   function getCard(id) { return CARDS.find((c) => c.id === id); }
-  const ATTR_LABEL = { Red: "紅", Yellow: "黃", Blue: "藍", Green: "綠" };
-  const ATTR_COLOR_ZHCN = { Red: "红", Yellow: "黄", Blue: "蓝", Green: "绿" };
-  const ATTR_COLOR_EN = { Red: "Red", Yellow: "Yellow", Blue: "Blue", Green: "Green" };
+  const ATTR_LABEL = { Red: "紅", Yellow: "黃", Blue: "藍", Green: "綠", Orange: "橙", Purple: "紫" };
+  const ATTR_COLOR_ZHCN = { Red: "红", Yellow: "黄", Blue: "蓝", Green: "绿", Orange: "橙", Purple: "紫" };
+  const ATTR_COLOR_EN = { Red: "Red", Yellow: "Yellow", Blue: "Blue", Green: "Green", Orange: "Orange", Purple: "Purple" };
   function attrLabel(a) {
     const l = getLang();
     if (l === "en") return ATTR_COLOR_EN[a] || a;
@@ -676,12 +676,22 @@
   function openDeckManager() { renderDeckManager(); showOverlay(dmModal); }
   function closeDeckManager() { hideOverlay(dmModal); }
   // ---------- share code (compact format; legacy base64 still decodable) ----------
-  const SERIES_LETTER = { SP01: "I", EB01: "F", PB01: "G", TB01: "H", BP01: "A", SD01: "B", SD02: "C", SD03: "D", SD04: "E" };
-  const LETTER_SERIES = { A: "BP01", B: "SD01", C: "SD02", D: "SD03", E: "SD04", F: "EB01", G: "PB01", H: "TB01", I: "SP01" };
+  // Series letters A–I stay fixed so old share codes keep decoding.
+  // Added in 1.6.14: J=SD05 K=SD06 L=LP01 M=PB02 N=CB01.
+  const SERIES_LETTER = {
+    SP01: "I", EB01: "F", PB01: "G", TB01: "H", BP01: "A",
+    SD01: "B", SD02: "C", SD03: "D", SD04: "E",
+    SD05: "J", SD06: "K", LP01: "L", PB02: "M", CB01: "N",
+  };
+  const LETTER_SERIES = {
+    A: "BP01", B: "SD01", C: "SD02", D: "SD03", E: "SD04",
+    F: "EB01", G: "PB01", H: "TB01", I: "SP01",
+    J: "SD05", K: "SD06", L: "LP01", M: "PB02", N: "CB01",
+  };
   function encodeShareFor(cardsArr, deckName) {
     let out = "";
     for (const [id, qty] of cardsArr) {
-      const m = id.match(/^(SP01|EB01|PB01|TB01|BP01|SD0[1-4])-(\d{3})(-V(\d+))?$/);
+      const m = id.match(/^(SP01|EB01|PB0[12]|TB01|BP01|LP01|CB01|SD0[1-6])-(\d{3})(-V(\d+))?$/);
       if (!m) return encodeShareForLegacy(cardsArr); // unknown id → fall back to legacy
       out += SERIES_LETTER[m[1]] + m[2] + (m[4] ? "v" + m[4] : "") + Math.min(qty | 0, 35).toString(36);
     }
@@ -707,7 +717,7 @@
         cardsPart = s.slice(idx + 1);
       }
       let m;
-      if (/^[A-I]/.test(cardsPart)) {
+      if (/^[A-N]/.test(cardsPart)) {
         // compact format: starts with a series letter
         m = new Map();
         let i = 0;
@@ -721,6 +731,16 @@
             let v = "";
             while (i < cardsPart.length && /\d/.test(cardsPart[i])) v += cardsPart[i++];
             if (!v) return null;
+            // Copy count is one base36 character. Counts 1–9 are digits, so they
+            // sit against the version. If the next character starts another card
+            // (or the code ends), that last digit is the count, not the version.
+            const next = cardsPart[i];
+            if (v.length > 1 && (!next || /[A-N]/.test(next))) {
+              const qty = parseInt(v.slice(-1), 36);
+              id += "-V" + v.slice(0, -1);
+              if (qty > 0 && getCard(id)) m.set(id, qty);
+              continue;
+            }
             id += "-V" + v;
           }
           if (i >= cardsPart.length) return null;
@@ -774,7 +794,7 @@
 
   // chrome=true: include logo, footer & QR (for the exported PNG); false: clean preview
   function drawDeckImage(withChrome) {
-    const RAR_COLORS = { R: "#2a3242", SR: "#4a5a8a", GR: "#8a6a1a", MR: "#3a7a4a", UR: "#7a3a9a", SEC: "#9a3a2a", ER: "#0f7a8c", PR: "#b04a9a", TR: "#a8741a", HR: "#c43a5e", C: "#3a4458" };
+    const RAR_COLORS = { R: "#2a3242", SR: "#4a5a8a", GR: "#8a6a1a", MR: "#3a7a4a", UR: "#7a3a9a", SEC: "#9a3a2a", ER: "#0f7a8c", PR: "#b04a9a", TR: "#a8741a", HR: "#c43a5e", CR: "#2f6f8f", C: "#3a4458" };
     const entries = [...deck.entries()].sort((a, b) => {
       const ca = getCard(a[0]), cb = getCard(b[0]);
       return ca.level - cb.level || ca.card_no.localeCompare(cb.card_no);
@@ -1507,17 +1527,19 @@
       byName.set(c.name, (byName.get(c.name) || 0) + qty);
       if (c.attribute) colors.add(c.attribute);
       // Rush Point cards are type Rush / rush in data; also id heuristics
-      const isRush = (c.type && /rush/i.test(c.type)) || (typeof c.card_no === "string" && false);
+      const isRush = c.type === "impact" || (c.type && /rush/i.test(c.type));
       if (isRush) rush = true;
     });
     // Extra rush heuristic by known number ranges if type missing
     r.deck.forEach((qty, id) => {
-      const m = String(id).match(/^(BP01|SP01|EB01|SD0[1-4]|PB01|TB01)-(\d{3})/);
+      const m = String(id).match(/^(BP01|SP01|EB01|LP01|PB0[12]|TB01|CB01|SD0[1-6])-(\d{3})/);
       if (!m) return;
       const set = m[1], n = parseInt(m[2], 10);
       if (set === "BP01" && n >= 121 && n <= 150) rush = true;
       if (set === "SP01" && n >= 81 && n <= 100) rush = true;
       if (/^SD0[1-4]$/.test(set) && n >= 121) rush = true;
+      if ((set === "SD05" || set === "SD06") && n === 19) rush = true;
+      if (set === "LP01" && n >= 73 && n <= 105) rush = true;
       if ((set === "EB01" || set === "PB01" || set === "TB01") && n >= 121) rush = true;
     });
     let nameOk = true;
