@@ -573,8 +573,115 @@
     }
   }
 
+  const SERIES_ORDER = ["weekly", "monthly", "special", "other"];
+  const SERIES_KEY = {
+    weekly: "calSeriesWeekly",
+    monthly: "calSeriesMonthly",
+    special: "calSeriesSpecial",
+    other: "calSeriesOther",
+  };
+
+  /**
+   * HK calendar series. JS only — id, title, and format text. No news.json field.
+   * Id tokens win over title/format. Official source is @marvelherorush.asia
+   * (id prefix ig-marvelherorush-asia-).
+   *
+   * weekly  周賽 — Weekly Casual (id weekly-casual, or title/format "Weekly Casual" / 周賽).
+   * monthly 月賽 — Monthly Competitive Event. Also Monthly Tournament, Monthly Event,
+   *           月賽 / 月度活動, and ids monthly-competitive / monthly-tournament /
+   *           monthly-event / -monthly-. Covers ig-marvelherorush-asia-monthly-competitive-…
+   *           and leftover official-style Mato monthlies.
+   * special 特別賽 — other official events only (Gift from Doom, Infinity Clash, or any
+   *           other @marvelherorush.asia item that is not weekly or monthly).
+   * other   其他 — leftover unofficial Mato "Tournament" and other non-official shop
+   *           events. Do not paint these as specials.
+   */
+  function seriesHaystack(it) {
+    const parts = [];
+    const push = (v) => { if (typeof v === "string" && v) parts.push(v); };
+    if (!it) return "";
+    push(it.title);
+    push(it.title_zh);
+    const titles = it.title_i18n;
+    if (titles && typeof titles === "object") Object.keys(titles).forEach((k) => push(titles[k]));
+    push(it.format);
+    const formats = it.format_i18n;
+    if (formats && typeof formats === "object") Object.keys(formats).forEach((k) => push(formats[k]));
+    return parts.join("\n");
+  }
+
+  function isOfficialAsia(it) {
+    const id = String((it && it.id) || "");
+    if (id.indexOf("ig-marvelherorush-asia-") === 0) return true;
+    const src = String((it && it.source) || "") + " " + String((it && it.source_name) || "");
+    return src.toLowerCase().indexOf("marvelherorush.asia") >= 0;
+  }
+
+  function mentionsWeekly(text, low) {
+    return low.indexOf("weekly casual") >= 0
+      || text.indexOf("周賽") >= 0 || text.indexOf("週賽") >= 0
+      || text.indexOf("周赛") >= 0 || text.indexOf("週赛") >= 0;
+  }
+
+  function mentionsMonthly(text, low) {
+    return low.indexOf("monthly competitive") >= 0
+      || low.indexOf("monthly tournament") >= 0
+      || low.indexOf("monthly event") >= 0
+      || /(^|[^a-z])monthly([^a-z]|$)/.test(low)
+      || text.indexOf("月賽") >= 0 || text.indexOf("月赛") >= 0
+      || text.indexOf("月度活動") >= 0 || text.indexOf("月度活动") >= 0;
+  }
+
+  function mentionsNamedSpecial(low) {
+    return low.indexOf("gift from doom") >= 0 || low.indexOf("infinity clash") >= 0;
+  }
+
+  function eventSeries(it) {
+    const id = String((it && it.id) || "").toLowerCase();
+    if (id.indexOf("weekly-casual") >= 0) return "weekly";
+    if (id.indexOf("monthly-competitive") >= 0 || id.indexOf("monthly-tournament") >= 0 || id.indexOf("monthly-event") >= 0) return "monthly";
+    if (/(^|[-_])monthly($|[-_])/.test(id)) return "monthly";
+    if (id.indexOf("gift-from-doom") >= 0 || id.indexOf("infinity-clash") >= 0) return "special";
+    const text = seriesHaystack(it);
+    const low = text.toLowerCase();
+    if (mentionsWeekly(text, low)) return "weekly";
+    if (mentionsMonthly(text, low)) return "monthly";
+    if (mentionsNamedSpecial(low)) return "special";
+    if (isOfficialAsia(it)) return "special";
+    return "other";
+  }
+
+  function seriesOnDay(list) {
+    const seen = {};
+    (list || []).forEach((it) => { seen[eventSeries(it)] = true; });
+    return SERIES_ORDER.filter((k) => seen[k]);
+  }
+
+  function seriesLabelJoin(kinds) {
+    const lang = (getLang && getLang()) || "zh-HK";
+    const sep = lang === "en" ? ", " : "、";
+    return kinds.map((k) => t(SERIES_KEY[k])).join(sep);
+  }
+
+  function seriesChip(series) {
+    return '<span class="cal-series cal-series-' + series + '">' + esc(t(SERIES_KEY[series])) + "</span>";
+  }
+
+  function seriesDotsHtml(kinds) {
+    const dots = (kinds || []).map((k) => '<i class="cal-dot cal-dot-' + k + '"></i>').join("");
+    return '<span class="cal-dots" aria-hidden="true">' + dots + "</span>";
+  }
+
+  function renderCalLegend() {
+    const items = SERIES_ORDER.map((k) =>
+      '<li><i class="cal-dot cal-dot-' + k + '" aria-hidden="true"></i><span>' + esc(t(SERIES_KEY[k])) + "</span></li>"
+    ).join("");
+    return '<ul class="cal-legend" aria-label="' + esc(t("calSeriesLegend")) + '">' + items + "</ul>";
+  }
+
   function renderCalEvent(it, now) {
     const past = isPastEvent(it, now);
+    const series = eventSeries(it);
     const fmt = formatPresentation(it);
     const shop = shopLine(it);
     const addr = it.address || "";
@@ -590,7 +697,7 @@
     if (hasOnSiteBody(it)) {
       actions.push('<button type="button" class="btn btn-sm" data-news-open="' + esc(it.id) + '">' + esc(t("newsReadOnSite")) + "</button>");
     }
-    return '<article class="cal-event' + (past ? " is-past" : "") + '">' +
+    return '<article class="cal-event is-series-' + series + (past ? " is-past" : "") + '">' +
       (past ? '<span class="cal-past-tag">' + esc(t("calPastTag")) + "</span>" : "") +
       '<h4 class="cal-event-title">' + esc(title) + "</h4>" +
       '<dl class="cal-facts">' +
@@ -600,6 +707,7 @@
           (addr ? '<span class="cal-address">' + esc(addr) + "</span>" : "") +
           (!shop && !addr ? "—" : "") +
         "</dd></div>" +
+        '<div><dt>' + esc(t("calSeriesLabel")) + "</dt><dd>" + seriesChip(series) + "</dd></div>" +
         '<div><dt>' + esc(t("calFormatLabel")) + '</dt><dd><span class="cal-format ' + fmtClass + '">' + esc(fmt.label) + "</span></dd></div>" +
       "</dl>" +
       (actions.length ? '<div class="cal-event-actions">' + actions.join("") + "</div>" : "") +
@@ -641,11 +749,12 @@
       else cls.push("is-empty-day");
       if (iso < now.date) cls.push("is-before");
       if (n && list.every((it) => isPastEvent(it, now))) cls.push("is-past-mark");
+      const kinds = seriesOnDay(list);
+      if (kinds.length === 1) cls.push("has-series-" + kinds[0]);
       const label = n
-        ? t("calDayEvents", { date: longDate(iso), n: n })
+        ? t("calDayEvents", { date: longDate(iso), n: n }) + " · " + seriesLabelJoin(kinds)
         : t("calDayNone", { date: longDate(iso) });
-      const dots = '<span class="cal-dots" aria-hidden="true">' +
-        (n ? new Array(Math.min(n, 3)).fill("<i></i>").join("") : "") + "</span>";
+      const dots = seriesDotsHtml(n ? kinds : []);
       const count = n > 1 ? '<span class="cal-count">' + n + "</span>" : "";
       cells += '<button type="button" class="' + cls.join(" ") + '" data-cal-day="' + iso + '" aria-pressed="' +
         (iso === calSelected ? "true" : "false") + '" aria-label="' + esc(label) + '">' +
@@ -664,6 +773,7 @@
         "</div>" +
         '<button type="button" class="btn btn-sm" data-cal="today">' + esc(t("calToday")) + "</button>" +
       "</div>" +
+      renderCalLegend() +
       '<div class="cal-layout">' +
         '<div class="cal-grid" role="grid" aria-label="' + esc(monthTitle(y, m)) + '">' +
           dows.map((name) => '<div class="cal-dow" role="columnheader">' + esc(name) + "</div>").join("") +
@@ -756,9 +866,12 @@
         ? ' type="button" data-news-open="' + esc(it.id) + '"'
         : ' href="' + esc(it.url) + '" target="_blank" rel="noopener"';
       const badge = onSite ? '<span class="news-onsite">' + esc(t("newsReadOnSite")) + "</span>" : "";
+      const series = newsRegion === "hk" ? eventSeries(it) : "";
       const pastCls = newsRegion === "hk" && isPastEvent(it, now) ? " is-past" : "";
-      return '<' + tag + ' class="news-item' + pastCls + '"' + openAttr + '>' +
+      const seriesCls = series ? " is-series-" + series : "";
+      return '<' + tag + ' class="news-item' + pastCls + seriesCls + '"' + openAttr + '>' +
         (it.category ? '<span class="news-cat cat-' + esc(it.category) + '">' + esc(catLabel(it.category)) + "</span>" : "") +
+        (series ? seriesChip(series) : "") +
         '<span class="news-body"><span class="news-title">' + esc(title) + badge + "</span>" +
         (summary ? '<span class="news-summary">' + esc(summary) + "</span>" : "") +
         '<span class="news-meta">' + meta + "</span></span></" + tag + ">";
