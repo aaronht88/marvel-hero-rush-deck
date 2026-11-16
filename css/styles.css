@@ -26,6 +26,15 @@
   --yellow: #f0c000;
   --blue: #3d8bff;
   --green: #35c96a;
+  /* HK calendar series. Past mixes keep a hue so ended events stay distinct. */
+  --cal-weekly: #f5c518;
+  --cal-monthly: #e62429;
+  --cal-special: #3d8bff;
+  --cal-other: #a39990;
+  --cal-weekly-past: #b0943a;
+  --cal-monthly-past: #a84342;
+  --cal-special-past: #5477ad;
+  --cal-other-past: #7a726a;
   --orange: #f07a12;
   --purple: #9b59e0;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -1085,7 +1094,11 @@ body.modal-open { overflow: hidden; }
 .cal-day:hover { border-color: var(--cyan-dim); background: var(--panel-2); }
 .cal-day.is-empty-day { background: transparent; border-color: rgba(58, 46, 40, .45); }
 .cal-day.is-empty-day .cal-num { color: var(--muted); }
-.cal-day.has-events { background: var(--panel); border-color: rgba(245, 197, 24, .32); }
+.cal-day.has-events { background: var(--panel); border-color: #4a3c34; }
+.cal-day.has-series-weekly { border-color: rgba(245, 197, 24, .55); }
+.cal-day.has-series-monthly { border-color: rgba(230, 36, 41, .55); }
+.cal-day.has-series-special { border-color: rgba(61, 139, 255, .55); }
+.cal-day.has-series-other { border-color: rgba(163, 153, 144, .55); }
 .cal-day.is-before .cal-num { opacity: .72; }
 .cal-day.is-before.has-events { background: rgba(16, 12, 14, .62); }
 .cal-day.is-today .cal-num { color: var(--gold); font-weight: 700; text-shadow: 0 0 8px rgba(245, 197, 24, .45); }
@@ -1096,12 +1109,31 @@ body.modal-open { overflow: hidden; }
 }
 .cal-num { font-family: var(--display); font-weight: 700; font-size: 15px; line-height: 1; }
 .cal-dots { display: flex; gap: 3px; min-height: 6px; align-items: center; }
-.cal-dots i {
+.cal-dot, .cal-dots i {
+  display: inline-block; flex: 0 0 auto;
   width: 6px; height: 6px; border-radius: 50%;
-  background: var(--gold); box-shadow: 0 0 6px rgba(245, 197, 24, .65);
+  background: var(--cal-other); box-shadow: none;
 }
-.cal-day.is-past-mark .cal-dots i { background: var(--muted); box-shadow: none; }
-.cal-count { font-family: var(--display); font-size: 12px; color: var(--gold); line-height: 1; }
+.cal-dot.cal-dot-weekly { background: var(--cal-weekly); }
+.cal-dot.cal-dot-monthly { background: var(--cal-monthly); }
+.cal-dot.cal-dot-special { background: var(--cal-special); }
+.cal-dot.cal-dot-other { background: var(--cal-other); }
+.cal-day.is-past-mark .cal-dot.cal-dot-weekly { background: var(--cal-weekly-past); }
+.cal-day.is-past-mark .cal-dot.cal-dot-monthly { background: var(--cal-monthly-past); }
+.cal-day.is-past-mark .cal-dot.cal-dot-special { background: var(--cal-special-past); }
+.cal-day.is-past-mark .cal-dot.cal-dot-other { background: var(--cal-other-past); }
+.cal-day.is-past-mark.has-series-weekly:not(.is-selected) { border-color: rgba(176, 148, 58, .7); }
+.cal-day.is-past-mark.has-series-monthly:not(.is-selected) { border-color: rgba(168, 67, 66, .7); }
+.cal-day.is-past-mark.has-series-special:not(.is-selected) { border-color: rgba(84, 119, 173, .75); }
+.cal-day.is-past-mark.has-series-other:not(.is-selected) { border-color: rgba(122, 114, 106, .7); }
+.cal-count { font-family: var(--display); font-size: 12px; color: var(--text); line-height: 1; }
+.cal-legend {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
+  margin: 0 0 10px; padding: 0; list-style: none;
+  font-size: 12px; line-height: 1.4; color: var(--text);
+}
+.cal-legend li { display: inline-flex; align-items: center; gap: 5px; }
+.cal-legend .cal-dot { width: 8px; height: 8px; }
 .cal-detail {
   position: sticky; top: 8px;
   background: rgba(16, 12, 14, .88); border: 1px solid var(--border); border-radius: 8px; padding: 12px;
@@ -1111,8 +1143,37 @@ body.modal-open { overflow: hidden; }
 .cal-event {
   position: relative;
   background: var(--panel); border: 1px solid var(--border-soft); border-radius: 6px;
+  border-left-width: 3px;
   padding: 10px 12px; margin-bottom: 8px;
 }
+.cal-event.is-series-weekly { border-left-color: var(--cal-weekly); }
+.cal-event.is-series-monthly { border-left-color: var(--cal-monthly); }
+.cal-event.is-series-special { border-left-color: var(--cal-special); }
+.cal-event.is-series-other { border-left-color: var(--cal-other); }
+.cal-event.is-past.is-series-weekly { border-left-color: var(--cal-weekly-past); }
+.cal-event.is-past.is-series-monthly { border-left-color: var(--cal-monthly-past); }
+.cal-event.is-past.is-series-special { border-left-color: var(--cal-special-past); }
+.cal-event.is-past.is-series-other { border-left-color: var(--cal-other-past); }
+.news-item.is-series-weekly { border-left: 3px solid var(--cal-weekly); }
+.news-item.is-series-monthly { border-left: 3px solid var(--cal-monthly); }
+.news-item.is-series-special { border-left: 3px solid var(--cal-special); }
+.news-item.is-series-other { border-left: 3px solid var(--cal-other); }
+.news-item.is-past.is-series-weekly { border-left-color: var(--cal-weekly-past); }
+.news-item.is-past.is-series-monthly { border-left-color: var(--cal-monthly-past); }
+.news-item.is-past.is-series-special { border-left-color: var(--cal-special-past); }
+.news-item.is-past.is-series-other { border-left-color: var(--cal-other-past); }
+.cal-series {
+  display: inline-block; flex: 0 0 auto; font-size: 12px; line-height: 1.4;
+  padding: 1px 7px; border-radius: 3px; border: 1px solid var(--border); color: var(--text);
+}
+.cal-series-weekly { color: #1a1202; background: var(--cal-weekly); border-color: var(--cal-weekly); }
+.cal-series-monthly { color: #fff; background: var(--cal-monthly); border-color: var(--cal-monthly); }
+.cal-series-special { color: #071018; background: var(--cal-special); border-color: var(--cal-special); }
+.cal-series-other { color: var(--text); background: transparent; border-color: var(--cal-other); }
+.cal-event.is-past .cal-series-weekly { color: #1a1202; background: var(--cal-weekly-past); border-color: var(--cal-weekly-past); }
+.cal-event.is-past .cal-series-monthly { color: #fff; background: var(--cal-monthly-past); border-color: var(--cal-monthly-past); }
+.cal-event.is-past .cal-series-special { color: #071018; background: var(--cal-special-past); border-color: var(--cal-special-past); }
+.cal-event.is-past .cal-series-other { color: var(--muted); background: transparent; border-color: var(--cal-other-past); }
 .cal-event:last-child { margin-bottom: 0; }
 .cal-event.is-past { opacity: .62; }
 .cal-event.is-past .cal-event-title,
@@ -1164,7 +1225,6 @@ body.modal-open { overflow: hidden; }
   .cal-detail { position: static; }
   .cal-pad, .cal-day { min-height: 44px; padding-top: 4px; }
   .cal-num { font-size: 13px; }
-  .cal-count { display: none; }
   .cal-title { font-size: 18px; min-width: 0; }
   .cal-facts > div { grid-template-columns: 4.6em minmax(0, 1fr); }
   .news-tools { width: 100%; }
