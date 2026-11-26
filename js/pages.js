@@ -109,10 +109,17 @@
     } catch (e) {}
     render();
   }
-  document.querySelectorAll(".page-tab").forEach((b) => b.addEventListener("click", () => {
+  document.querySelectorAll(".page-tab[data-page]").forEach((b) => b.addEventListener("click", () => {
     showPage(b.dataset.page, true, { newsId: null });
   }));
+  function isTableHash() {
+    return (location.hash || "").slice(1) === "table";
+  }
   window.addEventListener("hashchange", () => {
+    if (isTableHash()) {
+      location.replace("table.html");
+      return;
+    }
     const { page, newsId } = parseHash();
     showPage(page, false, { newsId });
   });
@@ -1569,7 +1576,10 @@
   }
 
   {
-    const boot = parseHash();
-    showPage(boot.page, false, { newsId: boot.newsId });
+    if ((location.hash || "").slice(1) === "table") location.replace("table.html");
+    else {
+      const boot = parseHash();
+      showPage(boot.page, false, { newsId: boot.newsId });
+    }
   }
 })();

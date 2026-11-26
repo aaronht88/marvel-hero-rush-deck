@@ -1852,3 +1852,18 @@ button.version-badge:hover {
    uppercase this label into DECKS / DECK REF. */
 .page-tab[data-page="decks"] { text-transform: none; }
 
+a.page-tab {
+  text-decoration: none;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+}
+a.page-tab:visited { color: var(--muted); }
+a.page-tab:hover { color: var(--text); }
+
+/* Five tabs no longer fit a phone width. Wrap so 對戰計數 stays fully visible. */
+.page-tabs {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
