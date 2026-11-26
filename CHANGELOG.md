@@ -4,6 +4,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.16-beta] — 2026-11-26
+
+### 新料
+- **對戰助手（Battle companion）**：頁面頂部新增按鈕，開啟實體對戰用的回合計數器。可標記 Call 1、Call 2、Call 3 與基地部署是否已於本回合使用。「結束回合」會重置這些標記、將畫面旋轉 180 度面向對手，並切換顏色。另可切換直向或橫向顯示，該切換不會清除已標記的項目。此工具只作計數，不判定規則。
+- 版本／cache-bust **1.6.16-beta**
+
 ## [1.6.15-beta] — 2026-11-16
 
 ### 新料

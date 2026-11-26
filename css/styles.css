@@ -1852,3 +1852,27 @@ button.version-badge:hover {
    uppercase this label into DECKS / DECK REF. */
 .page-tab[data-page="decks"] { text-transform: none; }
 
+a.btn-companion {
+  flex: 0 0 auto;
+  text-decoration: none;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 6px 16px;
+  font-family: var(--display);
+  font-size: 22px;
+  letter-spacing: .04em;
+  text-transform: none;
+}
+a.btn-companion:visited,
+a.btn-companion:hover { color: #fff; }
+@media (max-width: 720px) {
+  a.btn-companion {
+    order: -1;
+    flex: 1 0 100%;
+    min-height: 48px;
+  }
+}
+
