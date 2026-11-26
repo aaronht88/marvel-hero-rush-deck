@@ -1852,12 +1852,21 @@ button.version-badge:hover {
    uppercase this label into DECKS / DECK REF. */
 .page-tab[data-page="decks"] { text-transform: none; }
 
-/* Battle companion uses the same chip as 支持我. Link resets only —
-   size, type, and the quiet Broadcast fill come from .btn-donate-chip. */
-a.btn-companion,
-a.btn-companion:visited,
-a.btn-companion:hover,
-a.btn-companion:active {
+/* Companion chip only. Size and type stay with .btn-donate-chip;
+   支持我 keeps the quiet panel fill. */
+a.btn-donate-chip.btn-companion,
+a.btn-donate-chip.btn-companion:visited,
+a.btn-donate-chip.btn-companion:hover,
+a.btn-donate-chip.btn-companion:active {
   text-decoration: none;
+  background: var(--marvel-red);
+  border-color: var(--marvel-red);
+  color: #fff !important;
+  box-shadow: none;
+}
+a.btn-donate-chip.btn-companion:hover,
+a.btn-donate-chip.btn-companion:active {
+  background: #c81e23;
+  border-color: #c81e23;
 }
 
