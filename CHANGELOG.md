@@ -4,6 +4,12 @@ All notable changes to the Marvel Hero Rush Deck Builder.
 
 > 版本編號格式：X.Y.Z-beta。此檔案只記錄最新版本改動；完整歷史見 Git commit log。
 
+## [1.6.17-beta] — 2026-11-26
+
+### 新料
+- **頂部對戰助手**：將頂部「對戰助手」改為與「支持我」相同的小標籤樣式。仍連結至對戰助手頁面。
+- 版本／cache-bust **1.6.17-beta**
+
 ## [1.6.16-beta] — 2026-11-26
 
 ### 新料
