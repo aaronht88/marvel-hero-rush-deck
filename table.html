@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="css/table.css" />
 </head>
 <body class="table-body" data-side="a">
+  <div id="frame" class="table-frame">
+  <div id="orient" class="table-orient">
   <div id="stage" class="table-stage" data-side="a">
     <header class="table-bar">
       <a class="table-back" href="index.html" data-i18n="tableBack">返回</a>
@@ -18,7 +20,10 @@
         <p id="table-side" class="table-side">紅方</p>
         <p class="table-your" data-i18n="tableYourTurn">你的回合</p>
       </div>
-      <p class="table-kicker" data-i18n="pageTable">對戰計數</p>
+      <button type="button" id="btn-orient" class="table-orient-btn" aria-pressed="false">
+        <span class="orient-kicker" data-i18n="tableOrientKicker">顯示</span>
+        <span id="orient-label" class="orient-name">直向</span>
+      </button>
     </header>
     <p class="table-hint" data-i18n="tableHint">只作計數，不判定規則。已使用的項目可再按一次改回。</p>
     <div class="table-board">
@@ -46,6 +51,8 @@
       </button>
     </div>
     <p id="table-live" class="sr-only" aria-live="polite"></p>
+  </div>
+  </div>
   </div>
   <script src="js/i18n.js?v=1.6.15-beta"></script>
   <script src="js/table.js"></script>
