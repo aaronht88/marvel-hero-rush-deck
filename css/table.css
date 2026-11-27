@@ -318,54 +318,235 @@ body.table-body[data-side="b"] {
 .table-draw[hidden],
 .table-board[hidden] { display: none !important; }
 .table-draw {
-  display: flex;
+  position: relative;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(230, 36, 41, .22), transparent 58%),
+    var(--panel);
+  transform-style: preserve-3d;
 }
 .table-board {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+.coin-scene {
+  --d: clamp(168px, 52vw, 232px);
+  --t: calc(var(--d) * 0.22);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 118px;
+  perspective: 680px;
+  perspective-origin: 50% 42%;
+  pointer-events: none;
+}
+.coin-shadow {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: calc(var(--d) * 0.72);
+  height: calc(var(--d) * 0.16);
+  margin-left: calc(var(--d) * -0.36);
+  margin-top: calc(var(--d) * 0.40);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, .55), rgba(0, 0, 0, 0) 72%);
+  opacity: .55;
+  transform-origin: center center;
+  filter: blur(1px);
+}
+.coin {
+  --n: 40;
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: var(--d);
+  height: var(--d);
+  margin-left: calc(var(--d) / -2);
+  margin-top: calc(var(--d) / -2);
+  transform-style: preserve-3d;
+}
+.coin-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background:
+    radial-gradient(ellipse 16% 10% at var(--hx, 34%) var(--hy, 26%), rgba(255, 255, 255, .96) 0%, rgba(255, 255, 255, 0) 72%),
+    radial-gradient(ellipse 38% 22% at calc(var(--hx, 34%) - 8%) calc(var(--hy, 26%) + 12%), rgba(255, 236, 186, .55), transparent 70%),
+    conic-gradient(from 205deg,
+      #5c3c0c 0deg,
+      #f8e7a8 26deg,
+      #8a6414 78deg,
+      #fff6d4 108deg,
+      #6e4c10 168deg,
+      #e7c56a 214deg,
+      #3f2a08 262deg,
+      #f0d48a 318deg,
+      #5c3c0c 360deg),
+    radial-gradient(circle at 50% 58%, #d4a017 0%, #8a6410 52%, #4a3008 100%);
+  box-shadow:
+    inset 0 0 0 2px #fff8dc,
+    inset 0 0 0 5px #6b4710,
+    inset 0 0 0 7px #f6e2a4,
+    inset 0 0 22px rgba(40, 22, 4, .45);
+}
+.coin-face::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(48, 28, 6, .62);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 244, 210, .7),
+    0 0 0 1px rgba(255, 236, 190, .35);
+  pointer-events: none;
+}
+.coin-front { transform: translateZ(calc(var(--t) / 2)); }
+.coin-back { transform: rotateX(180deg) translateZ(calc(var(--t) / 2)); }
+.coin-slab {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(#f0d48a, #7a5410 46%, #e6c56a);
+  transform: translateZ(calc(var(--t) * var(--zf)));
+}
+.coin-slab.is-bevel {
+  background: linear-gradient(#fff6d4, #c9a04a 55%, #8a6414);
+}
+.coin-slab.is-glint {
+  background: linear-gradient(#fff, #ffe9a0 35%, #fff 52%, #d4a84a);
+}
+.coin-slab.is-groove {
+  inset: 5px;
+  background: #241608;
+}
+.coin-label {
+  position: relative;
+  z-index: 1;
+  max-width: 74%;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: calc(var(--d) * 0.30);
+  line-height: .82;
+  letter-spacing: .02em;
+  text-align: center;
+  white-space: nowrap;
+  color: #3a2406;
+  text-shadow:
+    0 1px 0 rgba(255, 248, 220, .9),
+    0 -1px 0 rgba(50, 28, 4, .55);
+}
+.coin-rim { position: absolute; inset: 0; transform-style: preserve-3d; }
+.coin-rim-seg {
+  --arc: calc(var(--d) * 3.1416 / var(--n) + 2px);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--arc);
+  height: var(--t);
+  margin-left: calc(var(--arc) / -2);
+  margin-top: calc(var(--t) / -2);
+  background: linear-gradient(to bottom,
+    #f8e7a8 0%,
+    #6b4710 16%,
+    #e7c56a 38%,
+    #fff6d0 50%,
+    #c9a04a 62%,
+    #3d2808 84%,
+    #d4a84a 100%);
+  transform: rotateZ(var(--a)) translateY(calc(var(--d) / -2)) rotateX(90deg);
+}
+.coin-rim-seg.is-reed {
+  background: linear-gradient(to bottom,
+    #c9a04a 0%,
+    #3d2808 22%,
+    #8a6414 48%,
+    #2a1a08 78%,
+    #a67c1a 100%);
+}
+.coin-rim-seg.is-lit {
+  background: linear-gradient(to bottom,
+    #fff 0%,
+    #fff6d4 28%,
+    #fff 50%,
+    #f0d48a 72%,
+    #a67c1a 100%);
+}
+.coin-rim-seg.is-dark {
+  background: linear-gradient(to bottom, #5c3c0c, #1a1006 42%, #3d2808 100%);
+}
 .draw-btn {
   appearance: none;
   font: inherit;
   cursor: pointer;
   touch-action: manipulation;
-  width: 100%;
-  flex: 1 1 auto;
-  min-height: 168px;
-  padding: 18px 16px 16px;
+  position: absolute;
+  inset: 0;
+  padding: 0 16px 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: var(--accent-ink);
+  justify-content: flex-end;
+  gap: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
 }
-.draw-btn:active { filter: brightness(1.08); }
+.draw-btn:disabled { cursor: default; }
+.draw-btn:active:not(:disabled) { background: rgba(255, 255, 255, .03); }
+.draw-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+}
 .draw-name {
   font-family: var(--display);
   font-weight: 500;
-  font-size: clamp(56px, 16vw, 84px);
-  line-height: .88;
+  font-size: clamp(34px, 9vw, 52px);
+  line-height: .9;
   letter-spacing: .04em;
   text-align: center;
   text-wrap: balance;
+  color: var(--text);
 }
 html[lang="en"] .draw-name {
-  font-size: clamp(40px, 11vw, 56px);
+  font-size: clamp(26px, 7vw, 38px);
   letter-spacing: .02em;
 }
+.table-draw[data-toss="fly"] .draw-name {
+  font-size: clamp(26px, 7vw, 36px);
+  color: var(--muted);
+}
+.table-draw[data-toss="settle"] .draw-name,
+.table-draw[data-toss="hold"] .draw-name {
+  font-size: clamp(56px, 16vw, 84px);
+  letter-spacing: .08em;
+  color: var(--used);
+}
+html[lang="en"] .table-draw[data-toss="settle"] .draw-name,
+html[lang="en"] .table-draw[data-toss="hold"] .draw-name {
+  font-size: clamp(40px, 12vw, 64px);
+  letter-spacing: .04em;
+}
 .draw-sub {
-  max-width: 18em;
+  max-width: 20em;
+  min-height: 1.35em;
   font-size: 16px;
   font-weight: 600;
   line-height: 1.35;
   letter-spacing: .03em;
   text-align: center;
-  opacity: .92;
+  color: var(--muted);
 }
+.draw-sub:empty { min-height: 0; }
 .table-calls {
   flex: 1.15 1 auto;
   min-height: 0;
@@ -500,9 +681,17 @@ html[lang="en"] .draw-name {
 .table-stage.is-wide .clock-time.is-long { font-size: 22px; }
 .table-stage.is-wide .table-your { font-size: 26px; }
 .table-stage.is-wide .table-your.is-first { font-size: 40px; }
-.table-stage.is-wide .draw-name { font-size: clamp(36px, 9vh, 60px); }
-.table-stage.is-wide .draw-sub { font-size: 14px; }
-.table-stage.is-wide .draw-btn { min-height: 0; padding: 10px 12px; }
+.table-stage.is-wide .coin-scene {
+  --d: clamp(96px, 34vh, 156px);
+  bottom: 70px;
+}
+.table-stage.is-wide .draw-btn { padding: 0 12px 8px; }
+.table-stage.is-wide .draw-name { font-size: clamp(26px, 6vh, 40px); }
+.table-stage.is-wide .draw-sub { font-size: 13px; }
+.table-stage.is-wide .table-draw[data-toss="settle"] .draw-name,
+.table-stage.is-wide .table-draw[data-toss="hold"] .draw-name { font-size: clamp(32px, 8vh, 52px); }
+html[lang="en"] .table-stage.is-wide .table-draw[data-toss="settle"] .draw-name,
+html[lang="en"] .table-stage.is-wide .table-draw[data-toss="hold"] .draw-name { font-size: clamp(28px, 7vh, 44px); }
 .table-stage.is-wide .table-board {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(140px, .9fr);
