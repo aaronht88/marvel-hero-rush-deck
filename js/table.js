@@ -6,15 +6,15 @@
 // 直向／橫向 only changes which way the board faces. It does not reset
 // counts, timers, or the first-player draw.
 //
-// A fresh page, or 清空, starts at 抽先後攻: a gold coin, front 先攻
-// and back 後攻. One tap tosses it. Gravity, spin, bounce, and a short
-// settle run on each frame; a fair coin-flip picked at the tap is the
-// face the toss is solved to land on, so the result is not a preset
-// clip. After the coin lies still long enough to read, 先攻 leaves the
-// screen where it is and shows 先攻. 後攻 rotates the stage 180° and
-// swaps color, so the opponent faces the screen and sees 先攻. The
-// coin then stays away until the next 清空. Reduced motion skips the
-// flight and still uses the same fair face.
+// A fresh page, or 清空, starts at 抽先後攻: a gold coin, front FIRST
+// and back SECOND. One tap tosses it through space. Gravity, a random
+// path, bounces, and spin on all three axes run on each frame. A fair
+// coin-flip picked at the tap is the face the toss settles on, so the
+// result is not a preset clip. After the coin lies still long enough
+// to read, 先攻 leaves the screen where it is and shows 先攻. 後攻
+// rotates the stage 180° and swaps color, so the opponent faces the
+// screen and sees 先攻. The coin then stays away until the next 清空.
+// Reduced motion skips the flight and still uses the same fair face.
 //
 // Each player has one accumulated clock. Nothing runs on page load
 // or on the draw. The facing player's clock starts on the first Call
@@ -223,11 +223,13 @@
 
   function paintCoin(s) {
     if (!coinEl) return;
-    const rx = s.rx * 180 / Math.PI;
-    const ry = s.ry * 180 / Math.PI;
-    coinEl.style.transform = "translate3d(" + s.x.toFixed(2) + "px," + (-s.y).toFixed(2) + "px,0) rotateY(" + ry.toFixed(2) + "deg) rotateX(" + rx.toFixed(2) + "deg)";
-    const hx = 50 - Math.sin(s.ry) * 36 + Math.sin(s.rx * 2) * 7;
-    const hy = 28 + Math.sin(s.rx) * 26;
+    const rx = (s.rx || 0) * 180 / Math.PI;
+    const ry = (s.ry || 0) * 180 / Math.PI;
+    const rz = (s.rz || 0) * 180 / Math.PI;
+    const z = s.z || 0;
+    coinEl.style.transform = "translate3d(" + s.x.toFixed(2) + "px," + (-s.y).toFixed(2) + "px," + z.toFixed(2) + "px) rotateZ(" + rz.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg) rotateX(" + rx.toFixed(2) + "deg)";
+    const hx = 50 - Math.sin(s.ry || 0) * 32 + Math.sin((s.rx || 0) * 2) * 8 + Math.sin(s.rz || 0) * 12;
+    const hy = 28 + Math.sin(s.rx || 0) * 24 + Math.cos(s.rz || 0) * 8;
     const clamp = function (v) { return Math.max(10, Math.min(90, v)); };
     coinEl.style.setProperty("--hx", clamp(hx).toFixed(1) + "%");
     coinEl.style.setProperty("--hy", clamp(hy).toFixed(1) + "%");
@@ -235,7 +237,7 @@
     const ceiling = s.ceiling > 0 ? s.ceiling : 160;
     const t = Math.max(0, Math.min(1, s.y / ceiling));
     const scale = 1 - t * 0.42;
-    shadowEl.style.transform = "translate3d(" + (s.x * 0.4).toFixed(2) + "px,0,0) scale(" + scale.toFixed(3) + ")";
+    shadowEl.style.transform = "translate3d(" + ((s.x + z * 0.35) * 0.62).toFixed(2) + "px,0,0) scale(" + scale.toFixed(3) + ")";
     shadowEl.style.opacity = String(Math.max(0.14, 0.55 - t * 0.38));
   }
 
@@ -266,8 +268,10 @@
     return {
       x: 0,
       y: 0,
+      z: 0,
       rx: first ? REST_RX : Math.PI + REST_RX,
       ry: REST_RY,
+      rz: 0,
       ceiling: 160
     };
   }
@@ -295,38 +299,92 @@
     tossRaf = 0;
   }
 
-  // Vertical motion and flip rate share one integrator, so a gain
-  // measured with vrx = 1 predicts the landing angle of any spin.
+  // Flight is a small rigid body: travel across the table, height,
+  // and spin on all three axes. The face is steered only while falling
+  // after the first bounce, so the tumble itself stays free.
+  function aheadAngle(angle, vel, target) {
+    const period = Math.PI * 2;
+    let nearest = target;
+    let nearestAbs = Infinity;
+    let k;
+    for (k = -6; k <= 8; k++) {
+      const cand = target + period * k;
+      const ad = Math.abs(cand - angle);
+      if (ad < nearestAbs) { nearestAbs = ad; nearest = cand; }
+    }
+    if (nearestAbs < 0.45 || Math.abs(vel) < 0.8) return nearest;
+    const dir = vel < 0 ? -1 : 1;
+    let best = nearest;
+    let bestAbs = Infinity;
+    for (k = -6; k <= 8; k++) {
+      const cand = target + period * k;
+      const d = cand - angle;
+      if (dir > 0 && d < 0.05) continue;
+      if (dir < 0 && d > -0.05) continue;
+      const ad = Math.abs(d);
+      if (ad < bestAbs && ad < period * 1.35) { bestAbs = ad; best = cand; }
+    }
+    return best;
+  }
+
+  function timeToGround(y, vy, g) {
+    const A = 0.5 * g;
+    const B = -vy;
+    const C = -Math.max(0, y);
+    const disc = B * B - 4 * A * C;
+    if (!(A > 0) || disc < 0) return 0.16;
+    const t = (-B + Math.sqrt(disc)) / (2 * A);
+    return t > 0.02 ? t : 0.02;
+  }
+
   function stepToss(s, dt) {
-    let period, k, dest, calm;
+    let calm, destX, destY, destZ;
     if (s.phase === "fly") {
       s.vy -= s.g * dt;
       s.y += s.vy * dt;
       s.x += s.vx * dt;
-      s.vx *= Math.exp(-1.8 * dt);
-      if (s.x > 22) { s.x = 22; s.vx = -Math.abs(s.vx) * 0.25; }
-      if (s.x < -22) { s.x = -22; s.vx = Math.abs(s.vx) * 0.25; }
+      s.z += s.vz * dt;
+      s.vx *= Math.exp(-0.32 * dt);
+      s.vz *= Math.exp(-0.4 * dt);
+      const maxX = s.maxX || 56;
+      if (s.x > maxX) { s.x = maxX; s.vx = -Math.abs(s.vx) * 0.62; }
+      if (s.x < -maxX) { s.x = -maxX; s.vx = Math.abs(s.vx) * 0.62; }
+      if (s.z > 34) { s.z = 34; s.vz *= -0.45; }
+      if (s.z < -26) { s.z = -26; s.vz *= -0.45; }
       s.vrx *= Math.exp(-s.drag * dt);
+      s.vry *= Math.exp(-0.1 * dt);
+      s.vrz *= Math.exp(-0.14 * dt);
       s.rx += s.vrx * dt;
       s.ry += s.vry * dt;
-      s.vry *= Math.exp(-0.6 * dt);
+      s.rz += s.vrz * dt;
+      if (s.bounces >= 1 && s.vy < 0 && s.y > 0 && s.y < s.ceiling * 0.72) {
+        const tHit = Math.min(0.7, timeToGround(s.y, s.vy, s.g));
+        const wantX = (aheadAngle(s.rx, s.vrx, s.target) - s.rx) / tHit;
+        const wantY = (aheadAngle(s.ry, s.vry, REST_RY) - s.ry) / tHit;
+        const gain = Math.min(1, dt * (0.7 + 2.2 / tHit));
+        s.vrx += (Math.max(-46, Math.min(46, wantX)) - s.vrx) * gain;
+        s.vry += (Math.max(-26, Math.min(26, wantY)) - s.vry) * gain * 0.85;
+      }
       if (s.y <= 0 && s.vy < 0) {
         s.y = 0;
         s.bounces += 1;
-        s.vx *= 0.4;
-        if (Math.abs(s.vy) < 165 || s.bounces >= 3) {
+        const impact = Math.abs(s.vy);
+        const e = s.bounces === 1 ? s.rest1 : s.rest2;
+        s.vx = s.vx * (0.42 + Math.random() * 0.28) + (Math.random() - 0.5) * 110;
+        s.vz = s.vz * 0.35 + (Math.random() - 0.5) * 50;
+        s.vrx *= s.spinKeep;
+        s.vry = s.vry * s.spinKeep + (Math.random() - 0.5) * 4;
+        s.vrz = s.vrz * s.spinKeep + (Math.random() - 0.5) * 3.2;
+        if (impact < 150 || s.bounces >= 3) {
           s.vy = 0;
           s.phase = "settle";
           s.settleFor = 0;
-          // Contact dumps most of the remaining spin. The spring then
-          // rocks onto the face instead of tumbling past it.
-          const cap = 2.4;
-          if (s.vrx > cap) s.vrx = cap;
-          if (s.vrx < -cap) s.vrx = -cap;
+          s.vrx = Math.max(-3.4, Math.min(3.4, s.vrx));
+          s.vry = Math.max(-2.6, Math.min(2.6, s.vry));
+          s.vrz = Math.max(-3.2, Math.min(3.2, s.vrz));
           return;
         }
-        s.vy = -s.vy * (s.bounces === 1 ? s.rest1 : s.rest2);
-        s.vrx *= s.spinKeep;
+        s.vy = impact * e;
       }
       return;
     }
@@ -334,22 +392,29 @@
     s.y += s.vy * dt;
     if (s.y <= 0) {
       s.y = 0;
-      s.vy = s.vy < -36 ? -s.vy * 0.32 : 0;
+      s.vy = s.vy < -34 ? -s.vy * 0.28 : 0;
+      s.vx *= 0.84;
+      s.vz *= 0.8;
     }
-    s.vx += (-s.x * 34 - s.vx * 9) * dt;
     s.x += s.vx * dt;
-    period = Math.PI * 2;
-    k = Math.round((s.rx - s.target) / period);
-    dest = s.target + period * k;
-    s.vrx += ((dest - s.rx) * 58 - s.vrx * 13) * dt;
+    s.z += s.vz * dt;
+    s.vx += (-s.x * 26 - s.vx * 6.5) * dt;
+    s.vz += (-s.z * 28 - s.vz * 7) * dt;
+    destX = aheadAngle(s.rx, s.vrx, s.target);
+    destY = aheadAngle(s.ry, s.vry, REST_RY);
+    destZ = aheadAngle(s.rz, s.vrz, 0);
+    s.vrx += ((destX - s.rx) * 42 - s.vrx * 10) * dt;
     s.rx += s.vrx * dt;
-    s.vry += ((REST_RY - s.ry) * 78 - s.vry * 9) * dt;
+    s.vry += ((destY - s.ry) * 38 - s.vry * 9) * dt;
     s.ry += s.vry * dt;
-    calm = Math.abs(dest - s.rx) < 0.03 && Math.abs(s.vrx) < 0.35
-      && Math.abs(s.ry - REST_RY) < 0.05 && Math.abs(s.vry) < 0.3
-      && s.y < 0.8 && Math.abs(s.vy) < 1 && Math.abs(s.x) < 1.2;
+    s.vrz += ((destZ - s.rz) * 34 - s.vrz * 8) * dt;
+    s.rz += s.vrz * dt;
+    calm = Math.abs(destX - s.rx) < 0.06 && Math.abs(s.vrx) < 0.45
+      && Math.abs(destY - s.ry) < 0.07 && Math.abs(s.vry) < 0.4
+      && Math.abs(destZ - s.rz) < 0.09 && Math.abs(s.vrz) < 0.45
+      && s.y < 1 && Math.abs(s.vy) < 2 && Math.abs(s.x) < 3 && Math.abs(s.z) < 3;
     s.settleFor = calm ? s.settleFor + dt : 0;
-    if (s.settleFor >= 0.12) s.phase = "done";
+    if (s.settleFor >= 0.1) s.phase = "done";
   }
 
   function blankToss(proto) {
@@ -359,10 +424,14 @@
       g: proto.g,
       x: 0,
       vx: proto.vx || 0,
+      z: 0,
+      vz: proto.vz || 0,
       rx: 0,
       vrx: proto.vrx,
       ry: 0,
-      vry: 0,
+      vry: proto.vry || 0,
+      rz: 0,
+      vrz: proto.vrz || 0,
       rest1: proto.rest1,
       rest2: proto.rest2,
       spinKeep: proto.spinKeep,
@@ -372,42 +441,10 @@
       target: proto.target,
       settleFor: 0,
       ceiling: proto.ceiling,
+      maxX: proto.maxX || 56,
       first: proto.first,
       gen: proto.gen
     };
-  }
-
-  function landingGain(proto) {
-    const s = blankToss(proto);
-    s.vrx = 1;
-    s.vx = 0;
-    let n = 0;
-    while (s.phase === "fly" && n < 4000) {
-      stepToss(s, STEP);
-      n += 1;
-    }
-    return s.rx > 0.05 ? s.rx : 0.05;
-  }
-
-  function solveVrx(target, gain, rx0) {
-    const period = Math.PI * 2;
-    const dir = Math.random() < 0.5 ? -1 : 1;
-    const delta = target - rx0;
-    const opts = [];
-    for (let n = 1; n <= 16; n++) {
-      let mag;
-      if (dir > 0) mag = delta + period * n;
-      else {
-        let base = -delta;
-        base = ((base % period) + period) % period;
-        if (base < 0.01) base = period;
-        mag = base + period * (n - 1);
-      }
-      const omega = mag / gain;
-      if (omega >= 24 && omega <= 38) opts.push(dir * omega);
-    }
-    if (!opts.length) return dir * 30;
-    return opts[Math.floor(Math.random() * opts.length)];
   }
 
   function measureCeiling() {
@@ -420,8 +457,11 @@
 
   function kickSettle(s) {
     const lean = Math.random() < 0.5 ? -1 : 1;
-    s.ry = REST_RY + lean * (0.16 + Math.random() * 0.1);
-    s.vry = -lean * (2.1 + Math.random() * 1.3);
+    s.ry = REST_RY + lean * (0.22 + Math.random() * 0.16);
+    s.vry = -lean * (1.6 + Math.random() * 1.4);
+    s.rz += (Math.random() - 0.5) * 0.45;
+    s.vrz += (Math.random() - 0.5) * 2.8;
+    s.vx += (Math.random() - 0.5) * 50;
     const hop = Math.min(26, Math.max(10, s.ceiling * 0.16));
     s.vy = Math.sqrt(2 * s.g * hop) * (0.82 + Math.random() * 0.28);
   }
@@ -477,8 +517,10 @@
     if (s.phase === "done") {
       s.rx = s.target;
       s.ry = REST_RY;
+      s.rz = 0;
       s.x = 0;
       s.y = 0;
+      s.z = 0;
       s.vy = 0;
       paintCoin(s);
       beginHold(s);
@@ -515,26 +557,34 @@
     const air = (ceiling < 110 ? 1.22 : 1.05) + Math.random() * 0.16;
     const h = ceiling * (0.9 + Math.random() * 0.1);
     const g = (8 * h) / (air * air);
+    const maxX = (function () {
+      const sw = coinScene ? coinScene.clientWidth : 360;
+      const d = coinEl ? coinEl.offsetWidth : 160;
+      return Math.max(32, Math.min(72, (sw - d) * 0.2));
+    })();
+    const spin = Math.random() < 0.5 ? -1 : 1;
     const proto = {
       vy: g * air / 2,
       g: g,
-      rest1: 0.46 + Math.random() * 0.08,
-      rest2: 0.42,
-      spinKeep: 0.45,
-      drag: 0.2,
+      rest1: 0.5 + Math.random() * 0.16,
+      rest2: 0.36 + Math.random() * 0.12,
+      spinKeep: 0.55 + Math.random() * 0.1,
+      drag: 0.08 + Math.random() * 0.06,
       target: first ? REST_RX : Math.PI + REST_RX,
       ceiling: h,
+      maxX: maxX,
       first: first,
       gen: gen,
-      vx: 0,
-      vrx: 1
+      vx: (Math.random() - 0.5) * 180,
+      vz: (Math.random() - 0.5) * 80,
+      vrx: spin * (18 + Math.random() * 16),
+      vry: (Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 12),
+      vrz: (Math.random() < 0.5 ? -1 : 1) * (6 + Math.random() * 12)
     };
-    const gain = landingGain(proto);
-    proto.vrx = solveVrx(proto.target, gain, REST_RX);
-    proto.vx = (Math.random() - 0.5) * 70;
     toss = blankToss(proto);
     toss.rx = REST_RX;
     toss.ry = REST_RY;
+    toss.rz = (Math.random() - 0.5) * 0.6;
     toss.gen = gen;
     toss.first = first;
     toss.ceiling = h;
