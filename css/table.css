@@ -110,22 +110,33 @@ body.table-body[data-side="b"] {
   min-height: 64px;
   padding-top: 8px;
 }
-.table-back {
+.table-bar-start {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.table-back, .table-clear-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 64px;
-  min-height: 44px;
-  padding: 0 12px;
+  min-width: 56px;
+  min-height: 48px;
+  padding: 0 10px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--muted);
   font-family: var(--sans);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: .04em;
   text-decoration: none;
+  touch-action: manipulation;
 }
-.table-back:active { background: var(--panel-2); color: var(--text); }
+.table-clear-btn {
+  appearance: none;
+  cursor: pointer;
+}
+.table-back:active, .table-clear-btn:active { background: var(--panel-2); color: var(--text); }
 .table-orient-btn {
   appearance: none;
   display: inline-flex;
@@ -170,6 +181,7 @@ body.table-body[data-side="b"] {
   justify-content: center;
   gap: 2px;
   min-width: 0;
+  overflow: hidden;
   text-align: center;
 }
 .table-side {
@@ -182,12 +194,25 @@ body.table-body[data-side="b"] {
 }
 .table-your {
   margin: 0;
+  max-width: 100%;
   font-family: var(--display);
   font-weight: 500;
-  font-size: 28px;
-  line-height: 1.2;
+  font-size: clamp(22px, 6.4vw, 28px);
+  line-height: 1.05;
   letter-spacing: .02em;
   color: var(--text);
+  white-space: nowrap;
+}
+.table-stage.is-pregame .table-your { color: var(--muted); }
+.table-your.is-first {
+  font-size: 48px;
+  line-height: .85;
+  letter-spacing: .08em;
+  color: var(--used);
+}
+.table-stage.is-opening::before {
+  height: 6px;
+  background: var(--used);
 }
 .table-kicker {
   margin: 0;
@@ -285,12 +310,61 @@ body.table-body[data-side="b"] {
   color: var(--muted);
 }
 
+.table-draw,
 .table-board {
   flex: 1 1 auto;
   min-height: 0;
+}
+.table-draw[hidden],
+.table-board[hidden] { display: none !important; }
+.table-draw {
+  display: flex;
+}
+.table-board {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.draw-btn {
+  appearance: none;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 168px;
+  padding: 18px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.draw-btn:active { filter: brightness(1.08); }
+.draw-name {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(56px, 16vw, 84px);
+  line-height: .88;
+  letter-spacing: .04em;
+  text-align: center;
+  text-wrap: balance;
+}
+html[lang="en"] .draw-name {
+  font-size: clamp(40px, 11vw, 56px);
+  letter-spacing: .02em;
+}
+.draw-sub {
+  max-width: 18em;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: .03em;
+  text-align: center;
+  opacity: .92;
 }
 .table-calls {
   flex: 1.15 1 auto;
@@ -378,7 +452,12 @@ body.table-body[data-side="b"] {
   opacity: .88;
 }
 
-.slot-btn:focus-visible, .end-btn:focus-visible, .table-back:focus-visible, .table-orient-btn:focus-visible {
+.slot-btn:focus-visible,
+.end-btn:focus-visible,
+.draw-btn:focus-visible,
+.table-back:focus-visible,
+.table-clear-btn:focus-visible,
+.table-orient-btn:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: 2px;
 }
@@ -420,6 +499,10 @@ body.table-body[data-side="b"] {
 .table-stage.is-wide .clock-time { font-size: 28px; }
 .table-stage.is-wide .clock-time.is-long { font-size: 22px; }
 .table-stage.is-wide .table-your { font-size: 26px; }
+.table-stage.is-wide .table-your.is-first { font-size: 40px; }
+.table-stage.is-wide .draw-name { font-size: clamp(36px, 9vh, 60px); }
+.table-stage.is-wide .draw-sub { font-size: 14px; }
+.table-stage.is-wide .draw-btn { min-height: 0; padding: 10px 12px; }
 .table-stage.is-wide .table-board {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(140px, .9fr);
@@ -435,6 +518,9 @@ body.table-body[data-side="b"] {
 @media (max-width: 360px) {
   .slot-state { font-size: 13px; }
   .orient-name { font-size: 18px; }
+  .table-back, .table-clear-btn { min-width: 48px; padding: 0 8px; font-size: 14px; }
+  .table-your.is-first { font-size: 40px; }
+  .draw-sub { font-size: 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
