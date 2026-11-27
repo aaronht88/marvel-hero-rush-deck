@@ -53,6 +53,10 @@
   const STEP = 0.004;
   const HOLD_MS = 1300;
   const REDUCED_HOLD_MS = 900;
+  // Rest and landing lean so the rim stays visible. The flip result
+  // is still which face points up: front = REST_RX, back = π + REST_RX.
+  const REST_RX = 0.30;
+  const REST_RY = 0.48;
   let uiLock = false;
   let tickTimer = 0;
   let toss = null;
@@ -187,14 +191,30 @@
 
   function buildCoin() {
     if (!coinEl || coinEl.dataset.built === "1") return;
-    const n = 40;
+    const slabs = 12;
+    for (let i = 0; i < slabs; i++) {
+      const slab = document.createElement("span");
+      slab.className = "coin-slab";
+      const zf = -0.46 + ((i + 0.5) / slabs) * 0.92;
+      slab.style.setProperty("--zf", zf.toFixed(3));
+      if (i === 0 || i === slabs - 1) slab.classList.add("is-bevel");
+      else if (i === 5 || i === 6) slab.classList.add("is-groove");
+      else if (i === 3 || i === 8) slab.classList.add("is-glint");
+      coinEl.appendChild(slab);
+    }
+    const n = 72;
     const rim = document.createElement("div");
     rim.className = "coin-rim";
     coinEl.style.setProperty("--n", String(n));
     for (let i = 0; i < n; i++) {
       const seg = document.createElement("span");
+      const deg = (i + 0.5) * (360 / n);
+      const lit = Math.cos(deg * Math.PI / 180);
       seg.className = "coin-rim-seg";
-      seg.style.setProperty("--a", ((i * 360) / n).toFixed(2) + "deg");
+      if (lit > 0.86) seg.classList.add("is-lit");
+      else if (lit < -0.45) seg.classList.add("is-dark");
+      else if (i % 2 === 0) seg.classList.add("is-reed");
+      seg.style.setProperty("--a", deg.toFixed(2) + "deg");
       rim.appendChild(seg);
     }
     coinEl.appendChild(rim);
@@ -206,6 +226,11 @@
     const rx = s.rx * 180 / Math.PI;
     const ry = s.ry * 180 / Math.PI;
     coinEl.style.transform = "translate3d(" + s.x.toFixed(2) + "px," + (-s.y).toFixed(2) + "px,0) rotateY(" + ry.toFixed(2) + "deg) rotateX(" + rx.toFixed(2) + "deg)";
+    const hx = 50 - Math.sin(s.ry) * 36 + Math.sin(s.rx * 2) * 7;
+    const hy = 28 + Math.sin(s.rx) * 26;
+    const clamp = function (v) { return Math.max(10, Math.min(90, v)); };
+    coinEl.style.setProperty("--hx", clamp(hx).toFixed(1) + "%");
+    coinEl.style.setProperty("--hy", clamp(hy).toFixed(1) + "%");
     if (!shadowEl) return;
     const ceiling = s.ceiling > 0 ? s.ceiling : 160;
     const t = Math.max(0, Math.min(1, s.y / ceiling));
@@ -237,8 +262,18 @@
     else delete drawPanel.dataset.face;
   }
 
+  function facePose(first) {
+    return {
+      x: 0,
+      y: 0,
+      rx: first ? REST_RX : Math.PI + REST_RX,
+      ry: REST_RY,
+      ceiling: 160
+    };
+  }
+
   function idlePose() {
-    return { x: 0, y: 0, rx: 0, ry: 0, ceiling: 160 };
+    return facePose(true);
   }
 
   function resetCoinPose() {
@@ -308,10 +343,10 @@
     dest = s.target + period * k;
     s.vrx += ((dest - s.rx) * 58 - s.vrx * 13) * dt;
     s.rx += s.vrx * dt;
-    s.vry += (-s.ry * 78 - s.vry * 9) * dt;
+    s.vry += ((REST_RY - s.ry) * 78 - s.vry * 9) * dt;
     s.ry += s.vry * dt;
     calm = Math.abs(dest - s.rx) < 0.03 && Math.abs(s.vrx) < 0.35
-      && Math.abs(s.ry) < 0.05 && Math.abs(s.vry) < 0.3
+      && Math.abs(s.ry - REST_RY) < 0.05 && Math.abs(s.vry) < 0.3
       && s.y < 0.8 && Math.abs(s.vy) < 1 && Math.abs(s.x) < 1.2;
     s.settleFor = calm ? s.settleFor + dt : 0;
     if (s.settleFor >= 0.12) s.phase = "done";
@@ -354,14 +389,20 @@
     return s.rx > 0.05 ? s.rx : 0.05;
   }
 
-  function solveVrx(target, gain) {
+  function solveVrx(target, gain, rx0) {
     const period = Math.PI * 2;
     const dir = Math.random() < 0.5 ? -1 : 1;
+    const delta = target - rx0;
     const opts = [];
     for (let n = 1; n <= 16; n++) {
-      const mag = dir > 0
-        ? target + period * n
-        : (target === 0 ? period * n : (period - target) + period * (n - 1));
+      let mag;
+      if (dir > 0) mag = delta + period * n;
+      else {
+        let base = -delta;
+        base = ((base % period) + period) % period;
+        if (base < 0.01) base = period;
+        mag = base + period * (n - 1);
+      }
       const omega = mag / gain;
       if (omega >= 24 && omega <= 38) opts.push(dir * omega);
     }
@@ -379,7 +420,7 @@
 
   function kickSettle(s) {
     const lean = Math.random() < 0.5 ? -1 : 1;
-    s.ry = lean * (0.22 + Math.random() * 0.14);
+    s.ry = REST_RY + lean * (0.16 + Math.random() * 0.1);
     s.vry = -lean * (2.1 + Math.random() * 1.3);
     const hop = Math.min(26, Math.max(10, s.ceiling * 0.16));
     s.vy = Math.sqrt(2 * s.g * hop) * (0.82 + Math.random() * 0.28);
@@ -402,8 +443,7 @@
   function beginHold(s) {
     const gen = s.gen;
     const first = s.first;
-    const flat = idlePose();
-    flat.rx = first ? 0 : Math.PI;
+    const flat = facePose(first);
     flat.ceiling = s.ceiling;
     paintCoin(flat);
     paintDrawCopy("hold", first);
@@ -436,7 +476,7 @@
     }
     if (s.phase === "done") {
       s.rx = s.target;
-      s.ry = 0;
+      s.ry = REST_RY;
       s.x = 0;
       s.y = 0;
       s.vy = 0;
@@ -462,9 +502,7 @@
     markToss(prefersReducedMotion() ? "hold" : "fly", first ? "first" : "second");
     if (prefersReducedMotion()) {
       toss = { reduced: true, gen: gen, first: first };
-      const flat = idlePose();
-      flat.rx = first ? 0 : Math.PI;
-      paintCoin(flat);
+      paintCoin(facePose(first));
       paintDrawCopy("hold", first);
       if (live) live.textContent = first ? label("tableLiveCoinFirst") : label("tableLiveCoinSecond");
       window.setTimeout(function () {
@@ -484,7 +522,7 @@
       rest2: 0.42,
       spinKeep: 0.45,
       drag: 0.2,
-      target: first ? 0 : Math.PI,
+      target: first ? REST_RX : Math.PI + REST_RX,
       ceiling: h,
       first: first,
       gen: gen,
@@ -492,9 +530,11 @@
       vrx: 1
     };
     const gain = landingGain(proto);
-    proto.vrx = solveVrx(proto.target, gain);
+    proto.vrx = solveVrx(proto.target, gain, REST_RX);
     proto.vx = (Math.random() - 0.5) * 70;
     toss = blankToss(proto);
+    toss.rx = REST_RX;
+    toss.ry = REST_RY;
     toss.gen = gen;
     toss.first = first;
     toss.ceiling = h;
