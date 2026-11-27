@@ -3,14 +3,25 @@
 // Counts Call 1/2/3 and 基地部署 for the player facing the phone.
 // It does not enforce rules: every tap toggles, nothing is blocked.
 // 結束回合 resets those marks, rotates the board, and swaps colors.
-// 直向／橫向 only changes which way the board faces. It does not reset counts.
+// 直向／橫向 only changes which way the board faces. It does not reset
+// counts, timers, or the first-player draw.
 //
-// Each player has one accumulated clock. Nothing runs on page load.
-// The facing player's clock starts on the first Call or 基地部署.
-// If 結束回合 is the first action, the incoming player's clock starts
-// and the passing player stays at 0. Later 結束回合 presses bank the
-// active clock and start the other. Totals are not reset by 結束回合
-// or by 直向／橫向. The same tab session keeps them across reload.
+// A fresh page, or 清空, starts at 抽先後攻. One tap is a fair 50/50.
+// 先攻 leaves the screen where it is and shows 先攻. 後攻 rotates the
+// stage 180° and swaps color, so the opponent faces the screen and
+// sees 先攻. The draw control then stays away until the next 清空.
+//
+// Each player has one accumulated clock. Nothing runs on page load
+// or on the draw. The facing player's clock starts on the first Call
+// or 基地部署. If 結束回合 is the first action, the incoming player's
+// clock starts and the passing player stays at 0. Later 結束回合
+// presses bank the active clock and start the other. Totals are not
+// reset by 結束回合 or by 直向／橫向. 清空 zeros both clocks, stops
+// the tick, resets action marks, and returns to the draw. It keeps
+// the 直向／橫向 choice. The same tab session keeps an in-progress
+// game, including that the draw already happened, across reload.
+// 清空 writes that cleared state, so a reload does not restore it.
+// Closing the tab clears the session.
 // =============================================================
 (function () {
   const i18n = window.MHR_I18N;
@@ -20,18 +31,31 @@
   const orient = document.getElementById("orient");
   const live = document.getElementById("table-live");
   const sideEl = document.getElementById("table-side");
+  const turnLabel = document.getElementById("table-turn-label");
+  const hintEl = document.getElementById("table-hint");
+  const drawPanel = document.getElementById("table-draw");
+  const board = document.getElementById("table-board");
+  const clearBtn = document.getElementById("btn-clear");
   const orientBtn = document.getElementById("btn-orient");
   const orientLabel = document.getElementById("orient-label");
   const clocksEl = document.getElementById("table-clocks");
-  let endLock = false;
+  let uiLock = false;
   let tickTimer = 0;
 
   function freshClock() {
     return { ms: { a: 0, b: 0 }, ticking: false, since: 0 };
   }
 
-  function fresh() {
-    return { side: "a", calls: [false, false, false], base: false, orient: null, clock: freshClock() };
+  function fresh(orientMode) {
+    return {
+      side: "a",
+      calls: [false, false, false],
+      base: false,
+      orient: orientMode === "portrait" || orientMode === "landscape" ? orientMode : null,
+      clock: freshClock(),
+      drawn: false,
+      opening: false
+    };
   }
 
   function clockFrom(raw) {
@@ -57,12 +81,19 @@
         return fresh();
       }
       const orientMode = raw.orient === "portrait" || raw.orient === "landscape" ? raw.orient : null;
+      // Sessions saved before the draw existed have no `drawn` flag.
+      // Treat those as an in-progress game so a reload does not ask again.
+      const legacy = raw.drawn !== true && raw.drawn !== false;
+      const drawn = legacy ? true : raw.drawn === true;
+      if (!drawn) return fresh(orientMode);
       return {
         side: raw.side,
         calls: raw.calls.map(Boolean),
         base: !!raw.base,
         orient: orientMode,
-        clock: clockFrom(raw.clock)
+        clock: clockFrom(raw.clock),
+        drawn: true,
+        opening: raw.opening === true
       };
     } catch (e) {
       return fresh();
@@ -104,7 +135,7 @@
   }
 
   function startIfIdle() {
-    if (state.clock.ticking) return;
+    if (!state.drawn || state.clock.ticking) return;
     beginActive();
   }
 
@@ -113,6 +144,28 @@
     state.clock.ms[state.side] += Math.max(0, Date.now() - state.clock.since);
     state.clock.ticking = false;
     state.clock.since = 0;
+  }
+
+  function stopTicker() {
+    if (!tickTimer) return;
+    window.clearInterval(tickTimer);
+    tickTimer = 0;
+  }
+
+  function facingGoesFirst() {
+    try {
+      if (window.crypto && crypto.getRandomValues) {
+        const buf = new Uint32Array(1);
+        crypto.getRandomValues(buf);
+        return (buf[0] & 1) === 1;
+      }
+    } catch (e) {}
+    return Math.random() < 0.5;
+  }
+
+  function lockFor(ms) {
+    uiLock = true;
+    window.setTimeout(function () { uiLock = false; }, ms);
   }
 
   function paintClocks() {
@@ -145,9 +198,8 @@
   function syncTicker() {
     if (state.clock.ticking) {
       if (!tickTimer) tickTimer = window.setInterval(paintClocks, 250);
-    } else if (tickTimer) {
-      window.clearInterval(tickTimer);
-      tickTimer = 0;
+    } else {
+      stopTicker();
     }
   }
 
@@ -179,14 +231,21 @@
   }
 
   function render(announce) {
+    const pre = !state.drawn;
     document.body.dataset.side = state.side;
+    document.body.dataset.phase = pre ? "draw" : (state.opening ? "opening" : "play");
     stage.dataset.side = state.side;
     stage.classList.toggle("is-flipped", state.side === "b");
+    stage.classList.toggle("is-pregame", pre);
+    stage.classList.toggle("is-opening", !pre && state.opening);
+    if (drawPanel) drawPanel.hidden = !pre;
+    if (board) board.hidden = pre;
     applyOrient();
     const land = effectiveOrient() === "landscape";
     orientLabel.textContent = land ? label("tableOrientLandscape") : label("tableOrientPortrait");
     orientBtn.setAttribute("aria-pressed", land ? "true" : "false");
     orientBtn.setAttribute("aria-label", land ? label("tableOrientToPort") : label("tableOrientToLand"));
+    if (clearBtn) clearBtn.setAttribute("aria-label", label("tableClearAria"));
     const theme = document.querySelector('meta[name="theme-color"]');
     if (theme) theme.setAttribute("content", state.side === "b" ? "#070b12" : "#09090b");
 
@@ -205,6 +264,13 @@
     if (baseState) baseState.textContent = state.base ? label("tableBaseUsed") : label("tableBaseUnused");
 
     sideEl.textContent = state.side === "b" ? label("tableSideB") : label("tableSideA");
+    if (turnLabel) {
+      if (pre) turnLabel.textContent = label("tablePreGame");
+      else if (state.opening) turnLabel.textContent = label("tableFirst");
+      else turnLabel.textContent = label("tableYourTurn");
+      turnLabel.classList.toggle("is-first", !pre && state.opening);
+    }
+    if (hintEl) hintEl.textContent = pre ? label("tableDrawHint") : label("tableHint");
     document.title = label("tableDocTitle");
     paintClocks();
     syncTicker();
@@ -216,7 +282,7 @@
 
   document.getElementById("table-calls").addEventListener("click", (e) => {
     const btn = e.target.closest("[data-call]");
-    if (!btn) return;
+    if (!btn || !state.drawn) return;
     const i = Number(btn.dataset.call);
     startIfIdle();
     state.calls[i] = !state.calls[i];
@@ -225,10 +291,33 @@
   });
 
   document.getElementById("btn-base").addEventListener("click", () => {
+    if (!state.drawn) return;
     startIfIdle();
     state.base = !state.base;
     save();
     render(false);
+  });
+
+  document.getElementById("btn-draw").addEventListener("click", () => {
+    if (state.drawn || uiLock) return;
+    const first = facingGoesFirst();
+    state.drawn = true;
+    state.opening = true;
+    if (!first) state.side = state.side === "a" ? "b" : "a";
+    save();
+    render(false);
+    if (live) live.textContent = first ? label("tableLiveDrawStay") : label("tableLiveDrawFlip");
+    lockFor(first ? 280 : 520);
+  });
+
+  clearBtn.addEventListener("click", () => {
+    if (uiLock) return;
+    stopTicker();
+    state = fresh(state.orient);
+    save();
+    render(false);
+    if (live) live.textContent = label("tableLiveClear");
+    lockFor(520);
   });
 
   orientBtn.addEventListener("click", () => {
@@ -239,16 +328,16 @@
   });
 
   document.getElementById("btn-end").addEventListener("click", () => {
-    if (endLock) return;
-    endLock = true;
+    if (!state.drawn || uiLock) return;
     bankActive();
     state.calls = [false, false, false];
     state.base = false;
+    state.opening = false;
     state.side = state.side === "a" ? "b" : "a";
     beginActive();
     save();
     render(true);
-    window.setTimeout(() => { endLock = false; }, 520);
+    lockFor(520);
   });
 
   const savedLang = localStorage.getItem("mhr_lang");
