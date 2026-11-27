@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Teko:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/table.css" />
+  <link rel="stylesheet" href="css/table.css?v=1.6.19-beta" />
 </head>
 <body class="table-body" data-side="a">
   <div id="frame" class="table-frame">
@@ -25,6 +25,25 @@
         <span id="orient-label" class="orient-name">直向</span>
       </button>
     </header>
+    <div class="table-clocks-wrap">
+      <p id="table-clock-caption" class="table-clock-caption" data-i18n="tableClockGroup">累計用時</p>
+      <div id="table-clocks" class="table-clocks" role="group" aria-labelledby="table-clock-caption">
+        <div class="clock" data-clock="a" role="timer">
+          <span class="clock-meta">
+            <span class="clock-name">紅方</span>
+            <span class="clock-status"></span>
+          </span>
+          <span class="clock-time">00:00</span>
+        </div>
+        <div class="clock" data-clock="b" role="timer">
+          <span class="clock-meta">
+            <span class="clock-name">藍方</span>
+            <span class="clock-status"></span>
+          </span>
+          <span class="clock-time">00:00</span>
+        </div>
+      </div>
+    </div>
     <p class="table-hint" data-i18n="tableHint">只作計數，不判定規則。已使用的項目可再按一次改回。</p>
     <div class="table-board">
       <div id="table-calls" class="table-calls">
@@ -54,7 +73,7 @@
   </div>
   </div>
   </div>
-  <script src="js/i18n.js?v=1.6.18-beta"></script>
-  <script src="js/table.js"></script>
+  <script src="js/i18n.js?v=1.6.19-beta"></script>
+  <script src="js/table.js?v=1.6.19-beta"></script>
 </body>
 </html>
