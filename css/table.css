@@ -431,18 +431,15 @@ body.table-body[data-side="b"] {
   z-index: 1;
   font-family: var(--display);
   font-weight: 600;
-  font-size: calc(var(--d) * 0.3);
+  font-size: calc(var(--d) * 0.2);
   line-height: 1;
-  letter-spacing: .12em;
+  letter-spacing: .02em;
   color: #3a2406;
   text-shadow:
     0 1px 0 rgba(255, 248, 220, .9),
     0 -1px 0 rgba(50, 28, 4, .55);
 }
-html[lang="en"] .coin-label {
-  font-size: calc(var(--d) * 0.2);
-  letter-spacing: .04em;
-}
+.coin-back .coin-label { font-size: calc(var(--d) * 0.16); }
 .coin-rim { position: absolute; inset: 0; transform-style: preserve-3d; }
 .coin-rim-seg {
   --arc: calc(var(--d) * 3.1416 / var(--n) + 2px);
