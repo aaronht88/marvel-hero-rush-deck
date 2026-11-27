@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="zh-HK" translate="no">
 <head>
   <meta charset="UTF-8" />
+  <meta name="google" content="notranslate" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#09090b" />
   <title>對戰助手 — Marvel Hero Rush</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Teko:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/table.css?v=1.6.20-beta" />
+  <link rel="stylesheet" href="css/table.css?v=1.6.21-beta" />
 </head>
 <body class="table-body" data-side="a">
   <div id="frame" class="table-frame">
@@ -49,11 +50,24 @@
         </div>
       </div>
     </div>
-    <p id="table-hint" class="table-hint" data-i18n="tableDrawHint">按下抽先後攻。計時於首次 Call 或基地部署時才開始。</p>
-    <div id="table-draw" class="table-draw">
+    <p id="table-hint" class="table-hint" data-i18n="tableDrawHint">輕按金幣抽先後攻。計時於首次 Call 或基地部署時才開始。</p>
+    <div id="table-draw" class="table-draw" data-toss="idle">
+      <div class="coin-scene" id="coin-scene" aria-hidden="true">
+        <div class="coin-shadow" id="coin-shadow"></div>
+        <div class="coin" id="coin">
+          <div class="coin-face coin-front">
+            <span class="coin-label" data-i18n="tableCoinFirst">先攻</span>
+          </div>
+          <div class="coin-face coin-back">
+            <span class="coin-label" data-i18n="tableCoinSecond">後攻</span>
+          </div>
+        </div>
+      </div>
       <button type="button" id="btn-draw" class="draw-btn">
-        <span class="draw-name" data-i18n="tableDraw">抽先後攻</span>
-        <span class="draw-sub" data-i18n="tableDrawSub">隨機決定先攻一方</span>
+        <span class="draw-copy">
+          <span class="draw-name" data-i18n="tableDraw">抽先後攻</span>
+          <span class="draw-sub" data-i18n="tableDrawSub">輕按擲幣。正面為先攻，背面為後攻。</span>
+        </span>
       </button>
     </div>
     <div class="table-board" id="table-board" hidden>
@@ -84,7 +98,7 @@
   </div>
   </div>
   </div>
-  <script src="js/i18n.js?v=1.6.20-beta"></script>
-  <script src="js/table.js?v=1.6.20-beta"></script>
+  <script src="js/i18n.js?v=1.6.21-beta"></script>
+  <script src="js/table.js?v=1.6.21-beta"></script>
 </body>
 </html>
